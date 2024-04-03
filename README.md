@@ -14,6 +14,13 @@
 - Duplicate `environment.local.ts` under the `src/environments/` folder and rename it to `environment.ts`
 - Run `npm run start` to start a development server on your local, and calling sandbox.practera.com for API
 
+## Development
+
+1. To this project locally start with `demo:true` (in environment.ts)
+1. Go to `https://localhost:4202/auth/demo` (the SSL must not be omitted) to get authorised locally
+1. Ignore the `.localsegment` error during compilation (it's for devops purpose)
+1. Start coding!
+
 ## Demo
 
 To run the demo version of CUTIE on local
