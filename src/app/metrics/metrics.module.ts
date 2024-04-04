@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { MetricComponent } from './metric/metric.component';
 
 
-
 @NgModule({
   declarations: [
     MetricsComponent,
@@ -15,7 +14,7 @@ import { MetricComponent } from './metric/metric.component';
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule.forRoot([
+    RouterModule.forChild([
       {
         path: '',
         component: MetricsComponent

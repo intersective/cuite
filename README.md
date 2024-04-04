@@ -5,21 +5,36 @@
 
 ## Requirements
 
-- Ionic 4
-- Angular 7
+- Ionic 7
+- Angular 15
+
+## Development
+
+1. To run this project locally, start with `demo:true` (in environment.ts)
+1. Go to `https://localhost:4202/auth/demo` (the SSL must not be omitted) to get authorised locally
+1. Ignore the `.localsegment` error during compilation (it's for devops purpose)
+1. Start coding!
+
+### Sandbox API environment (option 1)
+
+1. Copy the "me" object from the localStorage from our app or core-admin
+1. Paste it in your running local cutie-app's localStorage with the same key ("me")
+1. There is no content in the root "/"
+1. relative-url must be added after the `https://localhost:4202/` in order to see the content that you expect to see
+1. For example, `https://localhost:4202/overview-only` will redirect you to *overview-only* route. 
+1. You would not redirected and will get stuck in `https://localhost:4202` when there is no relative URL appended.
+
+### Sandbox API environment (option 2)
+
+1. Follow this URL format: https://localhost:4202/?redirect=overview-only&jwt={OUR-APP-APIKEY}
+1. Get the APIKEY from the already authorised app user localStorage or HTTP header and replace {OUR-APP-APIKEY} with the obtained APIKEY
+1. You'll be redirect to the specified "redirect" destination.
 
 ## Installation
 
 - Run `npm install` to install necessary packages
 - Duplicate `environment.local.ts` under the `src/environments/` folder and rename it to `environment.ts`
 - Run `npm run start` to start a development server on your local, and calling sandbox.practera.com for API
-
-## Development
-
-1. To this project locally start with `demo:true` (in environment.ts)
-1. Go to `https://localhost:4202/auth/demo` (the SSL must not be omitted) to get authorised locally
-1. Ignore the `.localsegment` error during compilation (it's for devops purpose)
-1. Start coding!
 
 ## Demo
 
