@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from '@apollo/client';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
 import { map } from 'rxjs';
 
@@ -21,6 +22,9 @@ export interface Metric {
   providedIn: 'root'
 })
 export class MetricsService {
+  saveMetric(value: any): Observable<any> {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(
     private graphql: ApolloService,
