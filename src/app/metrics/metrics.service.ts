@@ -2,6 +2,21 @@ import { Injectable } from '@angular/core';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
 import { map } from 'rxjs';
 
+export interface Metric {
+  id: number;
+  name: string;
+  description: string;
+  isPublic: boolean;
+  aggregation: string;
+  requirement: string;
+  status: string;
+  filterType: string;
+  filterValue: string;
+  dataSource: string;
+  dataSourceId: null | number; // Assuming dataSourceId can be a number or null
+  __typename: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,9 +52,7 @@ export class MetricsService {
         }
       }
     ).pipe(
-      map(response => {
-        console.log('response::', response);
-      })
+      map(response => response.data.metrics)
     );
   }
 }

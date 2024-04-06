@@ -1,8 +1,40 @@
 <ion-content>
+  <ion-breadcrumbs>
+    <ion-breadcrumb href="/home">
+      <ion-label>Home</ion-label>
+    </ion-breadcrumb>
+    <ion-breadcrumb href="/metrics">
+      <ion-label>Metrics</ion-label>
+    </ion-breadcrumb>
+    <ion-breadcrumb>
+      <ion-label>Metrics Management</ion-label>
+    </ion-breadcrumb>
+  </ion-breadcrumbs>
+
   <ion-grid>
-    <ion-row *ngIf="let metric of metrics">
-      <ion-col size="4">
-        <pre>{{metric | json}}</pre>
+    <ion-row>
+      <ion-col size="10" class="metric-col-header">Metrics</ion-col>
+      <ion-col size="2" class="metric-action-buttons">
+        <ion-button color="primary" size="small" (click)="addMetric()">Add Metric</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="table-header">
+      <ion-col size="1" class="metric-col">ID</ion-col>
+      <ion-col size="3" class="metric-col">Name</ion-col>
+      <ion-col size="2" class="metric-col">Description</ion-col>
+      <ion-col size="2" class="metric-col">Status</ion-col>
+      <ion-col size="2" class="metric-col">Requirement</ion-col>
+      <ion-col size="2" class="metric-col">Action</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let metric of metrics" class="table-row">
+      <ion-col size="1" class="metric-col">{{metric.id}}</ion-col>
+      <ion-col size="3" class="metric-col">{{metric.name}}</ion-col>
+      <ion-col size="2" class="metric-description">{{metric.description}}</ion-col>
+      <ion-col size="2" class="metric-col">{{metric.status}}</ion-col>
+      <ion-col size="2" class="metric-col">{{metric.requirement}}</ion-col>
+      <ion-col size="2" class="metric-col">
+        <ion-button (click)="editMetric(metric)" color="primary" size="small">Edit</ion-button>
+        <ion-button (click)="deleteMetric(metric)" color="primary" size="small">Delete</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

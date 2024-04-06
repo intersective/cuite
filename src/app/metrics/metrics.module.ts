@@ -4,16 +4,18 @@ import { MetricsComponent } from './metrics.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { MetricComponent } from './metric/metric.component';
+import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 
 
 @NgModule({
   declarations: [
     MetricsComponent,
-    MetricComponent
+    MetricComponent,
+    MetricsAdminComponent,
   ],
   imports: [
-    CommonModule,
     IonicModule,
+    CommonModule,
     RouterModule.forChild([
       {
         path: '',
@@ -21,7 +23,7 @@ import { MetricComponent } from './metric/metric.component';
       },
       {
         path: 'admin',
-        loadChildren: () => import('./metrics-admin/metrics-admin.module').then(m => m.MetricsAdminModule),
+        component: MetricsAdminComponent,
       }
     ])
   ],

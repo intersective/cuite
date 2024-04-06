@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MetricsService } from '../metrics.service';
+import { Metric, MetricsService } from '../metrics.service';
 
 @Component({
   selector: 'app-metrics-admin',
@@ -7,7 +7,7 @@ import { MetricsService } from '../metrics.service';
   styleUrls: ['./metrics-admin.component.scss']
 })
 export class MetricsAdminComponent implements OnInit {
-  metrics: any[] = [];
+  metrics: Metric[] = [];
   constructor(
     private metricsService: MetricsService
   ) { }
@@ -18,7 +18,19 @@ export class MetricsAdminComponent implements OnInit {
 
   getMetrics() {
     this.metricsService.getMetrics(true).subscribe((response: any) => {
-      this.metrics = response.data.metrics;
+      this.metrics = response;
     });
+  }
+
+  addMetric() {
+    throw new Error('Method not implemented.');
+  }
+
+  editMetric(data: Metric) {
+    throw new Error('Method not implemented.');
+  }
+
+  deleteMetric(data: Metric) {
+    throw new Error('Method not implemented.');
   }
 }
