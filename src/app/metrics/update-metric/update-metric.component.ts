@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MetricsService } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
   templateUrl: './update-metric.component.html',
   styleUrls: ['./update-metric.component.css']
 })
-export class UpdateMetricComponent {
+export class UpdateMetricComponent implements OnInit {
   metricForm: FormGroup;
 
   constructor(
@@ -24,6 +24,15 @@ export class UpdateMetricComponent {
       metricFilter: [''],
       metricCalculationFrequency: [''],
       metricIsRequired: [false],
+    });
+  }
+
+  ngOnInit() {
+    // Assuming `metric` is the data you pass when opening this modal
+    const metric = this.modalController.getTop().then(modal => {
+      if (modal && modal.componentProps && modal.componentProps.metric) {
+        this.metricForm.patchValue(modal.componentProps.metric);
+      }
     });
   }
 
