@@ -1,4 +1,3 @@
-<!-- metric-modal.component.html -->
 <ion-header>
   <ion-toolbar>
     <ion-title>Add/Edit Metric</ion-title>
@@ -13,18 +12,18 @@
 <ion-content>
   <form [formGroup]="metricForm">
     <ion-item>
-      <ion-label position="stacked">Metric Title</ion-label>
-      <ion-input formControlName="metricTitle"></ion-input>
+      <ion-label position="stacked">Title</ion-label>
+      <ion-input formControlName="name"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Description</ion-label>
-      <ion-textarea formControlName="metricDescription"></ion-textarea>
+      <ion-textarea formControlName="description"></ion-textarea>
     </ion-item>
 
     <ion-item>
       <ion-label>Data Type</ion-label>
-      <ion-select formControlName="metricDataType">
+      <ion-select formControlName="dataType">
         <ion-select-option value="scalar">Scalar</ion-select-option>
         <ion-select-option value="valueList">Value List</ion-select-option>
         <ion-select-option value="keywords">Keywords/Concepts</ion-select-option>
@@ -34,7 +33,7 @@
 
     <ion-item>
       <ion-label>Aggregation Technique</ion-label>
-      <ion-select formControlName="metricAggregationTechnique">
+      <ion-select formControlName="aggregation">
         <ion-select-option value="first">First</ion-select-option>
         <ion-select-option value="last">Last</ion-select-option>
         <ion-select-option value="min">Min</ion-select-option>
@@ -49,7 +48,7 @@
 
     <ion-item>
       <ion-label>Filter</ion-label>
-      <ion-select formControlName="metricFilter">
+      <ion-select formControlName="filterType">
         <ion-select-option value="role">By role</ion-select-option>
         <ion-select-option value="enrolmentStatus">By enrolment status</ion-select-option>
         <ion-select-option value="enrolmentGroup">By enrolment group</ion-select-option>
@@ -58,7 +57,7 @@
 
     <ion-item>
       <ion-label>Calculation Frequency</ion-label>
-      <ion-select formControlName="metricCalculationFrequency">
+      <ion-select formControlName="calculationFrequency">
         <ion-select-option value="daily">Daily</ion-select-option>
         <ion-select-option value="weekly">Weekly</ion-select-option>
         <ion-select-option value="dashboard">Dashboard Stat</ion-select-option>
@@ -69,7 +68,7 @@
 
     <ion-item>
       <ion-label>Is Required?</ion-label>
-      <ion-toggle formControlName="metricIsRequired"></ion-toggle>
+      <ion-toggle formControlName="isRequired"></ion-toggle>
     </ion-item>
   </form>
 </ion-content>

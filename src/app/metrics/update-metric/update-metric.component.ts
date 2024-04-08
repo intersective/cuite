@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MetricsService } from '../metrics.service';
+import { Metric, MetricsService } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -9,7 +9,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./update-metric.component.css']
 })
 export class UpdateMetricComponent implements AfterViewInit {
-  metric: any; // metric object from ModelController
+  metric: Metric; // metric object from ModelController
   metricForm: FormGroup;
 
   constructor(
@@ -22,9 +22,13 @@ export class UpdateMetricComponent implements AfterViewInit {
       description: [''],
       dataSource: [''],
       aggregation: [''],
+      dataType: [''],
       filterType: [''],
       filterValue: [''],
       isPublic: [false],
+      isRequired: [''], // requirement
+      calculationFrequency: [''],  // metricCalculationFrequency
+      status: ['']
     });
     
   }
@@ -32,12 +36,9 @@ export class UpdateMetricComponent implements AfterViewInit {
   ngAfterViewInit() {
     console.log(this.metric);
     
-    // Assuming `metric` is the data you pass when opening this modal
-    const metric = this.modalController.getTop().then(modal => {
-      if (modal && modal.componentProps && modal.componentProps.metric) {
-        this.metricForm.patchValue(modal.componentProps.metric);
-      }
-    });
+    if (this.metric) {
+      this.metricForm.patchValue(this.metric);
+    }
   }
 
   saveMetric() {
