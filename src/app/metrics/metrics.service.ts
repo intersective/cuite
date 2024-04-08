@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from '@apollo/client';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export interface Metric {
   id: number;

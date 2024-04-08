@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MetricsService } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
@@ -8,7 +8,8 @@ import { ModalController } from '@ionic/angular';
   templateUrl: './update-metric.component.html',
   styleUrls: ['./update-metric.component.css']
 })
-export class UpdateMetricComponent implements OnInit {
+export class UpdateMetricComponent implements AfterViewInit {
+  metric: any; // metric object from ModelController
   metricForm: FormGroup;
 
   constructor(
@@ -17,17 +18,20 @@ export class UpdateMetricComponent implements OnInit {
     private modalController: ModalController,
   ) {
     this.metricForm = this.formBuilder.group({
-      metricTitle: [''],
-      metricDescription: [''],
-      metricDataType: [''],
-      metricAggregationTechnique: [''],
-      metricFilter: [''],
-      metricCalculationFrequency: [''],
-      metricIsRequired: [false],
+      name: [''],
+      description: [''],
+      dataSource: [''],
+      aggregation: [''],
+      filterType: [''],
+      filterValue: [''],
+      isPublic: [false],
     });
+    
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    console.log(this.metric);
+    
     // Assuming `metric` is the data you pass when opening this modal
     const metric = this.modalController.getTop().then(modal => {
       if (modal && modal.componentProps && modal.componentProps.metric) {
