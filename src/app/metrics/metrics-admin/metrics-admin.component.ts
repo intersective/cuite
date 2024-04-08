@@ -26,7 +26,11 @@ export class MetricsAdminComponent implements OnInit {
   }
 
   addMetric() {
-    throw new Error('Method not implemented.');
+    this.modalController.create({
+      component: UpdateMetricComponent,
+    }).then(modal => {
+      modal.present();
+    });
   }
 
   editMetric(data: Metric) {
