@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { MetricComponent } from './metric/metric.component';
 import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
+import { UpdateMetricComponent } from './update-metric/update-metric.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -12,10 +14,12 @@ import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
     MetricsComponent,
     MetricComponent,
     MetricsAdminComponent,
+    UpdateMetricComponent,
   ],
   imports: [
     IonicModule,
     CommonModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
       {
         path: '',
@@ -30,6 +34,7 @@ import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
   exports: [
     MetricsComponent,
     IonicModule,
+    ReactiveFormsModule,
   ]
 })
 export class MetricsModule { }
