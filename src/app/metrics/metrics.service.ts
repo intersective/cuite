@@ -21,13 +21,77 @@ export interface Metric {
   providedIn: 'root'
 })
 export class MetricsService {
-  saveMetric(value: any): Observable<any> {
-    throw new Error('Method not implemented.');
-  }
 
   constructor(
     private graphql: ApolloService,
   ) { }
+
+  getAssessments(): Observable<any> {
+    return this.graphql.graphQLFetch(
+      `query getAssessments {
+        assessments {
+          name
+          question {
+            id
+            name
+          }
+        }
+      }`
+    ).pipe(
+      map(response => response.data.assessments)
+    );
+  }
+
+  createMetric(variables: {
+    name: string;
+    description: string;
+    isPublic: boolean;
+    aggregation: string;
+    requirement: string;
+    filterType: string;
+    filterValue: string;
+  }): Observable<any> {
+    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: String, $requirement: String, $filterType: String, $filterValue: String';
+    const params = 'name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterType:$filterType, filterValue:$filterValue';
+
+    return this.graphql.graphQLMutate(
+      `mutation createMetric(${paramsFormat}) {
+        createMetric(${params}) {
+          success
+          message
+        }
+      }`,
+      variables
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+
+  saveMetric(variables: {
+    uuid: number;
+    name: string;
+    description: string;
+    isPublic: boolean;
+    aggregation: string;
+    requirement: string;
+    filterType: string;
+    filterValue: string;
+  }): Observable<any> {
+    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: String, $requirement: String, $filterType: String, $filterValue: String';
+    const params = 'uuid:$uuid, name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterType:$filterType, filterValue:$filterValue';
+
+    return this.graphql.graphQLMutate(
+      `mutation updateMetric(${paramsFormat}) {
+        updateMetric(${params}) {
+          success
+          message
+        }
+      }`,
+      variables
+    ).pipe(
+      map(response => response.data)
+    );
+  }
 
   /**
    * get metrics data

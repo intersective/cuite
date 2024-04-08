@@ -43,7 +43,13 @@ export class UpdateMetricComponent implements AfterViewInit {
 
   saveMetric() {
     if (this.metricForm.valid) {
-      this.metricsService.saveMetric(this.metricForm.value).subscribe(() => {
+      if (this.metricForm.value.uuid) {
+        return this.metricsService.saveMetric(this.metricForm.value).subscribe(() => {
+          this.dismissModal();
+        });
+      }
+
+      return this.metricsService.createMetric(this.metricForm.value).subscribe(() => {
         this.dismissModal();
       });
     }
