@@ -21,6 +21,9 @@ export interface Metric {
   providedIn: 'root'
 })
 export class MetricsService {
+  saveMetric(value: any): Observable<any> {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(
     private graphql: ApolloService,
