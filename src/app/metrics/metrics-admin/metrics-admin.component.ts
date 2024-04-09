@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Metric, MetricsService } from '../metrics.service';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
 import { ModalController } from '@ionic/angular';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-metrics-admin',
@@ -45,6 +46,18 @@ export class MetricsAdminComponent implements OnInit {
   }
 
   deleteMetric(data: Metric) {
-    throw new Error('Method not implemented.');
+    return this.graphql.graphQLMutate(
+      `mutation deleteMetric($uuid: ID!) {
+        deleteMetric(uuid: $uuid) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid: data.uuid
+      }
+    ).pipe(
+      map(response => response.data)
+    );
   }
 }

@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 
 export interface Metric {
   id: number;
+  uuid?: number;
   name: string;
   description: string;
   isPublic: boolean;
@@ -38,6 +39,38 @@ export class MetricsService {
       }`
     ).pipe(
       map(response => response.data.assessments)
+    );
+  }
+
+  useMetric(uuid: number): Observable<any> {
+    return this.graphql.graphQLMutate(
+      `mutation useMetric($uuid: ID!) {
+        useMetric(uuid: $uuid) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid
+      }
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+
+  deleteTemplate(uuid: number): Observable<any> {
+    return this.graphql.graphQLMutate(
+      `mutation deleteTemplate($uuid: ID!) {
+        deleteTemplate(uuid: $uuid) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid
+      }
+    ).pipe(
+      map(response => response.data)
     );
   }
 
