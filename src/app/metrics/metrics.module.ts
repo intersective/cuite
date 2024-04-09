@@ -7,6 +7,7 @@ import { MetricComponent } from './metric/metric.component';
 import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MetricDetailComponent } from './metric-detail/metric-detail.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MetricComponent,
     MetricsAdminComponent,
     UpdateMetricComponent,
+    MetricDetailComponent,
   ],
   imports: [
     IonicModule,

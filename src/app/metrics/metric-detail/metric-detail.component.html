@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ metric?.title }}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p>Title: {{ metric?.title }}</p>
+  <p>Description: {{ metric?.description }}</p>
+  <p>Data Type: {{ metric?.dataType }}</p>
+  <p>Aggregation Technique: {{ metric?.aggregationTechnique }}</p>
+  <p>Filter: {{ metric?.filter }}</p>
+  <p>Calculation Frequency: {{ metric?.calculationFrequency }}</p>
+  <p>Is Required: {{ metric?.isRequired ? 'Yes' : 'No' }}</p>
+  <p>Status: {{ metric?.status }}</p>
+  <div *ngIf="metric?.status !== 'draft'">
+    <p>Value: {{ metric?.value }}</p>
+    <p>Data Points: {{ metric?.dataPoints }}</p>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <!-- Example action -->
+    <ion-button (click)="editMetric()">Edit</ion-button>
+    <!-- Add other actions -->
+    <ion-button (click)="dismissModal()">Close</ion-button>
+  </ion-toolbar>
+</ion-footer>
