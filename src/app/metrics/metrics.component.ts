@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
-import { Subject, takeUntil, filter, map } from 'rxjs';
+import { Subject, takeUntil, map } from 'rxjs';
 
 @Component({
   selector: 'app-metrics',
