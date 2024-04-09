@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
-
+import { Component, Input } from "@angular/core";
+import type { Metric } from "../metrics.service";
 @Component({
-  selector: 'app-metric',
-  templateUrl: './metric.component.html',
-  styleUrls: ['./metric.component.css']
+  selector: "app-metric",
+  templateUrl: "./metric.component.html",
+  styleUrls: ["./metric.component.css"],
 })
 export class MetricComponent {
-  title: string = 'Metric Component';
-  subtitle: string = 'Metric Component Subtitle';
-  content: string = 'Metric Component Content';
+  @Input() data: Metric;
+  @Input() index: number;
 }
