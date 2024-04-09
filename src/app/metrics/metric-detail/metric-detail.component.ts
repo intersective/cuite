@@ -18,4 +18,16 @@ export class MetricDetailComponent implements OnInit {
   dismissModal() {
     this.modalController.dismiss();
   }
+
+  editMetric() {
+  }
+
+  deleteMetric() {
+  }
+
+  archiveMetric() {
+  }
+
+  duplicateMetric() {
+  }
 }

@@ -14,7 +14,7 @@
   <p>Description: {{ metric?.description }}</p>
   <p>Data Type: {{ metric?.dataType }}</p>
   <p>Aggregation Technique: {{ metric?.aggregationTechnique }}</p>
-  <p>Filter: {{ metric?.filter }}</p>
+  <p>Filter: {{ metric?.filterType }}</p>
   <p>Calculation Frequency: {{ metric?.calculationFrequency }}</p>
   <p>Is Required: {{ metric?.isRequired ? 'Yes' : 'No' }}</p>
   <p>Status: {{ metric?.status }}</p>
@@ -26,9 +26,12 @@
 
 <ion-footer>
   <ion-toolbar>
-    <!-- Example action -->
-    <ion-button (click)="editMetric()">Edit</ion-button>
-    <!-- Add other actions -->
+    <ion-select placeholder="Select One">
+      <ion-select-option value="edit" (click)="editMetric()">Edit</ion-select-option>
+      <ion-select-option value="delete" (click)="deleteMetric()">Delete</ion-select-option>
+      <ion-select-option value="archive" (click)="archiveMetric()">Archive</ion-select-option>
+      <ion-select-option value="duplicate" (click)="duplicateMetric()">Duplicate</ion-select-option>
+    </ion-select>
     <ion-button (click)="dismissModal()">Close</ion-button>
   </ion-toolbar>
 </ion-footer>
