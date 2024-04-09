@@ -202,7 +202,6 @@ jobs:
           CUSTOM_ONBOARDING_FORM_IN_RAW_HTML: 0
           CUSTOM_ONBOARDING_POPUP_FORM_ID: 67a53834-ffac-4ebc-81cd-39f9e77167d8
 
-
 ###############################################################
 #  BUILD WEB PACKAGES
 ##############################################################

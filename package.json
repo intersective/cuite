@@ -6,7 +6,7 @@
   "localsegment": "<SEGMENT_KEY>",
   "scripts": {
     "ng": "ng",
-    "start": "SEGMENT_KEY=$(jq -r .localsegment package.json); [[ ! -z \"$SEGMENT_KEY\" ]] && echo Local SEGMENT_KEY exist ||  SEGMENT_KEY='<SEGMENT_KEY>'; sed -i '' \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" src/index.html; ng serve --port 4202",
+    "start": "SEGMENT_KEY=$(jq -r .localsegment package.json); [[ ! -z \"$SEGMENT_KEY\" ]] && echo Local SEGMENT_KEY exist ||  SEGMENT_KEY='<SEGMENT_KEY>'; sed -i '' \"s/<SEGMENT_KEY>/$SEGMENT_KEY/g\" src/index.html; ng serve --host 0.0.0.0 --port 4202 --disable-host-check --ssl true",
     "dev": "npm run start",
     "build": "ng build --base-href './' && npx cap copy",
     "test": "ng test --watch=false",

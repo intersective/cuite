@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  cutie:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cutie
+    ports:
+      - "4202:4202"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    networks:
+      - core-admin
+
+volumes:
+  node_modules:
+
+
+networks:
+  core-admin:
+    name: core-admin
+    external: true
