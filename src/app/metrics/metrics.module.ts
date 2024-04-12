@@ -1,13 +1,13 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { MetricsComponent } from "./metrics.component";
-import { IonicModule } from "@ionic/angular";
-import { RouterModule } from "@angular/router";
-import { MetricComponent } from "./metric/metric.component";
-import { MetricsAdminComponent } from "./metrics-admin/metrics-admin.component";
-import { UpdateMetricComponent } from "./update-metric/update-metric.component";
-import { MetricModalViewComponent } from "./modal-view/modal-view.component";
-import { ReactiveFormsModule } from "@angular/forms";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MetricsComponent } from './metrics.component';
+import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
+import { MetricComponent } from './metric/metric.component';
+import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
+import { UpdateMetricComponent } from './update-metric/update-metric.component';
+import { MetricModalViewComponent } from './modal-view/modal-view.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,11 +23,11 @@ import { ReactiveFormsModule } from "@angular/forms";
     ReactiveFormsModule,
     RouterModule.forChild([
       {
-        path: "",
+        path: '',
         component: MetricsComponent,
       },
       {
-        path: "admin",
+        path: 'admin',
         component: MetricsAdminComponent,
       },
     ]),
