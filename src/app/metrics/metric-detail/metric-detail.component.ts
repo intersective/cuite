@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 @Component({
   selector: 'app-metric-detail',
   templateUrl: './metric-detail.component.html',
-  styleUrls: ['./metric-detail.component.css']
+  styleUrls: ['./metric-detail.component.scss']
 })
 export class MetricDetailComponent implements OnInit {
   metric: any;
@@ -17,6 +17,26 @@ export class MetricDetailComponent implements OnInit {
 
   dismissModal() {
     this.modalController.dismiss();
+  }
+
+  async onSelectAction(event: any) {
+    const action = event.detail.value;
+    switch (action) {
+      case 'edit':
+        this.editMetric();
+        break;
+      case 'delete':
+        this.deleteMetric();
+        break;
+      case 'archive':
+        this.archiveMetric();
+        break;
+      case 'duplicate':
+        this.duplicateMetric();
+        break;
+      default:
+        console.log('Action not recognized');
+    }
   }
 
   editMetric() {

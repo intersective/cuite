@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { MetricComponent } from './metric/metric.component';
 import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
-import { MetricModalViewComponent } from './modal-view/modal-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MetricDetailComponent } from './metric-detail/metric-detail.component';
 
@@ -17,7 +16,6 @@ import { MetricDetailComponent } from './metric-detail/metric-detail.component';
     MetricsAdminComponent,
     UpdateMetricComponent,
     MetricDetailComponent,
-    MetricModalViewComponent,
   ],
   imports: [
     IonicModule,
