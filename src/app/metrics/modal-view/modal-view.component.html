@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ data.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="metric-details">
+    <p><strong>Title: </strong>{{ data.name }}</p>
+    <p><strong>Description: </strong> {{ data.description }}</p>
+    <p><strong>Data Source: </strong>{{ data.dataSource }}</p>
+    <p><strong>Aggregation Technique: </strong>{{ data.aggregation }}</p>
+    <p><strong>Filter: </strong>{{ data.filterType }}</p>
+    <p><strong>Public: </strong>{{ data.isPublic }}</p>
+    <p><strong>Status: </strong>{{ data.status }}</p>
+    <p><strong>Value: </strong>{{ data.filterValue }}</p>
+  </div>
+</ion-content>
