@@ -1,12 +1,11 @@
-import { MetricDetailComponent } from "./metric-detail/metric-detail.component";
-import { ModalController } from "@ionic/angular";
-import { Component, OnInit } from "@angular/core";
-import { MetricsService, type Metric } from "@app/metrics/metrics.service";
+import { ModalController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { MetricsService, type Metric } from '@app/metrics/metrics.service';
 
 @Component({
-  selector: "app-metrics",
-  templateUrl: "./metrics.component.html",
-  styleUrls: ["./metrics.component.css"],
+  selector: 'app-metrics',
+  templateUrl: './metrics.component.html',
+  styleUrls: ['./metrics.component.css'],
 })
 export class MetricsComponent implements OnInit {
   metrics: Metric[] = [];
@@ -26,18 +25,9 @@ export class MetricsComponent implements OnInit {
         this.metrics = response;
       },
       (error) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
         // Handle the error
       }
     );
-  }
-
-  // Inside your component class
-  async openMetricDetailModal(metric: Metric) {
-    const modal = await this.modalController.create({
-      component: MetricDetailComponent,
-      componentProps: { metric }
-    });
-    return await modal.present();
   }
 }

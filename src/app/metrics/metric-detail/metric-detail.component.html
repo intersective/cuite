@@ -10,17 +10,15 @@
 </ion-header>
 
 <ion-content>
-  <p>Title: {{ metric?.title }}</p>
-  <p>Description: {{ metric?.description }}</p>
-  <p>Data Type: {{ metric?.dataType }}</p>
-  <p>Aggregation Technique: {{ metric?.aggregationTechnique }}</p>
-  <p>Filter: {{ metric?.filterType }}</p>
-  <p>Calculation Frequency: {{ metric?.calculationFrequency }}</p>
-  <p>Is Required: {{ metric?.isRequired ? 'Yes' : 'No' }}</p>
-  <p>Status: {{ metric?.status }}</p>
-  <div *ngIf="metric?.status !== 'draft'">
-    <p>Value: {{ metric?.value }}</p>
-    <p>Data Points: {{ metric?.dataPoints }}</p>
+  <div class="metric-details">
+    <p><strong>Title: </strong>{{ metric.name }}</p>
+    <p><strong>Description: </strong> {{ metric.description }}</p>
+    <p><strong>Data Source: </strong>{{ metric.dataSource }}</p>
+    <p><strong>Aggregation Technique: </strong>{{ metric.aggregation }}</p>
+    <p><strong>Filter: </strong>{{ metric.filterType }}</p>
+    <p><strong>Public: </strong>{{ metric.isPublic }}</p>
+    <p><strong>Status: </strong>{{ metric.status }}</p>
+    <p><strong>Value: </strong>{{ metric.filterValue }}</p>
   </div>
 </ion-content>
 

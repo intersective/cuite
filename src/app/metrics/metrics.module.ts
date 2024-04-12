@@ -6,9 +6,9 @@ import { RouterModule } from '@angular/router';
 import { MetricComponent } from './metric/metric.component';
 import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
+import { MetricModalViewComponent } from './modal-view/modal-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MetricDetailComponent } from './metric-detail/metric-detail.component';
-
 
 @NgModule({
   declarations: [
@@ -17,6 +17,7 @@ import { MetricDetailComponent } from './metric-detail/metric-detail.component';
     MetricsAdminComponent,
     UpdateMetricComponent,
     MetricDetailComponent,
+    MetricModalViewComponent,
   ],
   imports: [
     IonicModule,
@@ -25,18 +26,14 @@ import { MetricDetailComponent } from './metric-detail/metric-detail.component';
     RouterModule.forChild([
       {
         path: '',
-        component: MetricsComponent
+        component: MetricsComponent,
       },
       {
         path: 'admin',
         component: MetricsAdminComponent,
-      }
-    ])
+      },
+    ]),
   ],
-  exports: [
-    MetricsComponent,
-    IonicModule,
-    ReactiveFormsModule,
-  ]
+  exports: [MetricsComponent, IonicModule, ReactiveFormsModule],
 })
-export class MetricsModule { }
+export class MetricsModule {}
