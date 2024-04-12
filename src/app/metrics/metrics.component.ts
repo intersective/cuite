@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { MetricDetailComponent } from './metric-detail/metric-detail.component';
-import { ModalController } from '@ionic/angular';
-import { Metric, MetricsService } from './metrics.service';
+import { MetricDetailComponent } from "./metric-detail/metric-detail.component";
+import { ModalController } from "@ionic/angular";
+import { Component, OnInit } from "@angular/core";
+import { MetricsService, type Metric } from "@app/metrics/metrics.service";
 
 @Component({
-  selector: 'app-metrics',
-  templateUrl: './metrics.component.html',
-  styleUrls: ['./metrics.component.css']
+  selector: "app-metrics",
+  templateUrl: "./metrics.component.html",
+  styleUrls: ["./metrics.component.css"],
 })
 export class MetricsComponent implements OnInit {
   metrics: Metric[] = [];
@@ -17,20 +17,26 @@ export class MetricsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getMetrics();
+    this.fetchData();
   }
 
-  getMetrics() {
-    this.metricsService.getMetrics(true).subscribe((response: any) => {
-      this.metrics = response;
-    });
+  fetchData() {
+    this.metricsService.getMetrics(true).subscribe(
+      (response) => {
+        this.metrics = response;
+      },
+      (error) => {
+        console.error("Error fetching data:", error);
+        // Handle the error
+      }
+    );
   }
 
   // Inside your component class
-  async openMetricDetailModal(metric) {
+  async openMetricDetailModal(metric: Metric) {
     const modal = await this.modalController.create({
       component: MetricDetailComponent,
-      componentProps: { metric: metric }
+      componentProps: { metric }
     });
     return await modal.present();
   }
