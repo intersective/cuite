@@ -6,11 +6,11 @@ import { RouterModule } from '@angular/router';
 import { MetricComponent } from './metric/metric.component';
 import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
-import { MetricModalViewComponent } from './modal-view/modal-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MetricsInstituteComponent } from './metrics-institute/metrics-institute.component';
 import { NoSymbolsPipe } from '@app/metrics/pipes/no-symbols.pipe';
 import { SharedModule } from '@app/shared/shared.module';
+import { MetricDetailComponent } from './metric-detail/metric-detail.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +18,9 @@ import { SharedModule } from '@app/shared/shared.module';
     MetricComponent,
     MetricsAdminComponent,
     UpdateMetricComponent,
-    MetricModalViewComponent,
     MetricsInstituteComponent,
     NoSymbolsPipe,
+    MetricDetailComponent,
   ],
   imports: [
     IonicModule,
