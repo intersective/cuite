@@ -50,7 +50,7 @@ export class MetricsService {
     filterType: string;
     filterValue: string;
   }): Observable<any> {
-    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: String, $requirement: String, $filterType: String, $filterValue: String';
+    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: MetricAggregation, $requirement: MetricRequirement, $filterType: MetricFilterType, $filterValue: MetricFilterValue';
     const params = 'name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterType:$filterType, filterValue:$filterValue';
 
     return this.graphql.graphQLMutate(
@@ -76,7 +76,7 @@ export class MetricsService {
     filterType: string;
     filterValue: string;
   }): Observable<any> {
-    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: String, $requirement: String, $filterType: String, $filterValue: String';
+    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: MetricAggregation, $requirement: MetricRequirement, $filterType: MetricFilterType, $filterValue: MetricFilterValue';
     const params = 'uuid:$uuid, name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterType:$filterType, filterValue:$filterValue';
 
     return this.graphql.graphQLMutate(
@@ -100,6 +100,7 @@ export class MetricsService {
       `query metrics($publicOnly: Boolean) {
         metrics(publicOnly: $publicOnly) {
           id
+          uuid
           name
           description
           isPublic

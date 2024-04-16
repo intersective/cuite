@@ -18,12 +18,14 @@ export class UpdateMetricComponent implements AfterViewInit {
     private modalController: ModalController,
   ) {
     this.metricForm = this.formBuilder.group({
+      id: [''],
+      uuid: [''],
       name: [''],
       description: [''],
       dataSource: [''],
       aggregation: [''],
       dataType: [''],
-      filterType: [''],
+      filterType: ['role'],
       filterValue: [''],
       isPublic: [false],
       isRequired: [''], // requirement
