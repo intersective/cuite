@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
 
 export interface Metric {
   id: number;
@@ -21,6 +21,9 @@ export interface Metric {
   providedIn: 'root'
 })
 export class MetricsService {
+  private _metrics$: BehaviorSubject<Metric[]> = new BehaviorSubject<Metric[]>([]);
+  metrics$ = this._metrics$.pipe(shareReplay(1));
+
   constructor(
     private graphql: ApolloService,
   ) { }
@@ -95,7 +98,7 @@ export class MetricsService {
   /**
    * get metrics data
    */
-  getMetrics(publicOnly): any {
+  getMetrics(publicOnly = false): any {
     return this.graphql.graphQLFetch(
       `query metrics($publicOnly: Boolean) {
         metrics(publicOnly: $publicOnly) {
@@ -119,7 +122,8 @@ export class MetricsService {
         }
       }
     ).pipe(
-      map(response => response.data.metrics)
+      map(response => response.data.metrics),
+      tap(metrics => this._metrics$.next(metrics)),
     );
   }
 }

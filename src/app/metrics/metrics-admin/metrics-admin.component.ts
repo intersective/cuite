@@ -17,6 +17,9 @@ export class MetricsAdminComponent implements OnInit {
 
   ngOnInit() {
     this.getMetrics();
+    this.metricsService.metrics$.subscribe((metrics) => {
+      this.metrics = metrics;
+    });
   }
 
   getMetrics() {
@@ -30,6 +33,9 @@ export class MetricsAdminComponent implements OnInit {
       component: UpdateMetricComponent,
     }).then(modal => {
       modal.present();
+      modal.onDidDismiss().then(() => {
+        this.getMetrics();
+      });
     });
   }
 
@@ -41,6 +47,9 @@ export class MetricsAdminComponent implements OnInit {
       }
     }).then(modal => {
       modal.present();
+      modal.onDidDismiss().then(() => {
+        this.getMetrics();
+      });
     });
   }
 
