@@ -1,15 +1,15 @@
 <ion-content color="light">
   <ng-container [ngSwitch]="redirect">
     <ng-container *ngSwitchCase="'overview-only'">
-      <app-overview skeletonOnly="true"></app-overview>
+      <app-overview [skeletonOnly]="true"></app-overview>
     </ng-container>
 
     <ng-container *ngSwitchCase="'chat-only'">
-      <app-chat skeletonOnly="true"></app-chat>
+      <app-chat [skeletonOnly]="true"></app-chat>
     </ng-container>
 
     <ng-container *ngSwitchCase="'progress-only'">
-      <app-progress skeletonOnly="true"></app-progress>
+      <app-progress [skeletonOnly]="true"></app-progress>
     </ng-container>
 
     <ng-container *ngSwitchDefault>
