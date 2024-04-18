@@ -186,7 +186,7 @@
             <!-- File preview -->
             <ion-col size="10" size-lg="6" class="ion-no-padding ion-text-center" *ngIf="!attachment.mimetype || !attachment.mimetype.includes('image') && !attachment.mimetype.includes('video')">
               <div class="file-preview">
-                <ion-item lines="none" class="general-attachment" (click)="previewFile(message.fileObject)">
+                <ion-item lines="none" class="general-attachment" (click)="previewFile(attachment.fileObject)">
                   <ion-ripple-effect></ion-ripple-effect>
                   <ion-icon name="document" slot="start"></ion-icon>
                   <ion-label color="black">
