@@ -1,23 +1,18 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ data.name }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismissModal()">
-        <ion-icon name="close" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
+<ion-content class="metric-detail-popup-container ion-padding">
+  <div class="close-btn ion-justify-content-end">
+    <ion-button shape="round" fill="clear" color="ocean" (click)="dismissModal()">
+      <ion-icon name="close" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
   <div class="metric-details">
-    <p><strong>Title: </strong>{{ data.name }}</p>
+    <div class="title-status-container">
+      <p class="heading-4 title">{{data.name}}</p>
+      <p class="status">{{data.status}}</p>
+    </div>
+
     <p><strong>Description: </strong> {{ data.description }}</p>
-    <p><strong>Data Source: </strong>{{ data.dataSource }}</p>
     <p><strong>Aggregation Technique: </strong>{{ data.aggregation }}</p>
-    <p><strong>Filter: </strong>{{ data.filterType }}</p>
     <p><strong>Public: </strong>{{ data.isPublic }}</p>
-    <p><strong>Status: </strong>{{ data.status }}</p>
-    <p><strong>Value: </strong>{{ data.filterValue }}</p>
+    {{data.requirement}}
   </div>
 </ion-content>

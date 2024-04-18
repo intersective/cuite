@@ -1,0 +1,14 @@
+// app-metric {
+//   height: 200px; /* Adjust this value as needed */
+//   display: flex;
+//   flex-direction: column;
+// }
+
+.metrics-dashboard {
+  .title-container {
+    display: flex;
+    h1 {
+      margin-bottom: 0;
+    }
+  }
+}
