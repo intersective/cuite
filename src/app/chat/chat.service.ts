@@ -51,7 +51,10 @@ export interface Message {
   message: string;
   created: string;
   file: string;
-  fileObject?: object;
+  fileObject?: {
+    filename: string;
+    mimetype: string;
+  };
   preview?: string;
   noAvatar?: boolean;
   channelUuid?: string;
