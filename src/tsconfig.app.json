@@ -2,17 +2,23 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": []
+    "types": [],
+    "baseUrl": "."
   },
+  "files": [
+    "./main.ts",
+    "./polyfills.ts",
+  ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
   ],
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
-  ],
   "include": [
-    "src/**/*.d.ts"
-  ]
+    "./**/*.ts",
+    "./**/*.d.ts"
+  ],
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "disableTypeScriptVersionCheck": true
+  }
 }
