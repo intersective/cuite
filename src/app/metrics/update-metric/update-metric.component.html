@@ -31,15 +31,18 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Filter</ion-label>
-      <ion-select formControlName="filterType" [disabled]="true">
-        <ion-select-option value="role">By role</ion-select-option>
+      <ion-label>Filter Role</ion-label>
+      <ion-select formControlName="filterRole">
+        <ion-select-option value="participant">Participant</ion-select-option>
+        <ion-select-option value="mentor">Mentor</ion-select-option>
+        <ion-select-option value="coordinator">Coordinator</ion-select-option>
+        <ion-select-option value="admin">Admin</ion-select-option>
       </ion-select>
     </ion-item>
-
+    
     <ion-item>
-      <ion-label>Filter Value</ion-label>
-      <ion-select formControlName="filterValue" [disabled]="true">
+      <ion-label>Filter Status</ion-label>
+      <ion-select formControlName="filterStatus">
         <ion-select-option value="participant">Participant</ion-select-option>
         <ion-select-option value="mentor">Mentor</ion-select-option>
         <ion-select-option value="coordinator">Coordinator</ion-select-option>
