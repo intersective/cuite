@@ -8,6 +8,7 @@ import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { MetricModalViewComponent } from './modal-view/modal-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MetricsInstituteComponent } from './metrics-institute/metrics-institute.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MetricsAdminComponent,
     UpdateMetricComponent,
     MetricModalViewComponent,
+    MetricsInstituteComponent,
   ],
   imports: [
     IonicModule,
@@ -25,6 +27,10 @@ import { ReactiveFormsModule } from '@angular/forms';
       {
         path: '',
         component: MetricsComponent,
+      },
+      {
+        path: 'institution',
+        component: MetricsInstituteComponent,
       },
       {
         path: 'admin',

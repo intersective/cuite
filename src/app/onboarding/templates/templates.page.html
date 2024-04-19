@@ -1,4 +1,4 @@
-<app-onboarding-steps class="ion-hide-sm-down" step=2 total=4></app-onboarding-steps>
+<app-onboarding-steps class="ion-hide-sm-down" [step]=2 [total]=4></app-onboarding-steps>
 <app-onboarding-header
   title="Industry Project Experience templates"
   subtitle="Select one experience from the templates or create your own."
@@ -29,7 +29,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-container *ngIf="!loading">
+  <ng-container *ngIf="!loading">
     <ng-container *ngIf="templates && templates.length > 0">
       <div [class]="!utils.isMobile() ? 'page-padding' : ''">
         <ion-grid class="ion-no-padding">
@@ -64,7 +64,7 @@
         </div>
       </div>
     </ng-container>
-  </ion-container>
+  </ng-container>
 
 </ion-content>
-<app-action-footer cancelOnly="true"></app-action-footer>
+<app-action-footer [cancelOnly]="true"></app-action-footer>
