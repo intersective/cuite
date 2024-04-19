@@ -22,6 +22,16 @@
     </ion-item>
 
     <ion-item>
+      <ion-label>Data Type</ion-label>
+      <ion-select formControlName="dataType">
+        <ion-select-option value="scalar">Scalar</ion-select-option>
+        <ion-select-option value="valueList">Value List</ion-select-option>
+        <ion-select-option value="keywords">Keywords/Concepts</ion-select-option>
+        <ion-select-option value="sentiment">Sentiment</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
       <ion-label>Aggregation</ion-label>
       <ion-select formControlName="aggregation">
         <ion-select-option value="average">Average</ion-select-option>
@@ -31,15 +41,18 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Filter</ion-label>
-      <ion-select formControlName="filterType" [disabled]="true">
-        <ion-select-option value="role">By role</ion-select-option>
+      <ion-label>Filter Role</ion-label>
+      <ion-select formControlName="filterRole">
+        <ion-select-option value="participant">Participant</ion-select-option>
+        <ion-select-option value="mentor">Mentor</ion-select-option>
+        <ion-select-option value="coordinator">Coordinator</ion-select-option>
+        <ion-select-option value="admin">Admin</ion-select-option>
       </ion-select>
     </ion-item>
-
+    
     <ion-item>
-      <ion-label>Filter Value</ion-label>
-      <ion-select formControlName="filterValue" [disabled]="true">
+      <ion-label>Filter Status</ion-label>
+      <ion-select formControlName="filterStatus">
         <ion-select-option value="participant">Participant</ion-select-option>
         <ion-select-option value="mentor">Mentor</ion-select-option>
         <ion-select-option value="coordinator">Coordinator</ion-select-option>
@@ -48,26 +61,12 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Requirement</ion-label>
-      <ion-select formControlName="requirement">
-        <ion-select-option value="required">Required</ion-select-option>
-        <ion-select-option value="recommended">Recommended</ion-select-option>
-        <ion-select-option value="not_required">Not Required</ion-select-option>
-      </ion-select>      
-    </ion-item>
-
-    <ion-item>
       <ion-label>Status</ion-label>
       <ion-select formControlName="status">
         <ion-select-option value="draft">Draft</ion-select-option>
         <ion-select-option value="active">Active</ion-select-option>
-        <ion-select-option value="archived">Archived</ion-select-option>
-      </ion-select>      
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Public</ion-label>
-      <ion-toggle formControlName="isPublic"></ion-toggle>
+        <ion-select-option value="archived">Archived</ion-select-option>  
+      </ion-select>
     </ion-item>
   </form>
 </ion-content>
