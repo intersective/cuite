@@ -32,43 +32,41 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Aggregation Technique</ion-label>
+      <ion-label>Aggregation</ion-label>
       <ion-select formControlName="aggregation">
-        <ion-select-option value="first">First</ion-select-option>
-        <ion-select-option value="last">Last</ion-select-option>
-        <ion-select-option value="min">Min</ion-select-option>
-        <ion-select-option value="max">Max</ion-select-option>
-        <ion-select-option value="sample">Sample</ion-select-option>
         <ion-select-option value="average">Average</ion-select-option>
         <ion-select-option value="sum">Sum</ion-select-option>
-        <ion-select-option value="difference">Difference</ion-select-option>
-        <ion-select-option value="percentChange">% Change</ion-select-option>
+        <ion-select-option value="count">Count</ion-select-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label>Filter</ion-label>
-      <ion-select formControlName="filterType">
-        <ion-select-option value="role">By role</ion-select-option>
-        <ion-select-option value="enrolmentStatus">By enrolment status</ion-select-option>
-        <ion-select-option value="enrolmentGroup">By enrolment group</ion-select-option>
+      <ion-label>Filter Role</ion-label>
+      <ion-select formControlName="filterRole">
+        <ion-select-option value="participant">Participant</ion-select-option>
+        <ion-select-option value="mentor">Mentor</ion-select-option>
+        <ion-select-option value="coordinator">Coordinator</ion-select-option>
+        <ion-select-option value="admin">Admin</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Filter Status</ion-label>
+      <ion-select formControlName="filterStatus">
+        <ion-select-option value="participant">Participant</ion-select-option>
+        <ion-select-option value="mentor">Mentor</ion-select-option>
+        <ion-select-option value="coordinator">Coordinator</ion-select-option>
+        <ion-select-option value="admin">Admin</ion-select-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label>Calculation Frequency</ion-label>
-      <ion-select formControlName="calculationFrequency">
-        <ion-select-option value="daily">Daily</ion-select-option>
-        <ion-select-option value="weekly">Weekly</ion-select-option>
-        <ion-select-option value="dashboard">Dashboard Stat</ion-select-option>
-        <ion-select-option value="endOfProgram">End of Program</ion-select-option>
-        <ion-select-option value="onRequest">Only on request</ion-select-option>
+      <ion-label>Status</ion-label>
+      <ion-select formControlName="status">
+        <ion-select-option value="draft">Draft</ion-select-option>
+        <ion-select-option value="active">Active</ion-select-option>
+        <ion-select-option value="archived">Archived</ion-select-option>  
       </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Is Required?</ion-label>
-      <ion-toggle formControlName="isRequired"></ion-toggle>
     </ion-item>
   </form>
 </ion-content>
