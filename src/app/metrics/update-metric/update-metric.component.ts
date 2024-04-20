@@ -81,13 +81,6 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onValueChanges(event) {
-    // console.log(event);
-    console.log(this.filterRolesFormGroup.value);
-    console.log(Object.keys(this.filterRolesFormGroup.value).filter(key => this.filterRolesFormGroup.value[key]));
-    console.log(Object.keys(this.filterStatusesFormGroup.value).filter(key => this.filterStatusesFormGroup.value[key]));
-  }
-
   saveMetric() {
     if (this.metricForm.valid) {
       if (this.metricForm.value.uuid) {
@@ -108,7 +101,6 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
       });
     }
 
-    console.log('Form is invalid');
     return this.notificationService.alert({
       header: 'Invalid Form',
       message: 'Please fill out all required fields',

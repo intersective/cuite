@@ -58,7 +58,6 @@
             <ion-checkbox slot="start" 
               [name]="role"
               [formControlName]="role"
-              (ionChange)="onValueChanges($event)"
               [ariaLabel]="role"
             ></ion-checkbox>
           </ion-item>
@@ -72,7 +71,6 @@
             <ion-label>{{ status | titlecase }}</ion-label>
             <ion-checkbox slot="start" 
               [formControlName]="status" 
-              (ionChange)="onValueChanges($event)" 
               [ariaLabel]="status"
             ></ion-checkbox>
           </ion-item>
