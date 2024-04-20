@@ -10,21 +10,53 @@
 </ion-header>
 
 <ion-content>
-  <div class="metric-details">
-    <p><strong>Description: </strong> {{ metric.description }}</p>
-    <p><strong>Aggregation: </strong>{{ metric.aggregation }}</p>
-    <p><strong>Filter: </strong>{{ metric.filterRole }}</p>
-    <p><strong>Filter status: </strong>{{ metric.filterStatus }}</p>
-    <p><strong>Public: </strong>{{ metric.isPublic }}</p>
-    <p><strong>Status: </strong>{{ metric.status }}</p>
-  </div>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ metric.name }}</ion-card-title>
+      <ion-card-subtitle>Status: {{ metric.status }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <strong>Description:</strong> {{ metric.description }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <strong>Data Source:</strong> {{ metric.dataSource }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <strong>Aggregation Technique:</strong> {{ metric.aggregation }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <strong>Filter Role:</strong> {{ metric.filterRole }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <strong>Filter Status:</strong> {{ metric.filterStatus }}
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <strong>Public:</strong> {{ metric.isPublic ? 'Yes' : 'No' }}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
 
 <ion-footer>
   <ion-toolbar class="">
     <ion-item lines="none">
-      <ion-label>Actions</ion-label>
-      <ion-select interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
+      <ion-select label="Actions" interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
         <ion-select-option value="edit">Edit</ion-select-option>
         <ion-select-option value="delete">Delete</ion-select-option>
         <ion-select-option value="archive">Archive</ion-select-option>

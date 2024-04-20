@@ -44,18 +44,16 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
       status: ['']
     });
 
-    this.filterRolesFormGroup = this.formBuilder.group({
-      participant: [false],
-      mentor: [false],
-      admin: [false],
-      coordinator: [false]
-    });
+    this.filterRolesFormGroup = this.formBuilder.group(this.filterRoles.reduce((acc, role) => {
+      acc[role] = [false];
+      return acc;
+    }, {}));
 
-    this.filterStatusesFormGroup = this.formBuilder.group({
-      active: [false],
-      inactive: [false],
-      pending: [false]
-    });
+    // this.filterStatuses values
+    this.filterStatusesFormGroup = this.formBuilder.group(this.filterStatuses.reduce((acc, status) => {
+      acc[status] = [false];
+      return acc;
+    }, {}));
   }
 
   ngOnDestroy() {
