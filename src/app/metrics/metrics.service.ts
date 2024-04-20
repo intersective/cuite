@@ -2,6 +2,58 @@ import { Injectable } from '@angular/core';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
 import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
 
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricaggregation.doc.html
+ */
+export enum MetricAggregation {
+  count = 'count',
+  sum = 'sum',
+  average = 'average',
+};
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricrequirement.doc.html
+ */
+export enum MetricRequirement {
+  required = 'required',
+  recommended = 'recommended',
+  not_required = 'not_required',
+};
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricstatus.doc.html
+ */
+export enum MetricStatus {
+  draft = 'draft',
+  active = 'active',
+  archived = 'archived',
+};
+
+// @link https://intersective.github.io/core-graphql-api/metricfilterrole.doc.html
+export enum MetricFilterRole {
+  participant = 'participant',
+  mentor = 'mentor',
+  coordinator = 'coordinator',
+  admin = 'admin',
+};
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricfilterstatus.doc.html
+ */
+export enum MetricFilterStatus {
+  active = 'active',
+  dropped = 'dropped',
+};
+
+export interface MetricAssessment {
+  id: number;
+  name: string;
+  question: {
+    id: number;
+    name: string;
+  };
+};
+
 export interface Metric {
   id: number;
   name: string;
@@ -10,8 +62,8 @@ export interface Metric {
   aggregation: string;
   requirement: string;
   status: string;
-  filterType: string;
-  filterValue: string;
+  filterRole: string[];
+  filterStatus: string[];
   dataSource: string;
   dataSourceId: null | number; // Assuming dataSourceId can be a number or null
   __typename: string;
@@ -53,7 +105,7 @@ export class MetricsService {
     filterRole: string;
     filterStatus: string;
   }): Observable<any> {
-    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: String, $requirement: String, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
+    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: MetricAggregation, $requirement: MetricRequirement, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
     const params = 'name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterRole:$filterRole, filterStatus:$filterStatus';
 
     return this.graphql.graphQLMutate(
