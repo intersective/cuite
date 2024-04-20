@@ -9,7 +9,7 @@ import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MetricDetailComponent } from './metric-detail/metric-detail.component';
 import { MetricsInstituteComponent } from './metrics-institute/metrics-institute.component';
-import { NoSymbolsPipe } from '@app/pipes/no-symbols.pipe';
+import { NoSymbolsPipe } from '@app/metrics/pipes/no-symbols.pipe';
 import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
