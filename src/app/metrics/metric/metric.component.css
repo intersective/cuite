@@ -1,0 +1,7 @@
+ion-card {
+  cursor: pointer;
+}
+
+ion-card:hover {
+  cursor: pointer;
+}

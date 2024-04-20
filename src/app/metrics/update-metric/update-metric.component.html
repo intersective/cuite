@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add/Edit Metric</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="metricForm">
+    <ion-item>
+      <ion-label position="stacked">Title</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Data Type</ion-label>
+      <ion-select formControlName="dataType">
+        <ion-select-option value="scalar">Scalar</ion-select-option>
+        <ion-select-option value="valueList">Value List</ion-select-option>
+        <ion-select-option value="keywords">Keywords/Concepts</ion-select-option>
+        <ion-select-option value="sentiment">Sentiment</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Aggregation Technique</ion-label>
+      <ion-select formControlName="aggregation">
+        <ion-select-option value="first">First</ion-select-option>
+        <ion-select-option value="last">Last</ion-select-option>
+        <ion-select-option value="min">Min</ion-select-option>
+        <ion-select-option value="max">Max</ion-select-option>
+        <ion-select-option value="sample">Sample</ion-select-option>
+        <ion-select-option value="average">Average</ion-select-option>
+        <ion-select-option value="sum">Sum</ion-select-option>
+        <ion-select-option value="difference">Difference</ion-select-option>
+        <ion-select-option value="percentChange">% Change</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Filter</ion-label>
+      <ion-select formControlName="filterType">
+        <ion-select-option value="role">By role</ion-select-option>
+        <ion-select-option value="enrolmentStatus">By enrolment status</ion-select-option>
+        <ion-select-option value="enrolmentGroup">By enrolment group</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Calculation Frequency</ion-label>
+      <ion-select formControlName="calculationFrequency">
+        <ion-select-option value="daily">Daily</ion-select-option>
+        <ion-select-option value="weekly">Weekly</ion-select-option>
+        <ion-select-option value="dashboard">Dashboard Stat</ion-select-option>
+        <ion-select-option value="endOfProgram">End of Program</ion-select-option>
+        <ion-select-option value="onRequest">Only on request</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Is Required?</ion-label>
+      <ion-toggle formControlName="isRequired"></ion-toggle>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveMetric()">Save Changes</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
