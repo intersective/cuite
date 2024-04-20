@@ -8,6 +8,9 @@ import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MetricDetailComponent } from './metric-detail/metric-detail.component';
+import { MetricsInstituteComponent } from './metrics-institute/metrics-institute.component';
+import { NoSymbolsPipe } from '@app/pipes/no-symbols.pipe';
+import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,10 +19,13 @@ import { MetricDetailComponent } from './metric-detail/metric-detail.component';
     MetricsAdminComponent,
     UpdateMetricComponent,
     MetricDetailComponent,
+    MetricsInstituteComponent,
+    NoSymbolsPipe,
   ],
   imports: [
     IonicModule,
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
     RouterModule.forChild([
       {
@@ -27,11 +33,20 @@ import { MetricDetailComponent } from './metric-detail/metric-detail.component';
         component: MetricsComponent,
       },
       {
+        path: 'institution',
+        component: MetricsInstituteComponent,
+      },
+      {
         path: 'admin',
         component: MetricsAdminComponent,
       },
     ]),
   ],
-  exports: [MetricsComponent, IonicModule, ReactiveFormsModule],
+  exports: [
+    NoSymbolsPipe,
+    MetricsComponent,
+    IonicModule,
+    ReactiveFormsModule,
+  ],
 })
 export class MetricsModule {}
