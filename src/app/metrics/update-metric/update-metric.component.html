@@ -11,65 +11,104 @@
 
 <ion-content>
   <form [formGroup]="metricForm">
-    <ion-item>
-      <ion-label position="stacked">Title</ion-label>
-      <ion-input formControlName="name"></ion-input>
-    </ion-item>
 
-    <ion-item>
-      <ion-label position="stacked">Description</ion-label>
-      <ion-textarea formControlName="description"></ion-textarea>
-    </ion-item>
+    <!-- Basic Details Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Basic Details</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="stacked">Title</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Description</ion-label>
+          <ion-textarea formControlName="description"></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label>Data Type</ion-label>
-      <ion-select formControlName="dataType">
-        <ion-select-option value="scalar">Scalar</ion-select-option>
-        <ion-select-option value="valueList">Value List</ion-select-option>
-        <ion-select-option value="keywords">Keywords/Concepts</ion-select-option>
-        <ion-select-option value="sentiment">Sentiment</ion-select-option>
-      </ion-select>
-    </ion-item>
+    <!-- Filters Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Filters</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list [formGroup]="filterRolesFormGroup">
+          <ion-list-header>
+            <ion-label>Filter by Role</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Participant</ion-label>
+            <ion-checkbox slot="start" formControlName="participant" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-label>Mentor</ion-label>
+            <ion-checkbox slot="start" formControlName="mentor" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-label>Coordinator</ion-label>
+            <ion-checkbox slot="start" formControlName="coordinator" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-label>Admin</ion-label>
+            <ion-checkbox slot="start" formControlName="admin" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          </ion-item>
+        </ion-list>
 
-    <ion-item>
-      <ion-label>Aggregation</ion-label>
-      <ion-select formControlName="aggregation">
-        <ion-select-option value="average">Average</ion-select-option>
-        <ion-select-option value="sum">Sum</ion-select-option>
-        <ion-select-option value="count">Count</ion-select-option>
-      </ion-select>
-    </ion-item>
+        <ion-list [formGroup]="filterStatusesFormGroup">
+          <ion-list-header>
+            <ion-label>Filter by Status</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Active</ion-label>
+            <ion-checkbox slot="start" formControlName="active" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-label>Inactive</ion-label>
+            <ion-checkbox slot="start" formControlName="inactive" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-label>Pending</ion-label>
+            <ion-checkbox slot="start" formControlName="pending" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label>Filter Role</ion-label>
-      <ion-select formControlName="filterRole">
-        <ion-select-option value="participant">Participant</ion-select-option>
-        <ion-select-option value="mentor">Mentor</ion-select-option>
-        <ion-select-option value="coordinator">Coordinator</ion-select-option>
-        <ion-select-option value="admin">Admin</ion-select-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Filter Status</ion-label>
-      <ion-select formControlName="filterStatus">
-        <ion-select-option value="participant">Participant</ion-select-option>
-        <ion-select-option value="mentor">Mentor</ion-select-option>
-        <ion-select-option value="coordinator">Coordinator</ion-select-option>
-        <ion-select-option value="admin">Admin</ion-select-option>
-      </ion-select>
-    </ion-item>
+    <!-- Settings Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Settings</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Requirement</ion-label>
+          <ion-select formControlName="requirement">
+            <ion-select-option value="required">Required</ion-select-option>
+            <ion-select-option value="recommended">Recommended</ion-select-option>
+            <ion-select-option value="not_required">Not Required</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Status</ion-label>
+          <ion-select formControlName="status">
+            <ion-select-option value="draft">Draft</ion-select-option>
+            <ion-select-option value="active">Active</ion-select-option>
+            <ion-select-option value="archived">Archived</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Public</ion-label>
+          <ion-toggle formControlName="isPublic"></ion-toggle>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label>Status</ion-label>
-      <ion-select formControlName="status">
-        <ion-select-option value="draft">Draft</ion-select-option>
-        <ion-select-option value="active">Active</ion-select-option>
-        <ion-select-option value="archived">Archived</ion-select-option>  
-      </ion-select>
-    </ion-item>
   </form>
 </ion-content>
+
 
 <ion-footer>
   <ion-toolbar>
