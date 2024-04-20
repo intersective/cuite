@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ metric?.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="metric-details">
+    <p><strong>Description: </strong> {{ metric.description }}</p>
+    <p><strong>Data Source: </strong>{{ metric.dataSource }}</p>
+    <p><strong>Aggregation Technique: </strong>{{ metric.aggregation }}</p>
+    <p><strong>Filter: </strong>{{ metric.filterType }}</p>
+    <p><strong>Public: </strong>{{ metric.isPublic }}</p>
+    <p><strong>Status: </strong>{{ metric.status }}</p>
+    <p><strong>Value: </strong>{{ metric.filterValue }}</p>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="">
+    <ion-item lines="none">
+      <ion-label>Actions</ion-label>
+      <ion-select interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
+        <ion-select-option value="edit">Edit</ion-select-option>
+        <ion-select-option value="delete">Delete</ion-select-option>
+        <ion-select-option value="archive">Archive</ion-select-option>
+        <ion-select-option value="duplicate">Duplicate</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-button (click)="dismissModal()" slot="end">Close</ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>
