@@ -5,7 +5,7 @@ import { Metric } from '../metrics.service';
 @Component({
   selector: 'app-metric-view',
   templateUrl: './modal-view.component.html',
-  styleUrls: ['./modal-view.component.css'],
+  styleUrls: ['./modal-view.component.scss'],
 })
 export class MetricModalViewComponent {
   @Input() data: Metric;
