@@ -53,7 +53,7 @@ export class MetricsService {
     filterRole: string;
     filterStatus: string;
   }): Observable<any> {
-    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: String, $requirement: String, $filterRole: MetricFilterRole, $filterStatus: MetricFilterStatus';
+    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: String, $requirement: String, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
     const params = 'name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterRole:$filterRole, filterStatus:$filterStatus';
 
     return this.graphql.graphQLMutate(
@@ -79,8 +79,8 @@ export class MetricsService {
     filterRole: string;
     filterStatus: string;
   }): Observable<any> {
-    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: MetricAggregation, $requirement: MetricRequirement, $status: MetricStatus, $filterRole: MetricFilterRole, $filterStatus: MetricFilterStatus';
-    const params = 'uuid:$uuid, name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterRole:$filterRole, filterStatus:$filterStatus';
+    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: MetricAggregation, $requirement: MetricRequirement, $status: MetricStatus, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
+    const params = 'uuid:$uuid, name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, status:$status, filterRole:$filterRole, filterStatus:$filterStatus';
 
     return this.graphql.graphQLMutate(
       `mutation updateMetric(${paramsFormat}) {
