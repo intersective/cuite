@@ -19,12 +19,26 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <ion-label position="stacked">Title</ion-label>
+          <ion-label position="stacked">Title<span class="red">*</span></ion-label>
           <ion-input formControlName="name"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Description</ion-label>
           <ion-textarea formControlName="description"></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Aggregation</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>Type<span class="red">*</span></ion-label>
+          <ion-select formControlName="aggregation">
+            <ion-select-option *ngFor="let aggregation of aggregations" [value]="aggregation">{{ aggregation | titlecase }}</ion-select-option>
+          </ion-select>
         </ion-item>
       </ion-card-content>
     </ion-card>
@@ -39,21 +53,14 @@
           <ion-list-header>
             <ion-label>Filter by Role</ion-label>
           </ion-list-header>
-          <ion-item>
-            <ion-label>Participant</ion-label>
-            <ion-checkbox slot="start" formControlName="participant" (ionChange)="onValueChanges($event)"></ion-checkbox>
-          </ion-item>
-          <ion-item>
-            <ion-label>Mentor</ion-label>
-            <ion-checkbox slot="start" formControlName="mentor" (ionChange)="onValueChanges($event)"></ion-checkbox>
-          </ion-item>
-          <ion-item>
-            <ion-label>Coordinator</ion-label>
-            <ion-checkbox slot="start" formControlName="coordinator" (ionChange)="onValueChanges($event)"></ion-checkbox>
-          </ion-item>
-          <ion-item>
-            <ion-label>Admin</ion-label>
-            <ion-checkbox slot="start" formControlName="admin" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          <ion-item *ngFor="let role of filterRoles">
+            <ion-label>{{ role | titlecase }}</ion-label>
+            <ion-checkbox slot="start" 
+              [name]="role"
+              [formControlName]="role"
+              (ionChange)="onValueChanges($event)"
+              [ariaLabel]="role"
+            ></ion-checkbox>
           </ion-item>
         </ion-list>
 
@@ -61,17 +68,13 @@
           <ion-list-header>
             <ion-label>Filter by Status</ion-label>
           </ion-list-header>
-          <ion-item>
-            <ion-label>Active</ion-label>
-            <ion-checkbox slot="start" formControlName="active" (ionChange)="onValueChanges($event)"></ion-checkbox>
-          </ion-item>
-          <ion-item>
-            <ion-label>Inactive</ion-label>
-            <ion-checkbox slot="start" formControlName="inactive" (ionChange)="onValueChanges($event)"></ion-checkbox>
-          </ion-item>
-          <ion-item>
-            <ion-label>Pending</ion-label>
-            <ion-checkbox slot="start" formControlName="pending" (ionChange)="onValueChanges($event)"></ion-checkbox>
+          <ion-item *ngFor="let status of filterStatuses">
+            <ion-label>{{ status | titlecase }}</ion-label>
+            <ion-checkbox slot="start" 
+              [formControlName]="status" 
+              (ionChange)="onValueChanges($event)" 
+              [ariaLabel]="status"
+            ></ion-checkbox>
           </ion-item>
         </ion-list>
       </ion-card-content>
@@ -84,19 +87,15 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <ion-label>Requirement</ion-label>
+          <ion-label>Requirement<span class="red">*</span></ion-label>
           <ion-select formControlName="requirement">
-            <ion-select-option value="required">Required</ion-select-option>
-            <ion-select-option value="recommended">Recommended</ion-select-option>
-            <ion-select-option value="not_required">Not Required</ion-select-option>
+            <ion-select-option *ngFor="let requirement of requirements" [value]="requirement">{{requirement | noSymbols | titlecase}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-label>Status</ion-label>
           <ion-select formControlName="status">
-            <ion-select-option value="draft">Draft</ion-select-option>
-            <ion-select-option value="active">Active</ion-select-option>
-            <ion-select-option value="archived">Archived</ion-select-option>
+            <ion-select-option *ngFor="let status of statuses" [value]="status">{{status | titlecase }}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>

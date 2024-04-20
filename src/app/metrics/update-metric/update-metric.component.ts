@@ -1,13 +1,14 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Metric, MetricsService } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '@app/shared/services/notification.service';
 
 @Component({
   selector: 'app-update-metric',
   templateUrl: './update-metric.component.html',
-  styleUrls: ['./update-metric.component.css']
+  styleUrls: ['./update-metric.component.scss']
 })
 export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   metric: Metric; // metric object from ModelController
@@ -17,26 +18,29 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
 
   filterRoles = ['participant', 'mentor', 'admin', 'coordinator'];
-  filterStatuses = ['active', 'inactive', 'pending'];
+  filterStatuses = ['active', 'dropped'];
+  statuses = ['draft', 'active', 'archived'];
+  requirements = ['required', 'recommended', 'not_required'];
+  aggregations = ['count', 'sum', 'average'];
 
 
   constructor(
     private formBuilder: FormBuilder,
     private metricsService: MetricsService,
     private modalController: ModalController,
+    private notificationService: NotificationService,
   ) {
     this.metricForm = this.formBuilder.group({
       id: [''],
       uuid: [''],
-      name: [''],
+      name: ['', Validators.required],
       description: [''],
       dataSource: [''],
-      aggregation: [''],
-      dataType: [''],
-      filterRole: this.formBuilder.array([]),
-      filterStatus: this.formBuilder.array([]),
+      aggregation: ['', Validators.required],
+      filterRole: [[]],
+      filterStatus: [[]],
       isPublic: [false],
-      requirement: [''],
+      requirement: ['', Validators.required],
       status: ['']
     });
 
@@ -64,6 +68,16 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
     
     if (this.metric) {
       this.metricForm.patchValue(this.metric);
+      this.filterRoles.forEach(role => {
+        if (this.metric.filterRole.includes(role)) {
+          this.filterRolesFormGroup.get(role).patchValue(true);
+        }
+      });
+      this.filterStatuses.forEach(status => {
+        if (this.metric.filterStatus.includes(status)) {
+          this.filterStatusesFormGroup.get(status).patchValue(true);
+        }
+      });
     }
   }
 
@@ -71,10 +85,7 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
     // console.log(event);
     console.log(this.filterRolesFormGroup.value);
     console.log(Object.keys(this.filterRolesFormGroup.value).filter(key => this.filterRolesFormGroup.value[key]));
-
-    // console.log(Object.keys(this.filterStatusesFormGroup.value).filter(key => this.filterStatusesFormGroup.value[key]));
-
-    // this.formBuilder.control(Object.keys(this.filterRolesFormGroup.value).filter(key => this.filterRolesFormGroup.value[key]));
+    console.log(Object.keys(this.filterStatusesFormGroup.value).filter(key => this.filterStatusesFormGroup.value[key]));
   }
 
   saveMetric() {
@@ -96,6 +107,13 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
         this.dismissModal();
       });
     }
+
+    console.log('Form is invalid');
+    return this.notificationService.alert({
+      header: 'Invalid Form',
+      message: 'Please fill out all required fields',
+      buttons: ['OK']
+    });
   }
 
   dismissModal() {
