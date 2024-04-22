@@ -12,11 +12,15 @@ export class MetricsInstituteComponent implements OnInit {
   constructor(private metricService: MetricsService) { }
 
   ngOnInit() {
+    this.metricService.metrics$.subscribe((metrics) => {
+      this.metrics = metrics;
+    });
     this.fetchData();
   }
 
   fetchData() {
-    this.metricService.getMetrics(true).subscribe(
+    // Institution metrics: publicOnly = false
+    this.metricService.getMetrics(false).subscribe(
       (response) => {
         this.metrics = response;
       },

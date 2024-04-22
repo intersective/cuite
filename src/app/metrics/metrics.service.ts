@@ -149,6 +149,8 @@ export class MetricsService {
 
   /**
    * get metrics data
+   * @param publicOnly boolean true: get metrics from library (template), false: don't get metrics from library (template)
+   * @returns metrics data
    */
   getMetrics(publicOnly = false): any {
     return this.graphql.graphQLFetch(

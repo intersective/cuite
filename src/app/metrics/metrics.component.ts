@@ -1,26 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
   styleUrls: ['./metrics.component.css'],
 })
-export class MetricsComponent implements OnInit {
+export class MetricsComponent implements OnInit, OnDestroy {
   metrics: Metric[] = [];
   unsubscribe$ = new Subject<void>();
 
-  constructor(private metricService: MetricsService) {}
+  constructor(private metricsService: MetricsService) {}
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   ngOnInit() {
     this.fetchData();
-    this.metricService.metrics$.pipe(takeUntil(this.unsubscribe$)).subscribe((metrics) => {
+    this.metricsService.metrics$.pipe(
+      map((metrics) => metrics.filter((metric) => metric.status === 'active')),
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((metrics) => {
       this.metrics = metrics;
     });
   }
 
   fetchData() {
-    this.metricService.getMetrics(true).pipe(takeUntil(this.unsubscribe$)).subscribe();
+    this.metricsService.getMetrics(false).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      error: (error) => {
+        console.error('Error fetching data:', error);
+      }
+    });
   }
 }
+

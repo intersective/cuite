@@ -33,6 +33,10 @@ import { SharedModule } from '@app/shared/shared.module';
         component: MetricsComponent,
       },
       {
+        path: 'experience',
+        component: MetricsComponent,
+      },
+      {
         path: 'institution',
         component: MetricsInstituteComponent,
       },
