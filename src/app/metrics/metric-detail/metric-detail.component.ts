@@ -25,14 +25,14 @@ export class MetricDetailComponent implements OnInit {
       case 'edit':
         this.editMetric();
         break;
-      case 'delete':
-        this.deleteMetric();
+      case 'calculate':
+        this.calculateMetric();
         break;
       case 'archive':
         this.archiveMetric();
         break;
-      case 'duplicate':
-        this.duplicateMetric();
+      case 'configure':
+        this.configureMetric();
         break;
       default:
         console.log('Action not recognized');
@@ -42,12 +42,12 @@ export class MetricDetailComponent implements OnInit {
   editMetric() {
   }
 
-  deleteMetric() {
-  }
-
   archiveMetric() {
   }
 
-  duplicateMetric() {
+  configureMetric() {
+  }
+
+  calculateMetric() {
   }
 }

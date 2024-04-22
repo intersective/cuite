@@ -12,8 +12,8 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ metric.name }}</ion-card-title>
-      <ion-card-subtitle>Status: {{ metric.status }}</ion-card-subtitle>
+      <ion-card-title>{{ metric.name | titlecase }}</ion-card-title>
+      <ion-card-subtitle>Status: {{ metric.status | titlecase }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-list lines="none">
@@ -24,22 +24,22 @@
         </ion-item>
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <strong>Data Source:</strong> {{ metric.dataSource }}
+            <strong>Aggregation:</strong> {{ metric.aggregation | titlecase }}
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <strong>Aggregation Technique:</strong> {{ metric.aggregation }}
+            <strong>Requirement:</strong> {{ metric.requirement | titlecase }}
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <strong>Filter Role:</strong> {{ metric.filterRole }}
+            <strong>Filter Role:</strong> {{ metric.filterRole.join(', ') | titlecase }}
           </ion-label>
         </ion-item>
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <strong>Filter Status:</strong> {{ metric.filterStatus }}
+            <strong>Filter Status:</strong> {{ metric.filterStatus.join(', ') | titlecase }}
           </ion-label>
         </ion-item>
         <ion-item>
@@ -58,9 +58,9 @@
     <ion-item lines="none">
       <ion-select label="Actions" interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
         <ion-select-option value="edit">Edit</ion-select-option>
-        <ion-select-option value="delete">Delete</ion-select-option>
         <ion-select-option value="archive">Archive</ion-select-option>
-        <ion-select-option value="duplicate">Duplicate</ion-select-option>
+        <ion-select-option value="configure">Configure</ion-select-option>
+        <ion-select-option value="calculate">Calculate</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
