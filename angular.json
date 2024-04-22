@@ -156,8 +156,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build",
-            "tsConfig": "src/tsconfig.app.json"
+            "browserTarget": "app:build"
           },
           "configurations": {
             "production": {
@@ -290,3 +289,4 @@
     }
   }
 }
+
