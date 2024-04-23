@@ -40,7 +40,7 @@ export class MetricsInstituteComponent implements OnInit {
     this.modalController.create({
       component: UpdateMetricComponent,
       componentProps: {
-        from: 'experience',
+        from: 'institution',
       },
     }).then(modal => {
       modal.present();

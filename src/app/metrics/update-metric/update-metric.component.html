@@ -91,7 +91,7 @@
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-select label="Status" formControlName="status">
+          <ion-select label="Status" formControlName="status" [disabled]="from !== 'experience'">
             <ion-select-option *ngFor="let status of statuses" [value]="status">{{status | titlecase }}</ion-select-option>
           </ion-select>
         </ion-item>

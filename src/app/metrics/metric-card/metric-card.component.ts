@@ -10,17 +10,19 @@ import { MetricDetailComponent } from '../metric-detail/metric-detail.component'
 export class MetricComponent {
   @Input() data: Metric;
   @Input() index: number;
+  @Input() from: 'experience' | 'institution' | null; // indicate metric category 
 
   constructor(private modalController: ModalController) { }
 
-  async openModal() {
+  async openModal(data) {
     const modal = await this.modalController.create({
       component: MetricDetailComponent,
       backdropDismiss: false,
       cssClass: 'metric-detail-view-popup',
       animated: true,
       componentProps: {
-        data: this.data,
+        metric: data,
+        from: this.from,
       },
     });
 
