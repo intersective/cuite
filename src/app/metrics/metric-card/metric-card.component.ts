@@ -29,16 +29,23 @@ export class MetricComponent {
     await modal.present();
   }
 
-  getRequirementIndicatorColor(requirement: string): string {
-    switch (requirement) {
+  getRequirementIndicatorColor(): string {
+    switch (this.data.requirement) {
       case 'required':
         return 'danger';
       case 'recommanded':
         return 'warning';
-      case 'not required':
+      case 'not_required':
         return 'medium';
       default:
         return 'danger';
+    }
+  }
+  getConfigarationStatusClass() {
+    if(this.data.dataSourceId) {
+      return "danger";
+    } else {
+      return "NOT CONFIGURED";
     }
   }
 }
