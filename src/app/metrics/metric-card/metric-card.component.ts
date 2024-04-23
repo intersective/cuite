@@ -20,7 +20,7 @@ export class MetricComponent {
       cssClass: 'metric-detail-view-popup',
       animated: true,
       componentProps: {
-        data: this.data,
+        metric: this.data,
       },
     });
 
