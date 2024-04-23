@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
-import { ModalController } from '@ionic/angular';
 import { Subject, takeUntil, map } from 'rxjs';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
-  styleUrls: ['./metrics.component.css'],
+  styleUrls: ['./metrics.component.scss'],
 })
 export class MetricsComponent implements OnInit, OnDestroy {
   metrics: Metric[] = [];

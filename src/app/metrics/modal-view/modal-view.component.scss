@@ -1,0 +1,29 @@
+.metric-detail-popup-container {
+  .close-btn {
+    display: flex;
+    ion-buttonÍ {
+      --padding-start: 26px;
+    --padding-end: 26px;
+    }
+  }
+  .metric-details {
+    p {
+      margin-bottom: 0;
+    }
+    .title-status-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      align-content: center;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      .titile {
+      }
+      .status {
+        text-transform: capitalize;
+        color: var(--practera-ocean-100);
+        font-weight: var(--font-weight-medium);
+      }
+    }
+  }
+}
