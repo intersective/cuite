@@ -23,6 +23,9 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   requirements = ['required', 'recommended', 'not_required'];
   aggregations = ['count', 'sum', 'average'];
 
+  // from modal properties
+  from: 'institution' | 'experience' | null = null;
+  
   constructor(
     private formBuilder: FormBuilder,
     private metricsService: MetricsService,
@@ -61,8 +64,6 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    console.log(this.metric);
-    
     if (this.metric) {
       this.metricForm.patchValue(this.metric);
       this.filterRoles.forEach(role => {
