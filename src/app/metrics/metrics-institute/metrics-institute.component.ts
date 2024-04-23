@@ -49,4 +49,12 @@ export class MetricsInstituteComponent implements OnInit {
       });
     });
   }
+
+  calculate() {
+    // this.metricsService.calculateMetrics();
+  }
+
+  download() {
+    // this.metricsService.downloadMetrics();
+  }
 }

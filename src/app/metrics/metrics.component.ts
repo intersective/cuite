@@ -55,5 +55,13 @@ export class MetricsComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  calculate() {
+    // this.metricsService.calculateMetrics();
+  }
+  
+  download() {
+    // this.metricsService.downloadMetrics();
+  }
 }
 
