@@ -1,6 +1,14 @@
 <ion-content>
   <ion-grid>
     <ion-row class="ion-no-padding">
+      <ion-col size="10">
+        <h2>Metrics Dashboard</h2>
+      </ion-col>
+      <ion-col size="2" class="ion-text-end">
+        <ion-button color="primary" fill="clear" shape="round" (click)="addNew()">New</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-no-padding">
       <ion-col size="12" size-sm="6" size-md="4" *ngFor="let metric of metrics; let i = index">
         <app-metric [data]="metric" [index]="i"></app-metric>
       </ion-col>

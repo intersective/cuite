@@ -23,7 +23,6 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   requirements = ['required', 'recommended', 'not_required'];
   aggregations = ['count', 'sum', 'average'];
 
-
   constructor(
     private formBuilder: FormBuilder,
     private metricsService: MetricsService,
@@ -106,9 +105,7 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  dismissModal() {
-    this.metricsService.getMetrics().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.modalController.dismiss();
-    });
+  async dismissModal() {
+    await this.modalController.dismiss();
   }
 }

@@ -11,6 +11,7 @@ import { MetricsInstituteComponent } from './metrics-institute/metrics-institute
 import { NoSymbolsPipe } from '@app/metrics/pipes/no-symbols.pipe';
 import { SharedModule } from '@app/shared/shared.module';
 import { MetricDetailComponent } from './metric-detail/metric-detail.component';
+import { MetricConfigureComponent } from './metric-configure/metric-configure.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MetricDetailComponent } from './metric-detail/metric-detail.component';
     MetricsInstituteComponent,
     NoSymbolsPipe,
     MetricDetailComponent,
+    MetricConfigureComponent,
   ],
   imports: [
     IonicModule,
