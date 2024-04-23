@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row class="ion-no-padding">
       <ion-col size="12" size-sm="6" size-md="4" *ngFor="let metric of metrics; let i = index">
-        <app-metric [data]="metric" [index]="i"></app-metric>
+        <app-metric-card [data]="metric" [index]="i"></app-metric-card>
       </ion-col>
     </ion-row>
   </ion-grid>

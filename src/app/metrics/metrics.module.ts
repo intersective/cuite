@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MetricsComponent } from './metrics.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { MetricComponent } from './metric/metric.component';
+import { MetricComponent } from './metric-card/metric-card.component';
 import { MetricsAdminComponent } from './metrics-admin/metrics-admin.component';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { ReactiveFormsModule } from '@angular/forms';
