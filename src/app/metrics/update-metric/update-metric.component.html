@@ -19,12 +19,12 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <ion-label position="stacked">Title<span class="red">*</span></ion-label>
-          <ion-input formControlName="name"></ion-input>
+          <ion-input labelPlacement="stacked" formControlName="name">
+            <div slot="label">Title<ion-text color="danger">*</ion-text></div>
+          </ion-input>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">Description</ion-label>
-          <ion-textarea formControlName="description"></ion-textarea>
+          <ion-textarea label="Description" labelPlacement="stacked" formControlName="description"></ion-textarea>
         </ion-item>
       </ion-card-content>
     </ion-card>
@@ -35,8 +35,8 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <ion-label>Type<span class="red">*</span></ion-label>
           <ion-select formControlName="aggregation">
+            <div slot="label">Type<ion-text color="danger">*</ion-text></div>
             <ion-select-option *ngFor="let aggregation of aggregations" [value]="aggregation">{{ aggregation | titlecase }}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -85,20 +85,18 @@
       </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <ion-label>Requirement<span class="red">*</span></ion-label>
           <ion-select formControlName="requirement">
+            <div slot="label">Requirement<ion-text color="danger">*</ion-text></div>
             <ion-select-option *ngFor="let requirement of requirements" [value]="requirement">{{requirement | noSymbols | titlecase}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label>Status</ion-label>
-          <ion-select formControlName="status">
+          <ion-select label="Status" formControlName="status" [disabled]="from !== 'experience'">
             <ion-select-option *ngFor="let status of statuses" [value]="status">{{status | titlecase }}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label>Public</ion-label>
-          <ion-toggle formControlName="isPublic"></ion-toggle>
+          <ion-toggle formControlName="isPublic">Public</ion-toggle>
         </ion-item>
       </ion-card-content>
     </ion-card>

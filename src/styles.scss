@@ -126,6 +126,16 @@ ion-item.sc-ion-select-popover {
   }
 }
 
+// Schedule chat message popup
+.metric-detail-view-popup{
+  --max-height: 700px;
+  --max-width: 700px;
+  --min-height: 500px;
+  .modal-wrapper {
+    border-radius: 6px;
+  }
+}
+
 // message-delete-alert
 .message-delete-alert {
   --max-width: 500px;

@@ -1,0 +1,28 @@
+<ion-card class="metrics-card" (click)="openModal()" [button]="true">
+  <ion-card-content>
+    <div class="title-status-container ion-justify-content-between">
+      <div class="title">
+        <ion-icon class="title-icon" name="trending-up-outline"></ion-icon>
+        <p class="card-title black">{{ data.name }}</p>
+      </div>
+      <div class="status">
+        <p class="{{data.status}}">{{ data.status }}</p>
+        <!-- <ng-container *ngIf="data.status === 'draft'">
+          <ion-icon class="draft" title="Status: Draft" color="danger" name="alert-circle"></ion-icon>
+        </ng-container>
+        <ng-container *ngIf="data.status === 'active'">
+          <ion-icon class="active" title="Status: Active" color="warning" name="star"></ion-icon>
+        </ng-container>
+        <ng-container *ngIf="data.status === 'archived'">
+          <ion-icon class="archive" title="Status: Archive" name="archive"></ion-icon>
+        </ng-container> -->
+      </div>
+    </div>
+    <div class="requirement" [class]="getRequirementIndicatorColor(data.requirement)">
+      <p>{{ data.requirement }}</p>
+    </div>
+    <div class="description">
+      <p class="black">{{ data.description }}</p>
+    </div>
+  </ion-card-content>
+</ion-card>

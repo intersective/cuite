@@ -23,7 +23,9 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   requirements = ['required', 'recommended', 'not_required'];
   aggregations = ['count', 'sum', 'average'];
 
-
+  // from modal properties
+  from: 'institution' | 'experience' | null = null;
+  
   constructor(
     private formBuilder: FormBuilder,
     private metricsService: MetricsService,
@@ -44,18 +46,16 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
       status: ['']
     });
 
-    this.filterRolesFormGroup = this.formBuilder.group({
-      participant: [false],
-      mentor: [false],
-      admin: [false],
-      coordinator: [false]
-    });
+    this.filterRolesFormGroup = this.formBuilder.group(this.filterRoles.reduce((acc, role) => {
+      acc[role] = [false];
+      return acc;
+    }, {}));
 
-    this.filterStatusesFormGroup = this.formBuilder.group({
-      active: [false],
-      inactive: [false],
-      pending: [false]
-    });
+    // this.filterStatuses values
+    this.filterStatusesFormGroup = this.formBuilder.group(this.filterStatuses.reduce((acc, status) => {
+      acc[status] = [false];
+      return acc;
+    }, {}));
   }
 
   ngOnDestroy() {
@@ -64,8 +64,6 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    console.log(this.metric);
-    
     if (this.metric) {
       this.metricForm.patchValue(this.metric);
       this.filterRoles.forEach(role => {
@@ -108,9 +106,7 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  dismissModal() {
-    this.metricsService.getMetrics().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.modalController.dismiss();
-    });
+  async dismissModal() {
+    await this.modalController.dismiss();
   }
 }

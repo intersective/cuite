@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
+import { ModalController } from '@ionic/angular';
+import { UpdateMetricComponent } from '../update-metric/update-metric.component';
 
 @Component({
   selector: 'app-metrics-institute',
@@ -9,14 +11,21 @@ import { MetricsService, type Metric } from '@app/metrics/metrics.service';
 export class MetricsInstituteComponent implements OnInit {
   metrics: Metric[] = [];
 
-  constructor(private metricService: MetricsService) { }
+  constructor(
+    private metricService: MetricsService,
+    private modalController: ModalController,
+  ) { }
 
   ngOnInit() {
+    this.metricService.metrics$.subscribe((metrics) => {
+      this.metrics = metrics;
+    });
     this.fetchData();
   }
 
   fetchData() {
-    this.metricService.getMetrics(true).subscribe(
+    // Institution metrics: publicOnly = false
+    this.metricService.getMetrics(false).subscribe(
       (response) => {
         this.metrics = response;
       },
@@ -25,5 +34,27 @@ export class MetricsInstituteComponent implements OnInit {
         // Handle the error
       }
     );
+  }
+
+  addNew() {
+    this.modalController.create({
+      component: UpdateMetricComponent,
+      componentProps: {
+        from: 'institution',
+      },
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(() => {
+        this.fetchData();
+      });
+    });
+  }
+
+  calculate() {
+    // this.metricsService.calculateMetrics();
+  }
+
+  download() {
+    // this.metricsService.downloadMetrics();
   }
 }
