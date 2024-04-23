@@ -4,12 +4,17 @@
       <div class="title">
         <p class="card-title black">{{ data.name }}</p>
       </div>
-      <div *ngIf="isInstitute" class="status" [class]="data.status">
-        <p>{{ data.status }}</p>
-      </div>
-      <div *ngIf="!isInstitute" class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
-        <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
-      </div>
+      <ng-container [ngSwitch]="from">
+        <div *ngSwitchCase="'experience'" class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
+          <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+        </div>
+        <div *ngSwitchCase="'institution'" class="status" [class]="data.status">
+          <p>{{ data.status }}</p>
+        </div>
+        <div *ngSwitchDefault class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
+          <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+        </div>
+      </ng-container>
     </div>
     <div class="requirement" [class]="getRequirementIndicatorColor()">
       <p class="body-2">{{ data.requirement }}</p>
