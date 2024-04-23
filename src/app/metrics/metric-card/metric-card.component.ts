@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import type { Metric } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
-import { MetricModalViewComponent } from '../modal-view/modal-view.component';
+import { MetricDetailComponent } from '../metric-detail/metric-detail.component';
 @Component({
   selector: 'app-metric-card',
   templateUrl: './metric-card.component.html',
@@ -15,7 +15,7 @@ export class MetricComponent {
 
   async openModal() {
     const modal = await this.modalController.create({
-      component: MetricModalViewComponent,
+      component: MetricDetailComponent,
       backdropDismiss: false,
       cssClass: 'metric-detail-view-popup',
       animated: true,

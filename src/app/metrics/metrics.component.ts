@@ -1,36 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-
-import { MetricsService, type Metric } from './metrics.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MetricsService, type Metric } from '@app/metrics/metrics.service';
+import { Subject, takeUntil, map } from 'rxjs';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
   styleUrls: ['./metrics.component.scss'],
 })
-export class MetricsComponent implements OnInit {
+export class MetricsComponent implements OnInit, OnDestroy {
   metrics: Metric[] = [];
+  unsubscribe$ = new Subject<void>();
 
   constructor(
-    private metricService: MetricsService,
-    private modalController: ModalController) {}
+    private metricsService: MetricsService,
+    private modalController: ModalController,) {}
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   ngOnInit() {
     this.fetchData();
+    this.metricsService.metrics$.pipe(
+      map((metrics) => metrics.filter((metric) => metric.status === 'active')),
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((metrics) => {
+      this.metrics = metrics;
+    });
   }
 
   fetchData() {
-    this.metricService.getMetrics(true).subscribe(
-      (response) => {
-        console.log(response);
-        this.metrics = response;
-      },
-      (error) => {
+    this.metricsService.getMetrics(false).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      error: (error) => {
         console.error('Error fetching data:', error);
-        // Handle the error
       }
-    );
+    });
   }
 
   addMetric() {
@@ -41,3 +49,4 @@ export class MetricsComponent implements OnInit {
     });
   }
 }
+

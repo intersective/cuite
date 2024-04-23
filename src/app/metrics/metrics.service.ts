@@ -1,6 +1,58 @@
 import { Injectable } from '@angular/core';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricaggregation.doc.html
+ */
+export enum MetricAggregation {
+  count = 'count',
+  sum = 'sum',
+  average = 'average',
+};
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricrequirement.doc.html
+ */
+export enum MetricRequirement {
+  required = 'required',
+  recommended = 'recommended',
+  not_required = 'not_required',
+};
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricstatus.doc.html
+ */
+export enum MetricStatus {
+  draft = 'draft',
+  active = 'active',
+  archived = 'archived',
+};
+
+// @link https://intersective.github.io/core-graphql-api/metricfilterrole.doc.html
+export enum MetricFilterRole {
+  participant = 'participant',
+  mentor = 'mentor',
+  coordinator = 'coordinator',
+  admin = 'admin',
+};
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricfilterstatus.doc.html
+ */
+export enum MetricFilterStatus {
+  active = 'active',
+  dropped = 'dropped',
+};
+
+export interface MetricAssessment {
+  id: number;
+  name: string;
+  question: {
+    id: number;
+    name: string;
+  };
+};
 
 export interface Metric {
   id: number;
@@ -10,8 +62,8 @@ export interface Metric {
   aggregation: string;
   requirement: string;
   status: string;
-  filterType: string;
-  filterValue: string;
+  filterRole: string[];
+  filterStatus: string[];
   dataSource: string;
   dataSourceId: null | number; // Assuming dataSourceId can be a number or null
   __typename: string;
@@ -21,6 +73,9 @@ export interface Metric {
   providedIn: 'root'
 })
 export class MetricsService {
+  private _metrics$: BehaviorSubject<Metric[]> = new BehaviorSubject<Metric[]>([]);
+  metrics$ = this._metrics$.pipe(shareReplay(1));
+
   constructor(
     private graphql: ApolloService,
   ) { }
@@ -47,11 +102,11 @@ export class MetricsService {
     isPublic: boolean;
     aggregation: string;
     requirement: string;
-    filterType: string;
-    filterValue: string;
+    filterRole: string;
+    filterStatus: string;
   }): Observable<any> {
-    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: String, $requirement: String, $filterType: String, $filterValue: String';
-    const params = 'name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterType:$filterType, filterValue:$filterValue';
+    const paramsFormat = '$name: String!, $description: String, $isPublic: Boolean!, $aggregation: MetricAggregation, $requirement: MetricRequirement, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
+    const params = 'name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterRole:$filterRole, filterStatus:$filterStatus';
 
     return this.graphql.graphQLMutate(
       `mutation createMetric(${paramsFormat}) {
@@ -73,11 +128,11 @@ export class MetricsService {
     isPublic: boolean;
     aggregation: string;
     requirement: string;
-    filterType: string;
-    filterValue: string;
+    filterRole: string;
+    filterStatus: string;
   }): Observable<any> {
-    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: String, $requirement: String, $filterType: String, $filterValue: String';
-    const params = 'uuid:$uuid, name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, filterType:$filterType, filterValue:$filterValue';
+    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: MetricAggregation, $requirement: MetricRequirement, $status: MetricStatus, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
+    const params = 'uuid:$uuid, name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, status:$status, filterRole:$filterRole, filterStatus:$filterStatus';
 
     return this.graphql.graphQLMutate(
       `mutation updateMetric(${paramsFormat}) {
@@ -94,22 +149,33 @@ export class MetricsService {
 
   /**
    * get metrics data
+   * @param publicOnly boolean true: get metrics from library (template), false: don't get metrics from library (template)
+   * @returns metrics data
    */
-  getMetrics(publicOnly): any {
+  getMetrics(publicOnly = false): any {
     return this.graphql.graphQLFetch(
       `query metrics($publicOnly: Boolean) {
         metrics(publicOnly: $publicOnly) {
           id
+          uuid
           name
           description
           isPublic
           aggregation
           requirement
           status
-          filterType
-          filterValue
+          filterRole
+          filterStatus
           dataSource
           dataSourceId
+          assessment {
+            id
+            name
+            question {
+              id
+              name
+            }
+          }
         }
       }`,
       {
@@ -118,7 +184,8 @@ export class MetricsService {
         }
       }
     ).pipe(
-      map(response => response.data.metrics)
+      map(response => response.data.metrics),
+      tap(metrics => this._metrics$.next(metrics)),
     );
   }
 }
