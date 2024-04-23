@@ -56,12 +56,26 @@
 <ion-footer>
   <ion-toolbar class="">
     <ion-item lines="none">
-      <ion-select label="Actions" interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
-        <ion-select-option value="edit">Edit</ion-select-option>
-        <ion-select-option value="archive">Archive</ion-select-option>
-        <ion-select-option value="configure">Configure</ion-select-option>
-        <ion-select-option value="calculate">Calculate</ion-select-option>
-      </ion-select>
+      <ng-container [ngSwitch]="from"> 
+        <ion-select *ngSwitchCase="'experience'" label="Actions" interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
+          <ion-select-option value="archive">Archive</ion-select-option>
+          <ion-select-option value="configure">Configure</ion-select-option>
+          <ion-select-option value="calculate">Calculate</ion-select-option>
+        </ion-select>
+        <ion-select *ngSwitchCase="'institution'" label="Actions" interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
+          <ion-select-option value="edit">Edit</ion-select-option>
+          <ion-select-option value="archive">Archive</ion-select-option>
+          <ion-select-option value="configure">Configure</ion-select-option>
+          <ion-select-option value="calculate">Calculate</ion-select-option>
+        </ion-select>
+        <ion-select *ngSwitchDefault label="Actions" interface="popover" placeholder="Select action"
+          (ionChange)="onSelectAction($event)">
+          <ion-select-option value="edit">Edit</ion-select-option>
+          <ion-select-option value="archive">Archive</ion-select-option>
+          <ion-select-option value="configure">Configure</ion-select-option>
+          <ion-select-option value="calculate">Calculate</ion-select-option>
+        </ion-select>
+      </ng-container>
     </ion-item>
     <ion-item>
       <ion-button (click)="dismissModal()" slot="end">Close</ion-button>
