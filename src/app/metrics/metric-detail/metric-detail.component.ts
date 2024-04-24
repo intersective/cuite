@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
-import { Metric } from '../metrics.service';
+import { Metric, MetricsService } from '../metrics.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-metric-detail',
@@ -12,14 +13,20 @@ export class MetricDetailComponent {
   from: 'institution' | 'experience' | null = null;
   metric: Metric;
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController,
+    private metricsService: MetricsService,
+  ) { }
 
   dismissModal() {
     this.modalController.dismiss();
   }
 
-  async onSelectAction(event: any) {
-    const action = event.detail.value;
+  getColor(status: string) {
+    return this.metricsService.color(status);
+  }
+
+  action(action: string) {
     switch (action) {
       case 'edit':
         this.editMetric();
@@ -49,6 +56,7 @@ export class MetricDetailComponent {
       modal.present();
       modal.onDidDismiss().then(() => {
         this.dismissModal();
+        this.metricsService.getMetrics().pipe(first()).subscribe();
       });
     });
   }
