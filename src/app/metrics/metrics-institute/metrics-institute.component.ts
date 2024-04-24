@@ -25,15 +25,11 @@ export class MetricsInstituteComponent implements OnInit {
 
   fetchData() {
     // Institution metrics: publicOnly = false
-    this.metricService.getMetrics(false).subscribe(
-      (response) => {
-        this.metrics = response;
-      },
-      (error) => {
+    this.metricService.getMetrics(false).subscribe({
+      error: (error) => {
         console.error('Error fetching data:', error);
-        // Handle the error
       }
-    );
+    });
   }
 
   addNew() {

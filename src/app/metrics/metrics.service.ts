@@ -188,4 +188,26 @@ export class MetricsService {
       tap(metrics => this._metrics$.next(metrics)),
     );
   }
+
+  // utils
+  color(tag: string): string {
+    switch (tag) {
+      // status
+      case 'draft':
+        return 'medium';
+      case 'active':
+        return 'success';
+      case 'archived':
+        return 'medium';
+
+      // requirement
+      case 'required':
+        return 'danger';
+      case 'recommanded':
+        return 'warning';
+      case 'not_required':
+        return 'medium';
+    }
+    return null;
+  }
 }

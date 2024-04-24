@@ -1,3 +1,4 @@
+import { MetricsService } from '@app/metrics/metrics.service';
 import { Component, Input } from '@angular/core';
 import type { Metric } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
@@ -12,7 +13,10 @@ export class MetricComponent {
   @Input() index: number;
   @Input() from: 'experience' | 'institution' | null; // indicate metric category 
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController,
+    private metricsService: MetricsService,
+  ) { }
 
   async openModal() {
     const modal = await this.modalController.create({
@@ -30,19 +34,11 @@ export class MetricComponent {
   }
 
   getRequirementIndicatorColor(): string {
-    switch (this.data.requirement) {
-      case 'required':
-        return 'danger';
-      case 'recommanded':
-        return 'warning';
-      case 'not_required':
-        return 'medium';
-      default:
-        return 'danger';
-    }
+    return this.metricsService.color(this.data.requirement);
   }
+
   getConfigarationStatusClass() {
-    if(this.data.dataSourceId) {
+    if (this.data.dataSourceId) {
       return "danger";
     } else {
       return "NOT CONFIGURED";

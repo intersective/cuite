@@ -13,7 +13,6 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>{{ metric.name | titlecase }}</ion-card-title>
-      <ion-card-subtitle>Status: {{ metric.status | titlecase }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-list lines="none">
@@ -29,7 +28,13 @@
         </ion-item>
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <strong>Requirement:</strong> {{ metric.requirement | titlecase }}
+            <strong>Status:</strong>&nbsp;<ion-chip [color]="getColor">{{ metric.status | titlecase }}</ion-chip>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <strong>Requirement:</strong> 
+              &nbsp;<ion-chip [color]="getColor(metric.requirement)">{{ metric.requirement | titlecase }}</ion-chip>
           </ion-label>
         </ion-item>
         <ion-item>
@@ -57,27 +62,16 @@
   <ion-toolbar class="">
     <ion-item lines="none">
       <ng-container [ngSwitch]="from"> 
-        <ion-select *ngSwitchCase="'experience'" label="Actions" interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
-          <ion-select-option value="archive">Archive</ion-select-option>
-          <ion-select-option value="configure">Configure</ion-select-option>
-          <ion-select-option value="calculate">Calculate</ion-select-option>
-        </ion-select>
-        <ion-select *ngSwitchCase="'institution'" label="Actions" interface="popover" placeholder="Select action" (ionChange)="onSelectAction($event)">
-          <ion-select-option value="edit">Edit</ion-select-option>
-          <ion-select-option value="archive">Archive</ion-select-option>
-          <ion-select-option value="configure">Configure</ion-select-option>
-          <ion-select-option value="calculate">Calculate</ion-select-option>
-        </ion-select>
-        <ion-select *ngSwitchDefault label="Actions" interface="popover" placeholder="Select action"
-          (ionChange)="onSelectAction($event)">
-          <ion-select-option value="edit">Edit</ion-select-option>
-          <ion-select-option value="archive">Archive</ion-select-option>
-          <ion-select-option value="configure">Configure</ion-select-option>
-          <ion-select-option value="calculate">Calculate</ion-select-option>
-        </ion-select>
+        <ion-button *ngSwitchCase="'experience'" (click)="action('archive')">Archive</ion-button>
+        <ion-button *ngSwitchCase="'experience'" (click)="action('configure')">Configure</ion-button>
+        <ion-button *ngSwitchCase="'institution'" (click)="action('edit')">Edit</ion-button>
+        <ion-button *ngSwitchCase="'institution'" (click)="action('archive')">Archive</ion-button>
+        <ng-container *ngSwitchDefault>
+          <ion-button (click)="action('edit')">Edit</ion-button>
+          <ion-button (click)="action('archive')">Archive</ion-button>
+          <ion-button (click)="action('configure')">Configure</ion-button>
+        </ng-container>
       </ng-container>
-    </ion-item>
-    <ion-item>
       <ion-button (click)="dismissModal()" slot="end">Close</ion-button>
     </ion-item>
   </ion-toolbar>
