@@ -17,7 +17,7 @@
       </ng-container>
     </div>
     <div class="requirement" [class]="getRequirementIndicatorColor()">
-      <p class="body-2">{{ data.requirement }}</p>
+      <p class="body-2">{{ data.requirement | noSymbols }}</p>
     </div>
     <div class="description">
       <p class="black">{{ data.description }}</p>

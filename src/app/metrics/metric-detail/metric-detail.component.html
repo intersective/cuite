@@ -34,7 +34,7 @@
         <ion-item>
           <ion-label class="ion-text-wrap">
             <strong>Requirement:</strong> 
-              &nbsp;<ion-chip [color]="getColor(metric.requirement)">{{ metric.requirement | titlecase }}</ion-chip>
+              &nbsp;<ion-chip [color]="getColor(metric.requirement)">{{ metric.requirement | titlecase | noSymbols }}</ion-chip>
           </ion-label>
         </ion-item>
         <ion-item>
@@ -62,10 +62,27 @@
   <ion-toolbar class="">
     <ion-item lines="none">
       <ng-container [ngSwitch]="from"> 
-        <ion-button *ngSwitchCase="'experience'" (click)="action('archive')">Archive</ion-button>
-        <ion-button *ngSwitchCase="'experience'" (click)="action('configure')">Configure</ion-button>
-        <ion-button *ngSwitchCase="'institution'" (click)="action('edit')">Edit</ion-button>
-        <ion-button *ngSwitchCase="'institution'" (click)="action('archive')">Archive</ion-button>
+        <ng-container *ngSwitchCase="'experience'">
+          <ion-button (click)="action('archive')">Archive</ion-button>
+          <ion-button (click)="action('configure')">Configure</ion-button>
+        </ng-container>
+        <ng-container *ngSwitchCase="'institution'">
+          <ion-button (click)="action('edit')">Edit</ion-button>
+          <ion-button (click)="action('archive')">Archive</ion-button>
+        </ng-container>
+        <ng-container *ngSwitchCase="'library'">
+          <ion-item lines="none">
+            <ion-select label="Use Metric" 
+              interface="action-sheet" 
+              cancelText="Cancel"
+              (ionChange)="useMetric($event.detail.value)"
+              >
+              <ion-select-option value="required">Required</ion-select-option>
+              <ion-select-option value="recommended">Recommended</ion-select-option>
+              <ion-select-option value="not_required">Not Required</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ng-container>
         <ng-container *ngSwitchDefault>
           <ion-button (click)="action('edit')">Edit</ion-button>
           <ion-button (click)="action('archive')">Archive</ion-button>
