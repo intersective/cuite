@@ -11,7 +11,7 @@ import { MetricDetailComponent } from '../metric-detail/metric-detail.component'
 export class MetricComponent {
   @Input() data: Metric;
   @Input() index: number;
-  @Input() from: 'experience' | 'institution' | null; // indicate metric category 
+  @Input() from: 'experience' | 'institution' | 'library' | null; // indicate metric category 
 
   constructor(
     private modalController: ModalController,

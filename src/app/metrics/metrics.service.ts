@@ -51,11 +51,13 @@ export interface MetricAssessment {
   question: {
     id: number;
     name: string;
+    type: string;
   };
 };
 
 export interface Metric {
   id: number;
+  uuid: string;
   name: string;
   description: string;
   isPublic: boolean;
@@ -87,6 +89,7 @@ export class MetricsService {
           name
           question {
             id
+            type
             name
           }
         }
@@ -209,5 +212,24 @@ export class MetricsService {
         return 'medium';
     }
     return null;
+  }
+
+  useMetric(metric: Metric, requirement: 'required' | 'recommended' | 'not_required' = 'required') {
+    return this.graphql.graphQLMutate(`
+      mutation useMetric($uuid: ID!, $requirement: MetricRequirement!) {
+        useMetric(uuid: $uuid, requirement: $requirement) {
+          success
+          message
+        }
+      }`,
+      {
+        variables: {
+          requirement,
+          uuid: metric.uuid,
+        }
+      }
+    ).pipe(
+      map(response => response.data),
+    );
   }
 }

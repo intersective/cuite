@@ -10,7 +10,7 @@ import { first } from 'rxjs';
   styleUrls: ['./metric-detail.component.scss']
 })
 export class MetricDetailComponent {
-  from: 'institution' | 'experience' | null = null;
+  from: 'institution' | 'experience' | 'library' | null = null;
   metric: Metric;
 
   constructor(
@@ -56,8 +56,16 @@ export class MetricDetailComponent {
       modal.present();
       modal.onDidDismiss().then(() => {
         this.dismissModal();
-        this.metricsService.getMetrics().pipe(first()).subscribe();
       });
+    });
+  }
+
+  useMetric(requirement) {
+    this.metricsService.useMetric(this.metric, requirement).subscribe({
+      complete: () => {
+        this.dismissModal();
+        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+      }
     });
   }
 
