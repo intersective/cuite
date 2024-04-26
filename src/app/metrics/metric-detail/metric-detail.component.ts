@@ -107,5 +107,23 @@ export class MetricDetailComponent implements OnInit {
   }
 
   calculateMetric() {
+    this.metricsService.calculate([this.metric.uuid]).pipe(first()).subscribe({
+      next: res => {
+        this.toastController.create({
+          message: res?.calculateMetrics?.message || 'Metric calculated.',
+          duration: 1500,
+          position: 'top',
+        }).then(toast => toast.present());
+        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+      },
+      error: error => {
+        this.toastController.create({
+          message: error.message,
+          duration: 1500,
+          position: 'top',
+          color: 'danger',
+        }).then(toast => toast.present());
+      }
+    });
   }
 }
