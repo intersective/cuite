@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Metric, MetricsService } from '../metrics.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '@app/shared/services/notification.service';
 
@@ -31,6 +31,7 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
     private metricsService: MetricsService,
     private modalController: ModalController,
     private notificationService: NotificationService,
+    private toastController: ToastController,
   ) {
     this.metricForm = this.formBuilder.group({
       id: [''],
@@ -89,13 +90,27 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
           filterStatus: statuses,
         });
 
-        return this.metricsService.saveMetric(this.metricForm.value).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+        return this.metricsService.saveMetric(this.metricForm.value)
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
           this.dismissModal();
+          this.toastController.create({
+            message: 'Metric added successfully.',
+            duration: 1500,
+            position: 'top',
+            color: 'success',
+          }).then(toast => toast.present());
         });
       }
 
       return this.metricsService.createMetric(this.metricForm.value).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
         this.dismissModal();
+
+        this.toastController.create({
+          message: 'Metric updated successfully.',
+          duration: 1500,
+          position: 'top',
+          color: 'success',
+        }).then(toast => toast.present());
       });
     }
 

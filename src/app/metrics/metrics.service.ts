@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
-import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, first, map, Observable, shareReplay, tap } from 'rxjs';
 
 /**
  * @link https://intersective.github.io/core-graphql-api/metricaggregation.doc.html
@@ -265,7 +265,11 @@ export class MetricsService {
         calculateMetrics(uuids: $uuids) {
           success
           message
-          data
+          data {
+            uuid
+            value
+            count
+          }
         }
       }`,
       {
