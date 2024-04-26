@@ -1,22 +1,30 @@
-import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
 import { Metric, MetricsService } from '../metrics.service';
 import { first } from 'rxjs';
+import { MetricConfigureComponent } from '../metric-configure/metric-configure.component';
 
 @Component({
   selector: 'app-metric-detail',
   templateUrl: './metric-detail.component.html',
   styleUrls: ['./metric-detail.component.scss']
 })
-export class MetricDetailComponent {
+export class MetricDetailComponent implements OnInit {
   from: 'institution' | 'experience' | 'library' | null = null;
   metric: Metric;
 
   constructor(
     private modalController: ModalController,
+    private toastController: ToastController,
     private metricsService: MetricsService,
   ) { }
+
+  ngOnInit() {
+    if (this.from === 'experience') {
+      this.metricsService.getAssessments().pipe(first()).subscribe();
+    }
+  }
 
   dismissModal() {
     this.modalController.dismiss();
@@ -72,7 +80,30 @@ export class MetricDetailComponent {
   archiveMetric() {
   }
 
-  configureMetric() {
+  async configureMetric() {
+    const configureModal = await this.modalController.create({
+      component: MetricConfigureComponent,
+      componentProps: {
+        metric: this.metric,
+        from: this.from,
+      },
+    });
+
+    configureModal.present();
+    configureModal.onDidDismiss().then(async (res) => {
+      const toast = await this.toastController.create({
+        message: 'Metric configured successfully.',
+        duration: 1500,
+        position: 'top',
+        color: 'success',
+      });
+
+      await toast.present();
+
+      if (res?.data?.configureMetric?.success === true) {
+        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+      }
+    });
   }
 
   calculateMetric() {
