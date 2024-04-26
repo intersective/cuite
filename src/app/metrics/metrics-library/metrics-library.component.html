@@ -1,0 +1,13 @@
+<ion-content class="metrics-dashboard ion-padding">
+  <div class="title-container ion-justify-content-between">
+    <h1 class="heading-3 black">Library Metrics Dashboard</h1>
+  </div>
+
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-sm="6" size-md="4" *ngFor="let metric of metrics; let i = index">
+        <app-metric-card [data]="metric" [index]="i" [from]="'library'"></app-metric-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-metrics-institute',
@@ -12,12 +13,13 @@ export class MetricsInstituteComponent implements OnInit {
   metrics: Metric[] = [];
 
   constructor(
-    private metricService: MetricsService,
+    private metricsService: MetricsService,
     private modalController: ModalController,
+    private toastController: ToastController,
   ) { }
 
   ngOnInit() {
-    this.metricService.metrics$.subscribe((metrics) => {
+    this.metricsService.metrics$.subscribe((metrics) => {
       this.metrics = metrics;
     });
     this.fetchData();
@@ -25,15 +27,11 @@ export class MetricsInstituteComponent implements OnInit {
 
   fetchData() {
     // Institution metrics: publicOnly = false
-    this.metricService.getMetrics(false).subscribe(
-      (response) => {
-        this.metrics = response;
-      },
-      (error) => {
+    this.metricsService.getMetrics(false).subscribe({
+      error: (error) => {
         console.error('Error fetching data:', error);
-        // Handle the error
       }
-    );
+    });
   }
 
   addNew() {
@@ -50,8 +48,26 @@ export class MetricsInstituteComponent implements OnInit {
     });
   }
 
-  calculate() {
-    // this.metricsService.calculateMetrics();
+  calculateAll() {
+    const metricsUuids = this.metrics.map((metric) => metric.uuid);
+    this.metricsService.calculate(metricsUuids).pipe(first()).subscribe({
+      next: res => {
+        this.toastController.create({
+          message: res?.calculateMetrics?.message || 'Metric calculated.',
+          duration: 1500,
+          position: 'top',
+        }).then(toast => toast.present());
+        this.metricsService.getMetrics(false).pipe(first()).subscribe();
+      },
+      error: error => {
+        this.toastController.create({
+          message: error.message,
+          duration: 1500,
+          position: 'top',
+          color: 'danger',
+        }).then(toast => toast.present());
+      }
+    });
   }
 
   download() {

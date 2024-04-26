@@ -2,24 +2,22 @@
   <ion-card-content>
     <div class="title-status-container ion-justify-content-between">
       <div class="title">
-        <ion-icon class="title-icon" name="trending-up-outline"></ion-icon>
         <p class="card-title black">{{ data.name }}</p>
       </div>
-      <div class="status">
-        <p class="{{data.status}}">{{ data.status }}</p>
-        <!-- <ng-container *ngIf="data.status === 'draft'">
-          <ion-icon class="draft" title="Status: Draft" color="danger" name="alert-circle"></ion-icon>
-        </ng-container>
-        <ng-container *ngIf="data.status === 'active'">
-          <ion-icon class="active" title="Status: Active" color="warning" name="star"></ion-icon>
-        </ng-container>
-        <ng-container *ngIf="data.status === 'archived'">
-          <ion-icon class="archive" title="Status: Archive" name="archive"></ion-icon>
-        </ng-container> -->
-      </div>
+      <ng-container [ngSwitch]="from">
+        <div *ngSwitchCase="'experience'" class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
+          <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+        </div>
+        <div *ngSwitchCase="'institution'" class="status" [class]="data.status">
+          <p>{{ data.status | titlecase }}</p>
+        </div>
+        <div *ngSwitchDefault class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
+          <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+        </div>
+      </ng-container>
     </div>
-    <div class="requirement" [class]="getRequirementIndicatorColor(data.requirement)">
-      <p>{{ data.requirement }}</p>
+    <div class="requirement" [class]="getRequirementIndicatorColor()">
+      <p class="body-2">{{ data.requirement | noSymbols }}</p>
     </div>
     <div class="description">
       <p class="black">{{ data.description }}</p>

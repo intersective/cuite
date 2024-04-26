@@ -1,25 +1,40 @@
-import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
-import { Metric } from '../metrics.service';
+import { Metric, MetricsService } from '../metrics.service';
+import { first } from 'rxjs';
+import { MetricConfigureComponent } from '../metric-configure/metric-configure.component';
 
 @Component({
   selector: 'app-metric-detail',
   templateUrl: './metric-detail.component.html',
   styleUrls: ['./metric-detail.component.scss']
 })
-export class MetricDetailComponent {
-  from: 'institution' | 'experience' | null = null;
+export class MetricDetailComponent implements OnInit {
+  from: 'institution' | 'experience' | 'library' | null = null;
   metric: Metric;
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController,
+    private toastController: ToastController,
+    private metricsService: MetricsService,
+  ) { }
+
+  ngOnInit() {
+    if (this.from === 'experience') {
+      this.metricsService.getAssessments().pipe(first()).subscribe();
+    }
+  }
 
   dismissModal() {
     this.modalController.dismiss();
   }
 
-  async onSelectAction(event: any) {
-    const action = event.detail.value;
+  getColor(status: string) {
+    return this.metricsService.color(status);
+  }
+
+  action(action: string) {
     switch (action) {
       case 'edit':
         this.editMetric();
@@ -53,12 +68,62 @@ export class MetricDetailComponent {
     });
   }
 
+  useMetric(requirement) {
+    this.metricsService.useMetric(this.metric, requirement).subscribe({
+      complete: () => {
+        this.dismissModal();
+        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+      }
+    });
+  }
+
   archiveMetric() {
   }
 
-  configureMetric() {
+  async configureMetric() {
+    const configureModal = await this.modalController.create({
+      component: MetricConfigureComponent,
+      componentProps: {
+        metric: this.metric,
+        from: this.from,
+      },
+    });
+
+    configureModal.present();
+    configureModal.onDidDismiss().then(async (res) => {
+      const toast = await this.toastController.create({
+        message: 'Metric configured successfully.',
+        duration: 1500,
+        position: 'top',
+        color: 'success',
+      });
+
+      await toast.present();
+
+      if (res?.data?.configureMetric?.success === true) {
+        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+      }
+    });
   }
 
   calculateMetric() {
+    this.metricsService.calculate([this.metric.uuid]).pipe(first()).subscribe({
+      next: res => {
+        this.toastController.create({
+          message: res?.calculateMetrics?.message || 'Metric calculated.',
+          duration: 1500,
+          position: 'top',
+        }).then(toast => toast.present());
+        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+      },
+      error: error => {
+        this.toastController.create({
+          message: error.message,
+          duration: 1500,
+          position: 'top',
+          color: 'danger',
+        }).then(toast => toast.present());
+      }
+    });
   }
 }

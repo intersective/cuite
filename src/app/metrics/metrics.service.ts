@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloService } from '@app/shared/apollo/apollo.service';
-import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, first, map, Observable, shareReplay, tap } from 'rxjs';
 
 /**
  * @link https://intersective.github.io/core-graphql-api/metricaggregation.doc.html
@@ -48,14 +48,16 @@ export enum MetricFilterStatus {
 export interface MetricAssessment {
   id: number;
   name: string;
-  question: {
+  questions: {
     id: number;
     name: string;
-  };
+    type: string;
+  }[];
 };
 
 export interface Metric {
   id: number;
+  uuid: string;
   name: string;
   description: string;
   isPublic: boolean;
@@ -73,8 +75,11 @@ export interface Metric {
   providedIn: 'root'
 })
 export class MetricsService {
-  private _metrics$: BehaviorSubject<Metric[]> = new BehaviorSubject<Metric[]>([]);
+  private _metrics$: BehaviorSubject<Metric[]> = new BehaviorSubject([]);
   metrics$ = this._metrics$.pipe(shareReplay(1));
+  
+  private _assessments$: BehaviorSubject<MetricAssessment[]> = new BehaviorSubject([]);
+  assessments$ = this._assessments$.pipe(shareReplay(1));
 
   constructor(
     private graphql: ApolloService,
@@ -82,17 +87,26 @@ export class MetricsService {
 
   getAssessments(): Observable<any> {
     return this.graphql.graphQLFetch(
-      `query getAssessments {
+      `query getAssessments($type: AssessmentQuestionType) {
         assessments {
           name
-          question {
+          questions(type: $type) {
             id
+            type
             name
           }
         }
-      }`
+      }`,
+      {
+        variables: {
+          type: 'oneof',
+        }
+      }
     ).pipe(
-      map(response => response.data.assessments)
+      map(response => response.data.assessments.filter(assessment =>
+        assessment.questions.some(question => question.type === 'oneof')
+      )),
+      tap(assessments => this._assessments$.next(assessments)),
     );
   }
 
@@ -186,6 +200,85 @@ export class MetricsService {
     ).pipe(
       map(response => response.data.metrics),
       tap(metrics => this._metrics$.next(metrics)),
+    );
+  }
+
+  // utils
+  color(tag: string): string {
+    switch (tag) {
+      // status
+      case 'draft':
+        return 'medium';
+      case 'active':
+        return 'success';
+      case 'archived':
+        return 'medium';
+
+      // requirement
+      case 'required':
+        return 'danger';
+      case 'recommanded':
+        return 'warning';
+      case 'not_required':
+        return 'medium';
+    }
+    return null;
+  }
+
+  useMetric(metric: Metric, requirement: 'required' | 'recommended' | 'not_required' = 'required') {
+    return this.graphql.graphQLMutate(`
+      mutation useMetric($uuid: ID!, $requirement: MetricRequirement) {
+        useMetric(uuid: $uuid, requirement: $requirement) {
+          success
+          message
+        }
+      }`,
+      {
+        requirement,
+        uuid: metric.uuid,
+      }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
+  configure(uuid: string, questionId: number) {
+    return this.graphql.graphQLMutate(`
+      mutation configureMetric($uuid: ID!, $dataSourceId: Int) {
+        configureMetric(uuid: $uuid, dataSourceId: $dataSourceId) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid,
+        dataSourceId: questionId,
+      }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
+  calculate(uuids: string[]) {
+    return this.graphql.graphQLMutate(`
+      mutation calculateMetrics($uuids: [ID]) {
+        calculateMetrics(uuids: $uuids) {
+          success
+          message
+          data {
+            uuid
+            value
+            count
+          }
+        }
+      }`,
+      {
+        variables: {
+          uuids,
+        }
+      }
+    ).pipe(
+      map(response => response.data),
     );
   }
 }
