@@ -76,6 +76,7 @@
               interface="action-sheet" 
               cancelText="Cancel"
               (ionChange)="useMetric($event.detail.value)"
+              [value]="metric.requirement"
               >
               <ion-select-option value="required">Required</ion-select-option>
               <ion-select-option value="recommended">Recommended</ion-select-option>

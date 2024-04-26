@@ -9,7 +9,7 @@
           <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
         </div>
         <div *ngSwitchCase="'institution'" class="status" [class]="data.status">
-          <p>{{ data.status }}</p>
+          <p>{{ data.status | titlecase }}</p>
         </div>
         <div *ngSwitchDefault class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
           <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>

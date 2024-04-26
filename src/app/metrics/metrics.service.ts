@@ -216,16 +216,52 @@ export class MetricsService {
 
   useMetric(metric: Metric, requirement: 'required' | 'recommended' | 'not_required' = 'required') {
     return this.graphql.graphQLMutate(`
-      mutation useMetric($uuid: ID!, $requirement: MetricRequirement!) {
+      mutation useMetric($uuid: ID!, $requirement: MetricRequirement) {
         useMetric(uuid: $uuid, requirement: $requirement) {
           success
           message
         }
       }`,
       {
+        requirement,
+        uuid: metric.uuid,
+      }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
+  configure(uuid: string, dataSourceId: number) {
+    return this.graphql.graphQLMutate(`
+      mutation configureMetric($uuid: ID!, $dataSourceId: Int) {
+        configureMetric(uuid: $uuid, dataSourceId: $dataSourceId) {
+          success
+          message
+        }
+      }`,
+      {
         variables: {
-          requirement,
-          uuid: metric.uuid,
+          uuid,
+          dataSourceId,
+        }
+      }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
+  calculate(uuids: string[]) {
+    return this.graphql.graphQLMutate(`
+      mutation calculateMetrics($uuids: [ID]) {
+        calculateMetrics(uuids: $uuids) {
+          success
+          message
+          data
+        }
+      }`,
+      {
+        variables: {
+          uuids,
         }
       }
     ).pipe(
