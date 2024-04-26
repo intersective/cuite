@@ -1,1 +1,15 @@
-<p>metric-configure works!</p>
+<ion-list>
+  <form [formGroup]="configureForm">
+    <ion-item *ngFor="let assessment of assessments">
+      <ion-select formControlName="questionId" 
+        [label]="assessment.name"
+        interface="action-sheet"
+        (ionChange)="configure($event.detail.value, $event)"
+      >
+        <ion-select-option *ngFor="let question of assessment.questions | filterBy:'type':'oneof'" [value]="question.id">
+          {{ question.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </form>
+</ion-list>

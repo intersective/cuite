@@ -11,6 +11,7 @@ import { PreviewComponent } from './filestack/preview/preview.component';
 import { ActionFooterComponent } from '@app/components/action-footer/action-footer.component';
 import { OnboardingTemplateDetailComponent } from '@app/components/onboarding-template-detail/onboarding-template-detail.component';
 import { VideoConversionComponent } from '@app/components/video-conversion/video-conversion.component';
+import { FilterByPipe } from './filter-by.pipe';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { VideoConversionComponent } from '@app/components/video-conversion/video
         ActionFooterComponent,
         OnboardingTemplateDetailComponent,
         VideoConversionComponent,
+        FilterByPipe,
     ],
     imports: [
         CommonModule,
@@ -35,6 +37,7 @@ import { VideoConversionComponent } from '@app/components/video-conversion/video
         ActionFooterComponent,
         OnboardingTemplateDetailComponent,
         VideoConversionComponent,
+        FilterByPipe,
     ],
     providers: [
         StorageService,

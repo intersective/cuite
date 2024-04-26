@@ -48,11 +48,11 @@ export enum MetricFilterStatus {
 export interface MetricAssessment {
   id: number;
   name: string;
-  question: {
+  questions: {
     id: number;
     name: string;
     type: string;
-  };
+  }[];
 };
 
 export interface Metric {
@@ -75,8 +75,11 @@ export interface Metric {
   providedIn: 'root'
 })
 export class MetricsService {
-  private _metrics$: BehaviorSubject<Metric[]> = new BehaviorSubject<Metric[]>([]);
+  private _metrics$: BehaviorSubject<Metric[]> = new BehaviorSubject([]);
   metrics$ = this._metrics$.pipe(shareReplay(1));
+  
+  private _assessments$: BehaviorSubject<MetricAssessment[]> = new BehaviorSubject([]);
+  assessments$ = this._assessments$.pipe(shareReplay(1));
 
   constructor(
     private graphql: ApolloService,
@@ -84,18 +87,26 @@ export class MetricsService {
 
   getAssessments(): Observable<any> {
     return this.graphql.graphQLFetch(
-      `query getAssessments {
+      `query getAssessments($type: AssessmentQuestionType) {
         assessments {
           name
-          question {
+          questions(type: $type) {
             id
             type
             name
           }
         }
-      }`
+      }`,
+      {
+        variables: {
+          type: 'oneof',
+        }
+      }
     ).pipe(
-      map(response => response.data.assessments)
+      map(response => response.data.assessments.filter(assessment =>
+        assessment.questions.some(question => question.type === 'oneof')
+      )),
+      tap(assessments => this._assessments$.next(assessments)),
     );
   }
 
@@ -231,7 +242,7 @@ export class MetricsService {
     );
   }
 
-  configure(uuid: string, dataSourceId: number) {
+  configure(uuid: string, questionId: number) {
     return this.graphql.graphQLMutate(`
       mutation configureMetric($uuid: ID!, $dataSourceId: Int) {
         configureMetric(uuid: $uuid, dataSourceId: $dataSourceId) {
@@ -240,10 +251,8 @@ export class MetricsService {
         }
       }`,
       {
-        variables: {
-          uuid,
-          dataSourceId,
-        }
+        uuid,
+        dataSourceId: questionId,
       }
     ).pipe(
       map(response => response.data),
