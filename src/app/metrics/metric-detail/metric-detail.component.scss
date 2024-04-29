@@ -2,7 +2,7 @@
   .toolbar-content {
     display: inline-flex;
 
-    &>* {
+    & > * {
       justify-content: center;
     }
   }
@@ -19,4 +19,13 @@ ion-label {
 
 .right {
   float: right;
+}
+
+.dismisBtn-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  margin: 8px 0px;
 }
