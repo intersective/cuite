@@ -82,13 +82,14 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
 
   saveMetric() {
     if (this.metricForm.valid) {
+      const roles = Object.keys(this.filterRolesFormGroup.value).filter(key => this.filterRolesFormGroup.value[key]);
+      const statuses = Object.keys(this.filterStatusesFormGroup.value).filter(key => this.filterStatusesFormGroup.value[key]);
+      this.metricForm.patchValue({
+        filterRole: roles,
+        filterStatus: statuses,
+      });
+      
       if (this.metricForm.value.uuid) {
-        const roles = Object.keys(this.filterRolesFormGroup.value).filter(key => this.filterRolesFormGroup.value[key]);
-        const statuses = Object.keys(this.filterStatusesFormGroup.value).filter(key => this.filterStatusesFormGroup.value[key]);
-        this.metricForm.patchValue({
-          filterRole: roles,
-          filterStatus: statuses,
-        });
 
         return this.metricsService.saveMetric(this.metricForm.value)
         .pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
