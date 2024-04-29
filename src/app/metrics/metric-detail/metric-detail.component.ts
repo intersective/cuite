@@ -48,6 +48,12 @@ export class MetricDetailComponent implements OnInit {
       case 'configure':
         this.configureMetric();
         break;
+      case 'activate':
+        this.setActive();
+        break;
+      case 'setDraft':
+        this.setDraft();
+        break;
       default:
         console.log('Action not recognized');
     }
@@ -75,6 +81,12 @@ export class MetricDetailComponent implements OnInit {
         this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
       }
     });
+  }
+  
+  setDraft() {
+  }
+
+  setActive() {
   }
 
   archiveMetric() {
