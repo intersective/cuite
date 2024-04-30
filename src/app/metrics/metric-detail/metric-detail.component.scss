@@ -2,21 +2,26 @@
   .toolbar-content {
     display: inline-flex;
 
-    &>* {
+    & > * {
       justify-content: center;
     }
   }
 }
 
-ion-card {
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.metric-detail-container {
+  .title {
+    margin: 0;
+  }
+  p {
+    span {
+      font-weight: var(--font-weight-medium) !important;
+    }
+  }
 }
 
-ion-label {
-  font-size: 16px;
+ion-footer {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12) !important;
 }
-
-.right {
-  float: right;
+ion-header {
+  box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.2), 0 -3px 5px 0 rgba(0, 0, 0, 0.14), 0 -1px 10px 0 rgba(0, 0, 0, 0.12) !important;
 }

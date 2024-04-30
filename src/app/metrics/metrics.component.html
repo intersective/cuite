@@ -13,7 +13,7 @@
 
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-sm="6" size-md="4" *ngFor="let metric of metrics; let i = index">
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngFor="let metric of metrics; let i = index">
         <app-metric-card [data]="metric" [index]="i" [from]="'experience'"></app-metric-card>
       </ion-col>
     </ion-row>
