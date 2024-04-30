@@ -47,30 +47,4 @@ export class MetricsInstituteComponent implements OnInit {
       });
     });
   }
-
-  calculateAll() {
-    const metricsUuids = this.metrics.map((metric) => metric.uuid);
-    this.metricsService.calculate(metricsUuids).pipe(first()).subscribe({
-      next: res => {
-        this.toastController.create({
-          message: res?.calculateMetrics?.message || 'Metric calculated.',
-          duration: 1500,
-          position: 'top',
-        }).then(toast => toast.present());
-        this.metricsService.getMetrics(false).pipe(first()).subscribe();
-      },
-      error: error => {
-        this.toastController.create({
-          message: error.message,
-          duration: 1500,
-          position: 'top',
-          color: 'danger',
-        }).then(toast => toast.present());
-      }
-    });
-  }
-
-  download() {
-    // this.metricsService.downloadMetrics();
-  }
 }

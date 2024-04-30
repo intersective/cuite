@@ -1,6 +1,6 @@
-<ion-header>
+<ion-header mode="md">
   <ion-toolbar>
-    <ion-title>{{ metric?.name }}</ion-title>
+    <ion-title>Metric detail view</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismissModal()">
         <ion-icon name="close" slot="icon-only"></ion-icon>
@@ -9,76 +9,102 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{ metric.name | titlecase }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list lines="none">
-        <ion-item>
-          <ion-label class="ion-text-wrap">
-            <strong>Description:</strong> {{ metric.description }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label class="ion-text-wrap">
-            <strong>Aggregation:</strong> {{ metric.aggregation | titlecase }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label class="ion-text-wrap">
-            <strong>Status:</strong>&nbsp;<ion-chip [color]="getColor">{{ metric.status | titlecase }}</ion-chip>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label class="ion-text-wrap">
-            <strong>Requirement:</strong> 
-              &nbsp;<ion-chip [color]="getColor(metric.requirement)">{{ metric.requirement | titlecase | noSymbols }}</ion-chip>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label class="ion-text-wrap">
-            <strong>Filter Role:</strong> {{ metric.filterRole.join(', ') | titlecase }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label class="ion-text-wrap">
-            <strong>Filter Status:</strong> {{ metric.filterStatus.join(', ') | titlecase }}
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label class="ion-text-wrap">
-            <strong>Public:</strong> {{ metric.isPublic ? 'Yes' : 'No' }}
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+<ion-content class="ion-padding metric-detail-container">
+  <ion-grid>
+    <ion-row class="ion-justify-content-between ion-align-items-center">
+      <ion-col size="auto">
+        <h2 class="title">{{ metric.name | titlecase }}</h2>
+      </ion-col>
+      <ng-container [ngSwitch]="from">
+        <ion-col size="auto">
+          <div *ngSwitchCase="'experience'" class="config-status-chip"
+            [class]="this.metric.dataSourceId ? 'config' : 'not'">
+            <p>{{ this.metric.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+          </div>
+          <div *ngSwitchCase="'institution'" class="matric-status-chip" [class]="metric.status">
+            <p>{{ metric.status | titlecase }}</p>
+          </div>
+          <div *ngSwitchDefault class="config-status-chip" [class]="this.metric.dataSourceId ? 'config' : 'not'">
+            <p>{{ this.metric.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+          </div>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="requirement-label detail-popup" [class]="getColor(metric.requirement)">
+          <p>{{ metric.requirement | titlecase | noSymbols }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ng-container *ngIf="metric.lastRecord">
+      <ion-row>
+        <ion-col>
+          <div class="metric-record-data-container">
+            <p class="record-value ocean-100">{{ metric.lastRecord.value }}</p>
+            <p class="record-count black">{{ metric.lastRecord.count }} data point</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+    <ion-row>
+      <ion-col>
+        <p>{{ metric.description }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p><span>Filter Role:</span> {{ metric.filterRole.join(', ') | titlecase }}</p>
+      </ion-col>
+      <ion-col>
+        <p><span>Filter Status:</span> {{ metric.filterStatus.join(', ') | titlecase }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p><span>Public:</span> {{ metric.isPublic ? 'Yes' : 'No' }}</p>
+      </ion-col>
+    </ion-row>
+    <ng-container *ngIf="metric.assessment">
+      <ion-row>
+        <ion-col>
+          <p><span>Assessment Details</span></p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p><span>Assessment: </span> {{metric.assessment.name | titlecase }} </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p><span>Question: </span> {{metric.assessment.question.name | titlecase }} </p>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+
 </ion-content>
 
 
-<ion-footer>
+<ion-footer mode="md">
   <ion-toolbar class="">
     <ion-item lines="none">
-      <ng-container [ngSwitch]="from"> 
+      <ng-container [ngSwitch]="from">
         <ng-container *ngSwitchCase="'experience'">
-          <ion-button (click)="action('archive')">Archive</ion-button>
-          <ion-button (click)="action('configure')">Configure</ion-button>
-          <ion-button (click)="action('calculate')">Calculate</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('configure')">Configure</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('calculate')">Calculate</ion-button>
         </ng-container>
         <ng-container *ngSwitchCase="'institution'">
-          <ion-button (click)="action('edit')">Edit</ion-button>
-          <ion-button (click)="action('archive')">Archive</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('edit')">Edit</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('setDraft')">Convert to Draft</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('archive')">Archive</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'draft' || metric.status === 'archived'" (click)="action('activate')">Set Active</ion-button>
         </ng-container>
         <ng-container *ngSwitchCase="'library'">
           <ion-item lines="none">
-            <ion-select label="Use Metric" 
-              interface="action-sheet" 
-              cancelText="Cancel"
-              (ionChange)="useMetric($event.detail.value)"
-              [value]="metric.requirement"
-              >
+            <ion-select label="Use Metric" interface="action-sheet" cancelText="Cancel"
+              (ionChange)="useMetric($event.detail.value)" [value]="metric.requirement">
               <ion-select-option value="required">Required</ion-select-option>
               <ion-select-option value="recommended">Recommended</ion-select-option>
               <ion-select-option value="not_required">Not Required</ion-select-option>
@@ -86,12 +112,11 @@
           </ion-item>
         </ng-container>
         <ng-container *ngSwitchDefault>
-          <ion-button (click)="action('edit')">Edit</ion-button>
-          <ion-button (click)="action('archive')">Archive</ion-button>
-          <ion-button (click)="action('configure')">Configure</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('edit')">Edit</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('archive')">Archive</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('configure')">Configure</ion-button>
         </ng-container>
       </ng-container>
-      <ion-button (click)="dismissModal()" slot="end">Close</ion-button>
     </ion-item>
   </ion-toolbar>
 </ion-footer>

@@ -90,7 +90,7 @@
             <ion-select-option *ngFor="let requirement of requirements" [value]="requirement">{{requirement | noSymbols | titlecase}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="from !== 'institution'">
           <ion-select label="Status" formControlName="status" [disabled]="from !== 'experience'">
             <ion-select-option *ngFor="let status of statuses" [value]="status">{{status | titlecase }}</ion-select-option>
           </ion-select>

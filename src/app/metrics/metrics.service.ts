@@ -68,6 +68,19 @@ export interface Metric {
   filterStatus: string[];
   dataSource: string;
   dataSourceId: null | number; // Assuming dataSourceId can be a number or null
+  assessment: {
+    id: number,
+    name: string,
+    question: {
+      id: number,
+      name: string
+    }
+  }
+  lastRecord: {
+    value: number,
+    count: number,
+    created: string
+  }
   __typename: string;
 }
 
@@ -190,6 +203,11 @@ export class MetricsService {
               name
             }
           }
+          lastRecord {
+            value
+            count
+            created
+          }
         }
       }`,
       {
@@ -217,7 +235,7 @@ export class MetricsService {
       // requirement
       case 'required':
         return 'danger';
-      case 'recommanded':
+      case 'recommended':
         return 'warning';
       case 'not_required':
         return 'medium';

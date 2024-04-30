@@ -5,20 +5,26 @@
         <p class="card-title black">{{ data.name }}</p>
       </div>
       <ng-container [ngSwitch]="from">
-        <div *ngSwitchCase="'experience'" class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
+        <div *ngSwitchCase="'experience'" class="config-status-chip" [class]="this.data.dataSourceId ? 'config' : 'not'">
           <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
         </div>
-        <div *ngSwitchCase="'institution'" class="status" [class]="data.status">
+        <div *ngSwitchCase="'institution'" class="matric-status-chip" [class]="data.status">
           <p>{{ data.status | titlecase }}</p>
         </div>
-        <div *ngSwitchDefault class="config-status" [class]="this.data.dataSourceId ? 'config' : 'not'">
+        <div *ngSwitchDefault class="config-status-chip" [class]="this.data.dataSourceId ? 'config' : 'not'">
           <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
         </div>
       </ng-container>
     </div>
-    <div class="requirement" [class]="getRequirementIndicatorColor()">
+    <div class="requirement-label" [class]="getRequirementIndicatorColor()">
       <p class="body-2">{{ data.requirement | noSymbols }}</p>
     </div>
+    <ng-container *ngIf="data.lastRecord">
+      <div class="metric-record-data-container">
+        <p class="record-value ocean-100">{{ data.lastRecord.value }}</p>
+        <p class="record-count black">{{ data.lastRecord.count }} data point</p>
+      </div>
+    </ng-container>
     <div class="description">
       <p class="black">{{ data.description }}</p>
     </div>
