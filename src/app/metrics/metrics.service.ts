@@ -98,9 +98,7 @@ export class MetricsService {
         }
       }`,
       {
-        variables: {
-          type: 'oneof',
-        }
+        type: 'oneof',
       }
     ).pipe(
       map(response => response.data.assessments.filter(assessment =>
@@ -193,9 +191,7 @@ export class MetricsService {
         }
       }`,
       {
-        variables: {
-          publicOnly
-        }
+        publicOnly
       }
     ).pipe(
       map(response => response.data.metrics),
@@ -273,9 +269,7 @@ export class MetricsService {
         }
       }`,
       {
-        variables: {
-          uuids,
-        }
+        uuids,
       }
     ).pipe(
       map(response => response.data),
