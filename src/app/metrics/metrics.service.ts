@@ -68,6 +68,14 @@ export interface Metric {
   filterStatus: string[];
   dataSource: string;
   dataSourceId: null | number; // Assuming dataSourceId can be a number or null
+  assessment: {
+    id: number,
+    name: string,
+    question: {
+      id: number,
+      name: string
+    }
+  }
   lastRecord: {
     value: number,
     count: number,
