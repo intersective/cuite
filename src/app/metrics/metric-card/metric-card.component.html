@@ -46,12 +46,9 @@
       </div>
     </ng-container>
     <ng-template #elseBlock>
-      <ion-select label="Use Metric" interface="popover" fill="outline" mode="md" color="ocean"
-        (ionChange)="useMetric($event.detail.value)">
-        <ion-select-option value="required">Required</ion-select-option>
-        <ion-select-option value="recommended">Recommended</ion-select-option>
-        <ion-select-option value="not_required">Not Required</ion-select-option>
-      </ion-select>
+      <ion-button color="ocean" (click)="useMetric()">
+        Use Metric
+      </ion-button>
     </ng-template>
   </div>
 </ng-template>

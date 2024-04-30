@@ -48,8 +48,8 @@ export class MetricComponent {
     }
   }
 
-  useMetric(requirement) {
-    this.metricsService.useMetric(this.data, requirement).subscribe({
+  useMetric() {
+    this.metricsService.useMetric(this.data, 'not_required').subscribe({
       complete: () => {
         this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
         this.router.navigate(['metrics', 'institution']);
