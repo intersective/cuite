@@ -37,7 +37,7 @@
         </div>
       </ion-col>
     </ion-row>
-    <ng-container *ngIf="metric.lastRecord">
+    <ng-container *ngIf="from === 'experience' && metric.lastRecord">
       <ion-row>
         <ion-col>
           <div class="metric-record-data-container">
@@ -54,18 +54,23 @@
     </ion-row>
     <ion-row>
       <ion-col>
+        <p><span>Aggregation:</span>{{ metric.aggregation | titlecase }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
         <p><span>Filter Role:</span> {{ metric.filterRole.join(', ') | titlecase }}</p>
       </ion-col>
       <ion-col>
         <p><span>Filter Status:</span> {{ metric.filterStatus.join(', ') | titlecase }}</p>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="from === 'institution'">
       <ion-col>
         <p><span>Public:</span> {{ metric.isPublic ? 'Yes' : 'No' }}</p>
       </ion-col>
     </ion-row>
-    <ng-container *ngIf="metric.assessment">
+    <ng-container *ngIf="from === 'experience' && metric.assessment">
       <ion-row>
         <ion-col>
           <p><span>Assessment Details</span></p>
@@ -100,16 +105,6 @@
           <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('setDraft')">Convert to Draft</ion-button>
           <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('archive')">Archive</ion-button>
           <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'draft' || metric.status === 'archived'" (click)="action('activate')">Set Active</ion-button>
-        </ng-container>
-        <ng-container *ngSwitchCase="'library'">
-          <ion-item lines="none">
-            <ion-select label="Use Metric" interface="action-sheet" cancelText="Cancel"
-              (ionChange)="useMetric($event.detail.value)" [value]="metric.requirement">
-              <ion-select-option value="required">Required</ion-select-option>
-              <ion-select-option value="recommended">Recommended</ion-select-option>
-              <ion-select-option value="not_required">Not Required</ion-select-option>
-            </ion-select>
-          </ion-item>
         </ng-container>
         <ng-container *ngSwitchDefault>
           <ion-button size="default" shape="round" color="ocean" (click)="action('edit')">Edit</ion-button>

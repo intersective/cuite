@@ -73,15 +73,6 @@ export class MetricDetailComponent implements OnInit {
       });
     });
   }
-
-  useMetric(requirement) {
-    this.metricsService.useMetric(this.metric, requirement).subscribe({
-      complete: () => {
-        this.dismissModal();
-        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
-      }
-    });
-  }
   
   setDraft() {
   }
