@@ -1664,4 +1664,18 @@ export class DemoService {
     }).pipe(delay(1000));
   }
 
+  get myInfo() {
+    return {
+      uuid: 'uuid-1',
+      name: 'test user',
+      firstName: 'test',
+      lastName: 'user',
+      email: 'test@abcd.com',
+      image: 'https://swapnil2597.github.io/assets/img/profile.png',
+      role: 'participent',
+      contactNumber: '',
+      userHash: '1234#asdwdd'
+    }
+  }
+
 }
