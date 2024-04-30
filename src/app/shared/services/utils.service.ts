@@ -417,8 +417,8 @@ export class UtilsService {
   XLSXFormat() {
   }
   
-  generateXLSX(data) {
-    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);
+  generateXLSX(data, header = null) {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, { header });
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Metrics');
 
