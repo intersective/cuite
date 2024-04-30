@@ -90,7 +90,6 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
       });
       
       if (this.metricForm.value.uuid) {
-
         return this.metricsService.saveMetric(this.metricForm.value)
         .pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
           this.dismissModal();
