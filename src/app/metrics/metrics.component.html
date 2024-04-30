@@ -5,9 +5,6 @@
       <ion-button color="ocean" size="default" (click)="calculateAll()">
         Calculate All
       </ion-button>
-      <ion-button color="ocean" size="default" (click)="addNew()">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
       <ion-button color="ocean" size="default" (click)="download()">
         <ion-icon slot="icon-only" name="download-outline"></ion-icon>
       </ion-button>
@@ -16,7 +13,7 @@
 
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-sm="6" size-md="4" *ngFor="let metric of metrics; let i = index">
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngFor="let metric of metrics; let i = index">
         <app-metric-card [data]="metric" [index]="i" [from]="'experience'"></app-metric-card>
       </ion-col>
     </ion-row>
