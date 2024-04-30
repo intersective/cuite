@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx';
 import { Injectable, Inject } from '@angular/core';
 import * as _ from 'lodash';
 import { DOCUMENT } from '@angular/common';
@@ -413,4 +414,15 @@ export class UtilsService {
     });
   }
 
+  XLSXFormat() {
+  }
+  
+  generateXLSX(data) {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Metrics');
+
+    // save to file
+    return XLSX.writeFile(workbook, 'metrics_report.xlsx', { bookType: 'xlsx', type: 'string' });
+  }
 }
