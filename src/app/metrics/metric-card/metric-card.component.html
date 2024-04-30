@@ -1,4 +1,5 @@
-<ion-card class="metrics-card" (click)="openModal()" [button]="true">
+<ion-card class="metrics-card" (click)="from === 'library' ? '' : openModal()"
+  [button]="from === 'library' ? false : true">
   <ng-container [ngSwitch]="from">
     <ion-card-content *ngSwitchCase="'experience'">
       <ng-container *ngTemplateOutlet="experienceCardContent"></ng-container>
@@ -24,6 +25,27 @@
   </div>
   <div class="description space">
     <p class="black">{{ data.description }}</p>
+  </div>
+  <div class="description space">
+    <p class="black"><span>Aggregation: </span>{{ data.aggregation }}</p>
+  </div>
+  <div class="description space">
+    <p class="black"><span>Filter Role: </span>{{ data.filterRole.join(', ') | titlecase }}</p>
+  </div>
+  <div class="description space">
+    <p class="black"><span>Filter Status: </span>{{ data.filterStatus.join(', ') | titlecase }}</p>
+  </div>
+  <div class="useBtn-container">
+    <ng-container *ngIf="data.status; else elseBlock">
+      <div class="matric-status-chip active">
+        <p>Used</p>
+      </div>
+    </ng-container>
+    <ng-template #elseBlock>
+      <ion-button color="ocean" (click)="useMetric()">
+        Use Metric
+      </ion-button>
+    </ng-template>
   </div>
 </ng-template>
 

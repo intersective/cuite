@@ -1,8 +1,10 @@
 import { MetricsService } from '@app/metrics/metrics.service';
 import { Component, Input } from '@angular/core';
+import { first } from 'rxjs';
 import type { Metric } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
 import { MetricDetailComponent } from '../metric-detail/metric-detail.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-metric-card',
   templateUrl: './metric-card.component.html',
@@ -16,6 +18,7 @@ export class MetricComponent {
   constructor(
     private modalController: ModalController,
     private metricsService: MetricsService,
+    private router: Router,
   ) { }
 
   async openModal() {
@@ -43,5 +46,14 @@ export class MetricComponent {
     } else {
       return "NOT CONFIGURED";
     }
+  }
+
+  useMetric() {
+    this.metricsService.useMetric(this.data, 'not_required').subscribe({
+      complete: () => {
+        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+        this.router.navigate(['metrics', 'institution']);
+      }
+    });
   }
 }
