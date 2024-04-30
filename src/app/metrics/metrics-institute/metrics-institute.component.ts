@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
-import { first } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-metrics-institute',
@@ -16,6 +16,7 @@ export class MetricsInstituteComponent implements OnInit {
     private metricsService: MetricsService,
     private modalController: ModalController,
     private toastController: ToastController,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -46,5 +47,9 @@ export class MetricsInstituteComponent implements OnInit {
         this.fetchData();
       });
     });
+  }
+
+  goToLibrary() {
+    this.router.navigate(['/metrics/library']);
   }
 }

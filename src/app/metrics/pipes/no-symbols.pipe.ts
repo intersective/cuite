@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NoSymbolsPipe implements PipeTransform {
   transform(value: string): string {
-    return value.replace(/[\W_]+/g, ' ');
+    return value?.replace(/[\W_]+/g, ' ');
   }
 }

@@ -2,7 +2,7 @@
   <div class="title-container ion-justify-content-between">
     <h1 class="heading-3 black">Metrics Dashboard</h1>
     <div>
-      <ion-button color="ocean" size="default" (click)="addNew()">
+      <ion-button color="ocean" size="default" id="add-new" trigger-action="click">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </div>
@@ -10,9 +10,18 @@
 
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-sm="6" size-md="4" *ngFor="let metric of metrics; let i = index">
+      <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngFor="let metric of metrics; let i = index">
         <app-metric-card [data]="metric" [index]="i" [from]="'institution'"></app-metric-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-popover trigger="add-new" triggerAction="click" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-content>
+      <ion-item [button]="true" [detail]="false" (click)="addNew()">Create New Metric</ion-item>
+      <ion-item [button]="true" [detail]="false" (click)="goToLibrary()">Get From Library</ion-item>
+    </ion-content>
+  </ng-template>
+</ion-popover>

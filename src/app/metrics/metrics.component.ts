@@ -3,6 +3,7 @@ import { MetricsService, type Metric } from '@app/metrics/metrics.service';
 import { Subject, takeUntil, map, first } from 'rxjs';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { ModalController, ToastController } from '@ionic/angular';
+import { UtilsService } from '@app/shared/services/utils.service';
 
 @Component({
   selector: 'app-metrics',
@@ -17,6 +18,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
     private metricsService: MetricsService,
     private modalController: ModalController,
     private toastController: ToastController,
+    private utils: UtilsService,
   ) {}
 
   ngOnDestroy() {
@@ -80,7 +82,40 @@ export class MetricsComponent implements OnInit, OnDestroy {
   }
   
   download() {
-    // this.metricsService.downloadMetrics();
+    this.metricsService.download().pipe(first()).subscribe({
+      next: response => {
+        const metrics = response.metrics;
+
+        const headers = [
+          "Metric ID", "UUID", "Metric Name", "Description", "Public Status",
+          "Aggregation Method", "Requirement Level", "Current Status", "Roles", "Status Filters",
+          "Data Source Type", "Data Source ID", "Assessment ID", "Assessment Name",
+          "Question ID", "Question Name"
+        ];
+
+        const dataRows = metrics.map(metric => ([
+          metric.id,
+          metric.uuid,
+          metric.name,
+          metric.description,
+          metric.isPublic ? "Yes" : "No",
+          metric.aggregation,
+          metric.requirement,
+          metric.status,
+          metric.filterRole.join(';'), // Combine arrays into a single string
+          metric.filterStatus.join(';'),
+          metric.dataSource,
+          metric.dataSourceId,
+          metric.assessment ? metric.assessment.id : "",
+          metric.assessment ? metric.assessment.name : "",
+          metric.assessment && metric.assessment.question ? metric.assessment.question.id : "",
+          metric.assessment && metric.assessment.question ? metric.assessment.question.name : ""
+        ]));
+
+        const formattedData = [headers, ...dataRows];
+        return this.utils.generateXLSX(formattedData);
+      }
+    });
   }
 }
 
