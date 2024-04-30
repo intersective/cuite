@@ -111,9 +111,7 @@ export class MetricsService {
         }
       }`,
       {
-        variables: {
-          type: 'oneof',
-        }
+        type: 'oneof',
       }
     ).pipe(
       map(response => response.data.assessments.filter(assessment =>
@@ -211,9 +209,7 @@ export class MetricsService {
         }
       }`,
       {
-        variables: {
-          publicOnly
-        }
+        publicOnly
       }
     ).pipe(
       map(response => response.data.metrics),
@@ -291,10 +287,44 @@ export class MetricsService {
         }
       }`,
       {
-        variables: {
-          uuids,
-        }
+        uuids,
       }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
+  download() {
+    return this.graphql.graphQLFetch(
+      `query metrics($publicOnly: Boolean) {
+        metrics(publicOnly: $publicOnly) {
+          id
+          uuid
+          name
+          description
+          isPublic
+          aggregation
+          requirement
+          status
+          filterRole
+          filterStatus
+          dataSource
+          dataSourceId
+          assessment {
+            id
+            name
+            question {
+              id
+              name
+            }
+          }
+          records {
+            value
+            count
+            created
+          }
+        }
+      }`
     ).pipe(
       map(response => response.data),
     );

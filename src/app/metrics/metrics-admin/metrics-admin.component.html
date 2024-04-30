@@ -20,19 +20,29 @@
     </ion-row>
     <ion-row class="table-header">
       <ion-col size="1" class="metric-col">No</ion-col>
-      <ion-col size="3" class="metric-col">Name</ion-col>
+      <ion-col size="2" class="metric-col">UUID</ion-col>
+      <ion-col size="2" class="metric-col">Name</ion-col>
       <ion-col size="2" class="metric-col">Description</ion-col>
-      <ion-col size="2" class="metric-col">Status</ion-col>
-      <ion-col size="2" class="metric-col">Requirement</ion-col>
-      <ion-col size="2" class="metric-col">Action</ion-col>
+      <ion-col size="1" class="metric-col">Aggregation</ion-col>
+      <ion-col size="1" class="metric-col">isPublic</ion-col>
+      <ion-col size="1" class="metric-col">Status</ion-col>
+      <ion-col size="1" class="metric-col">Requirement</ion-col>
+      <ion-col size="1" class="metric-col">Action</ion-col>
     </ion-row>
     <ion-row *ngFor="let metric of metrics; let i = index" class="table-row">
       <ion-col size="1" class="metric-col">{{ i+1 }}</ion-col>
-      <ion-col size="3" class="metric-col">{{metric.name}}</ion-col>
+      <ion-col size="2" class="metric-col">{{metric.uuid}}</ion-col>
+      <ion-col size="2" class="metric-col">{{metric.name}}</ion-col>
       <ion-col size="2" class="metric-description">{{metric.description}}</ion-col>
-      <ion-col size="2" class="metric-col">{{metric.status}}</ion-col>
-      <ion-col size="2" class="metric-col">{{metric.requirement | noSymbols}}</ion-col>
-      <ion-col size="2" class="metric-col">
+      <ion-col size="1" class="metric-col">{{metric.aggregation}}</ion-col>
+      <ion-col size="1" class="metric-col">{{metric.isPublic}}</ion-col>
+      <ion-col size="1" class="metric-col">
+        {{metric.status}} {{metric.status === 'active' ? '🟢' : '🔴'}}
+        {{metric.filterRole.join(', ')}}
+        {{metric.filterStatus.join(', ')}}
+      </ion-col>
+      <ion-col size="1" class="metric-col">{{metric.requirement | noSymbols}}</ion-col>
+      <ion-col size="1" class="metric-col">
         <ion-button (click)="editMetric(metric)" color="primary" size="small">Edit</ion-button>
         <ion-button (click)="deleteMetric(metric)" color="primary" size="small">Delete</ion-button>
       </ion-col>
