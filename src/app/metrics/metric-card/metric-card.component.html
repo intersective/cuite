@@ -29,16 +29,12 @@
   <div class="description space">
     <p class="black"><span>Aggregation: </span>{{ data.aggregation }}</p>
   </div>
-  <ion-grid class="ion-no-padding">
-    <ion-row class="ion-justify-content-between ion-align-items-center ion-no-padding">
-      <ion-col class="ion-no-padding">
-        <p class="black"><span>Filter Role: </span>{{ data.filterRole.join(', ') | titlecase }}</p>
-      </ion-col>
-      <ion-col class="ion-no-padding">
-        <p class="black"><span>Filter Status: </span>{{ data.filterStatus.join(', ') | titlecase }}</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="description space">
+    <p class="black"><span>Filter Role: </span>{{ data.filterRole.join(', ') | titlecase }}</p>
+  </div>
+  <div class="description space">
+    <p class="black"><span>Filter Status: </span>{{ data.filterStatus.join(', ') | titlecase }}</p>
+  </div>
   <div class="useBtn-container">
     <ng-container *ngIf="data.status; else elseBlock">
       <div class="matric-status-chip active">
@@ -46,12 +42,9 @@
       </div>
     </ng-container>
     <ng-template #elseBlock>
-      <ion-select label="Use Metric" interface="popover" fill="outline" mode="md" color="ocean"
-        (ionChange)="useMetric($event.detail.value)">
-        <ion-select-option value="required">Required</ion-select-option>
-        <ion-select-option value="recommended">Recommended</ion-select-option>
-        <ion-select-option value="not_required">Not Required</ion-select-option>
-      </ion-select>
+      <ion-button color="ocean" (click)="useMetric()">
+        Use Metric
+      </ion-button>
     </ng-template>
   </div>
 </ng-template>
