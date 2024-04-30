@@ -293,4 +293,40 @@ export class MetricsService {
       map(response => response.data),
     );
   }
+
+  download() {
+    return this.graphql.graphQLFetch(
+      `query metrics($publicOnly: Boolean) {
+        metrics(publicOnly: $publicOnly) {
+          id
+          uuid
+          name
+          description
+          isPublic
+          aggregation
+          requirement
+          status
+          filterRole
+          filterStatus
+          dataSource
+          dataSourceId
+          assessment {
+            id
+            name
+            question {
+              id
+              name
+            }
+          }
+          records {
+            value
+            count
+            created
+          }
+        }
+      }`
+    ).pipe(
+      map(response => response.data),
+    );
+  }
 }
