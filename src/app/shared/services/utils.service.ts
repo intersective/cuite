@@ -415,114 +415,14 @@ export class UtilsService {
   }
 
   XLSXFormat() {
-    
   }
   
-  generateXLSX() {
-    let reportOverview: (string | number)[][] = [
-      [
-        'Experiences Overview',
-        'Value',
-        'Description'
-      ]
-    ];
-    this.stats.forEach(s => reportOverview.push([
-      s.label,
-      s.value,
-      s.description.replace(/(<([^>]+)>)/ig, '')
-    ]));
-    reportOverview = [
-      ...reportOverview,
-      ...[
-        [],
-        ['filters'],
-        [
-          'Status',
-          'Type',
-          'Sort by',
-          'Sort order',
-        ],
-        [
-          this.status,
-          this.type,
-          this.sortBy,
-          this.sortDesc ? 'Desc' : 'Asc'
-        ],
-        [],
-        ['filter by tags'],
-        ['selected']
-      ],
-      ...this.tags.filter(t => t.active).map(a => [a.name]),
-    ];
-
-    const reportPerExp: (string | number)[][] = [
-      [
-        'Experience',
-        'Type',
-        'Description',
-        'Tags list',
-        'Status',
-        'no. of issues',
-        'Enrolment - Total',
-        'Enrolment - Author',
-        'Enrolment - Coordinator',
-        'Enrolment - Expert',
-        'Enrolment - Learner',
-        'Registered - Total',
-        'Registered - Author',
-        'Registered - Coordinator',
-        'Registered - Expert',
-        'Registered - Learner',
-        'On-track',
-        'Recent activity - Learner',
-        'Recent activity - Expert',
-        'Feedback Loops - Completed',
-        'Feedback Loops - Started',
-        'Feedback Quality Score',
-      ]
-    ];
-    [...this.experiences, ...this.remainingExperiences].forEach(exp => {
-      let totalEnrolled = 0;
-      let totalRegistered = 0;
-      for (const c of ['admin', 'coordinator', 'mentor', 'participant']) {
-        totalEnrolled += exp.statistics.enrolledUserCount[c];
-        totalRegistered += exp.statistics.registeredUserCount[c];
-      }
-      reportPerExp.push([
-        exp.name,
-        exp.type,
-        exp.description ? exp.description.replace(/(<([^>]+)>)/ig, '') : '',
-        exp.tags.join(','),
-        exp.status,
-        exp.todoItemCount,
-        totalEnrolled,
-        exp.statistics.enrolledUserCount.admin,
-        exp.statistics.enrolledUserCount.coordinator,
-        exp.statistics.enrolledUserCount.mentor,
-        exp.statistics.enrolledUserCount.participant,
-        totalRegistered,
-        exp.statistics.registeredUserCount.admin,
-        exp.statistics.registeredUserCount.coordinator,
-        exp.statistics.registeredUserCount.mentor,
-        exp.statistics.registeredUserCount.participant,
-        exp.statistics.onTrackRatio < 0 ? '-' : exp.statistics.onTrackRatio.toFixed(2),
-        exp.statistics.activeUserCount.participant,
-        exp.statistics.activeUserCount.mentor,
-        exp.statistics.feedbackLoopCompleted,
-        exp.statistics.feedbackLoopStarted,
-        exp.statistics.reviewRatingAvg > 1 ? 1 : exp.statistics.reviewRatingAvg,
-      ]);
-    });
-
-    // generate worksheet
-    const ws1: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(reportOverview);
-    const ws2: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(reportPerExp);
-    // generate workbook and add the worksheet
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws1, 'Overview');
-    XLSX.utils.book_append_sheet(wb, ws2, 'Reporting per experience');
+  generateXLSX(data) {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Metrics');
 
     // save to file
-    XLSX.writeFile(wb, 'report.xlsx');
+    return XLSX.writeFile(workbook, 'metrics_report.xlsx', { bookType: 'xlsx', type: 'string' });
   }
 }
