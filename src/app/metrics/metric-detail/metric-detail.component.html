@@ -97,7 +97,9 @@
         </ng-container>
         <ng-container *ngSwitchCase="'institution'">
           <ion-button size="default" shape="round" color="ocean" (click)="action('edit')">Edit</ion-button>
-          <ion-button size="default" shape="round" color="ocean" (click)="action('archive')">Archive</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('setDraft')">Convert to Draft</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('archive')">Archive</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'draft' || metric.status === 'archived'" (click)="action('activate')">Set Active</ion-button>
         </ng-container>
         <ng-container *ngSwitchCase="'library'">
           <ion-item lines="none">
