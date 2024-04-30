@@ -80,40 +80,74 @@ export class MetricsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  private _formatDate(timestamp) {
+    const date = new Date(parseInt(timestamp));
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  }
+
+  private _processRecords(records) {
+    const dateMap = {}; // Key: date, Value: { valueSum, countSum }
+    records.forEach(record => {
+      const date = this._formatDate(record.created);
+      if (!dateMap[date]) {
+        dateMap[date] = { value: 0, count: 0 };
+      }
+      dateMap[date].value += parseInt(record.value);
+      dateMap[date].count += record.count;
+    });
+    return dateMap;
+  }
   
+  private _ucFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   download() {
     this.metricsService.download().pipe(first()).subscribe({
       next: response => {
         const metrics = response.metrics;
 
-        const headers = [
-          "Metric ID", "UUID", "Metric Name", "Description", "Public Status",
-          "Aggregation Method", "Requirement Level", "Current Status", "Roles", "Status Filters",
-          "Data Source Type", "Data Source ID", "Assessment ID", "Assessment Name",
-          "Question ID", "Question Name"
-        ];
+        const allDates = new Set();
+        metrics.forEach(metric => {
+          metric.records.forEach(record => {
+            const date = this._formatDate(record.created);
+            allDates.add(date);
+          });
+        });
 
-        const dataRows = metrics.map(metric => ([
-          metric.id,
-          metric.uuid,
-          metric.name,
-          metric.description,
-          metric.isPublic ? "Yes" : "No",
-          metric.aggregation,
-          metric.requirement,
-          metric.status,
-          metric.filterRole.join(';'), // Combine arrays into a single string
-          metric.filterStatus.join(';'),
-          metric.dataSource,
-          metric.dataSourceId,
-          metric.assessment ? metric.assessment.id : "",
-          metric.assessment ? metric.assessment.name : "",
-          metric.assessment && metric.assessment.question ? metric.assessment.question.id : "",
-          metric.assessment && metric.assessment.question ? metric.assessment.question.name : ""
-        ]));
+        const sortedDates = Array.from(allDates).sort((a: any, b: any) => {
+          return new Date(a).getTime() - new Date(b).getTime();
+        });
+        const headers = ['Metric', 'Description', 'Agg Method'];
+        sortedDates.forEach(date => {
+          headers.push(`${date}\nValue`);
+          headers.push(`${date}\nCount`);
+        });
 
-        const formattedData = [headers, ...dataRows];
-        return this.utils.generateXLSX(formattedData);
+        const output = metrics.map(metric => {
+          const row = {
+            'Metric': metric.name,
+            'Description': metric.description,
+            'Agg Method': this._ucFirst(metric.aggregation),
+          };
+
+          // Initialize each date with default values
+          sortedDates.forEach(date => {
+            row[`${date}\nValue`] = 0;
+            row[`${date}\nCount`] = 0;
+          });
+
+          // group data by date
+          metric.records.forEach(record => {
+            const date = this._formatDate(record.created);
+            row[`${date}\nValue`] += parseInt(record.value);
+            row[`${date}\nCount`] += record.count;
+          });
+
+          return row;
+        });
+
+        return this.utils.generateXLSX(output, headers);
       }
     });
   }
