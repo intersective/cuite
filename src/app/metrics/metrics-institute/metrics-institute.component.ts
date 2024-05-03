@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subject, distinctUntilChanged, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-metrics-institute',
@@ -11,13 +12,21 @@ import { Router } from '@angular/router';
 })
 export class MetricsInstituteComponent implements OnInit {
   metrics: Metric[] = [];
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
     private metricsService: MetricsService,
     private modalController: ModalController,
-    private toastController: ToastController,
     private router: Router,
-  ) { }
+  ) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      filter((event: NavigationEnd) => event.urlAfterRedirects === '/metrics/institution'),
+      takeUntil(this.unsubscribe$),
+    ).subscribe((e) => {
+      this.fetchData();
+    });
+  }
 
   ngOnInit() {
     this.metricsService.metrics$.subscribe((metrics) => {
