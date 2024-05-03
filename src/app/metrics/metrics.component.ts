@@ -85,23 +85,13 @@ export class MetricsComponent implements OnInit, OnDestroy {
     const date = new Date(parseInt(timestamp));
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   }
-
-  private _processRecords(records) {
-    const dateMap = {}; // Key: date, Value: { valueSum, countSum }
-    records.forEach(record => {
-      const date = this._formatDate(record.created);
-      if (!dateMap[date]) {
-        dateMap[date] = { value: 0, count: 0 };
-      }
-      dateMap[date].value += parseInt(record.value);
-      dateMap[date].count += record.count;
-    });
-    return dateMap;
-  }
   
+  // Capitalize the first letter of a string
   private _ucFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+  // generate a CSV file for download
   download() {
     this.metricsService.download().pipe(first()).subscribe({
       next: response => {

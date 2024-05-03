@@ -146,8 +146,26 @@ export class MetricsService {
     );
   }
 
+  // set metric status only (draft, active, archived)
+  setStatus(uuid: string, status: MetricStatus) {
+    return this.graphql.graphQLMutate(`
+      mutation updateMetric($uuid: ID!, $status: MetricStatus) {
+        updateMetric(uuid: $uuid, status: $status) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid,
+        status
+      }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
   saveMetric(variables: {
-    uuid: number;
+    uuid: string;
     name: string;
     description: string;
     isPublic: boolean;
