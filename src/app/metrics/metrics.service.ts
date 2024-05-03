@@ -90,7 +90,7 @@ export interface Metric {
 export class MetricsService {
   private _metrics$: BehaviorSubject<Metric[]> = new BehaviorSubject([]);
   metrics$ = this._metrics$.pipe(shareReplay(1));
-  
+
   private _assessments$: BehaviorSubject<MetricAssessment[]> = new BehaviorSubject([]);
   assessments$ = this._assessments$.pipe(shareReplay(1));
 
@@ -317,25 +317,10 @@ export class MetricsService {
       `query metrics($publicOnly: Boolean) {
         metrics(publicOnly: $publicOnly) {
           id
-          uuid
           name
           description
-          isPublic
           aggregation
-          requirement
-          status
-          filterRole
-          filterStatus
-          dataSource
           dataSourceId
-          assessment {
-            id
-            name
-            question {
-              id
-              name
-            }
-          }
           records {
             value
             count

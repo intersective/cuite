@@ -95,7 +95,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
   download() {
     this.metricsService.download().pipe(first()).subscribe({
       next: response => {
-        const metrics = response.metrics;
+        const metrics = response.metrics.filter(m => m.dataSourceId);
 
         const allDates = new Set();
         metrics.forEach(metric => {
@@ -123,14 +123,14 @@ export class MetricsComponent implements OnInit, OnDestroy {
 
           // Initialize each date with default values
           sortedDates.forEach(date => {
-            row[`${date}\nValue`] = 0;
-            row[`${date}\nCount`] = 0;
+            row[`${date}\nValue`] = '';
+            row[`${date}\nCount`] = '';
           });
 
           // group data by date
           metric.records.forEach(record => {
             const date = this._formatDate(record.created);
-            row[`${date}\nValue`] += parseInt(record.value);
+            row[`${date}\nValue`] += record.value;
             row[`${date}\nCount`] += record.count;
           });
 
