@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
-import { Subject, takeUntil, map, first } from 'rxjs';
+import { Subject, takeUntil, map, first, filter, distinctUntilChanged } from 'rxjs';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
-import { ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { UtilsService } from '@app/shared/services/utils.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-metrics',
@@ -19,7 +20,18 @@ export class MetricsComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private toastController: ToastController,
     private utils: UtilsService,
-  ) {}
+    private router: Router,
+    private loadingCtrl: LoadingController,
+  ) {
+    // subscribe to router and once this route activated will trigger fetch
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      filter((event: NavigationEnd) => event.urlAfterRedirects === '/metrics/institute'),
+      takeUntil(this.unsubscribe$),
+    ).subscribe((e) => {
+      this.fetchData();
+    });
+  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -37,10 +49,20 @@ export class MetricsComponent implements OnInit, OnDestroy {
     });
   }
 
-  fetchData() {
+  async fetchData() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Loading metrics...',
+    });
+
+    await loading.present();
+      
     this.metricsService.getMetrics(false).pipe(takeUntil(this.unsubscribe$)).subscribe({
       error: (error) => {
         console.error('Error fetching data:', error);
+        loading.dismiss();
+      },
+      complete: () => {
+        loading.dismiss();
       }
     });
   }
