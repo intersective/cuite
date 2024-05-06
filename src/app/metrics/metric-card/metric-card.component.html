@@ -55,14 +55,16 @@
     <div class="title">
       <p class="card-title black">{{ data.name }}</p>
     </div>
+  </div>
+  <div class="chip-container">
+    <div class="requirement-label" [class]="getRequirementIndicatorColor()">
+      <p class="body-2">{{ data.requirement | noSymbols }}</p>
+    </div>
     <div class="matric-status-chip" [class]="data.status">
       <p>{{ data.status | titlecase }}</p>
     </div>
   </div>
-  <div class="requirement-label" [class]="getRequirementIndicatorColor()">
-    <p class="body-2">{{ data.requirement | noSymbols }}</p>
-  </div>
-  <div class="description">
+  <div class="description short">
     <p class="black">{{ data.description }}</p>
   </div>
 </ng-template>
@@ -73,12 +75,14 @@
     <div class="title">
       <p class="card-title black">{{ data.name }}</p>
     </div>
+  </div>
+  <div class="chip-container">
+    <div class="requirement-label" [class]="getRequirementIndicatorColor()">
+      <p class="body-2">{{ data.requirement | noSymbols }}</p>
+    </div>
     <div class="config-status-chip" [class]="this.data.dataSourceId ? 'config' : 'not'">
       <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
     </div>
-  </div>
-  <div class="requirement-label" [class]="getRequirementIndicatorColor()">
-    <p class="body-2">{{ data.requirement | noSymbols }}</p>
   </div>
   <ng-container *ngIf="data.lastRecord">
     <div class="metric-record-data-container">
@@ -86,7 +90,7 @@
       <p class="record-count black">{{ data.lastRecord.count }} data points</p>
     </div>
   </ng-container>
-  <div class="description">
+  <div class="description short">
     <p class="black">{{ data.description }}</p>
   </div>
 </ng-template>

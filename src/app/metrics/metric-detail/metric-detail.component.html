@@ -103,7 +103,7 @@
           <ion-button size="default" shape="round" color="ocean" (click)="action('calculate')">Calculate</ion-button>
         </ng-container>
         <ng-container *ngSwitchCase="'institution'">
-          <ion-button size="default" shape="round" color="ocean" (click)="action('edit')">Edit</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status !== 'active'" (click)="action('edit')">Edit</ion-button>
           <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'draft' || metric.status === 'archived'" (click)="action('activate')">Set Active</ion-button>
           <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('draft')">Convert to Draft</ion-button>
           <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active' || metric.status === 'draft'" (click)="action('archive')">Archive</ion-button>
