@@ -447,8 +447,26 @@ quill-view {
   Custom labels / chips for metrics
 *********************************/
 
+.chip-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+  &.left {
+    justify-content: left;
+  }
+  &.right {
+    justify-content: right;
+  }
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
 .matric-status-chip,
-.config-status-chip {
+.config-status-chip,
+.requirement-chip {
   padding: 5px 14px;
   border-radius: 50px;
   width: fit-content;
@@ -459,7 +477,7 @@ quill-view {
 }
 
 .matric-status-chip {
-  &.draft,
+  &.inactive,
   &.archived {
     background-color: var(--practera-grey-25-tint);
     p {
@@ -475,6 +493,7 @@ quill-view {
 }
 
 .config-status-chip {
+  margin-left: 12px;
   &.config {
     background-color: var(--practera-green-25);
     p {
@@ -485,6 +504,27 @@ quill-view {
     background-color: var(--practera-red-25);
     p {
       color: var(--practera-red-100);
+    }
+  }
+}
+
+.requirement-chip {
+  &.danger {
+    background-color: var(--practera-red-25);
+    p {
+      color: var(--practera-red-100);
+    }
+  }
+  &.warning {
+    background-color: var(--practera-yellow-25);
+    p {
+      color: var(--practera-yellow-100);
+    }
+  }
+  &.medium {
+    background-color: var(--practera-grey-25);
+    p {
+      color: var(--practera-grey-100);
     }
   }
 }
@@ -501,6 +541,7 @@ quill-view {
   &.detail-popup {
     margin-left: -35px;
     padding: 10px 10px 10px 35px;
+    width: 100%;
   }
 
   &.danger {

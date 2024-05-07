@@ -80,6 +80,11 @@
     <div class="requirement-label" [class]="getRequirementIndicatorColor()">
       <p class="body-2">{{ data.requirement | noSymbols }}</p>
     </div>
+  </div>
+  <div class="chip-container left">
+    <div class="matric-status-chip" [class]="data.status">
+      <p>{{ data.status | titlecase }}</p>
+    </div>
     <div class="config-status-chip" [class]="this.data.dataSourceId ? 'config' : 'not'">
       <p>{{ this.data.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
     </div>
