@@ -68,6 +68,7 @@ export interface Metric {
   filterStatus: string[];
   dataSource: string;
   dataSourceId: null | number; // Assuming dataSourceId can be a number or null
+  maxValue: number
   assessment: {
     id: number,
     name: string,
@@ -211,6 +212,7 @@ export class MetricsService {
           filterStatus
           dataSource
           dataSourceId
+          maxValue
           assessment {
             id
             name

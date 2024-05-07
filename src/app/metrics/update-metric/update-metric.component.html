@@ -54,7 +54,7 @@
             <ion-label>Filter by Role</ion-label>
           </ion-list-header>
           <ion-item *ngFor="let role of filterRoles">
-            <ion-label>{{ role | titlecase }}</ion-label>
+            <ion-label>{{ getFilterRoleDisplay(role) }}</ion-label>
             <ion-checkbox slot="start" 
               [name]="role"
               [formControlName]="role"
