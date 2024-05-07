@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
-import { Metric, MetricsService } from '../metrics.service';
+import { Metric, MetricStatus, MetricsService } from '../metrics.service';
 import { first } from 'rxjs';
 import { MetricConfigureComponent } from '../metric-configure/metric-configure.component';
 
@@ -43,16 +43,16 @@ export class MetricDetailComponent implements OnInit {
         this.calculateMetric();
         break;
       case 'archive':
-        this.archiveMetric();
+        this.setStatus('archived');
         break;
       case 'configure':
         this.configureMetric();
         break;
       case 'activate':
-        this.setActive();
+        this.setStatus('active');
         break;
-      case 'setDraft':
-        this.setDraft();
+      case 'draft':
+        this.setStatus('draft');
         break;
       default:
         console.log('Action not recognized');
@@ -73,14 +73,26 @@ export class MetricDetailComponent implements OnInit {
       });
     });
   }
-  
-  setDraft() {
+
+  fetchMetrics() {
+    this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe({
+      next: (metrics: Metric[]) => {
+        this.metric = metrics.find(metric => metric.uuid === this.metric.uuid);
+      },
+    });
   }
 
-  setActive() {
-  }
-
-  archiveMetric() {
+  setStatus(status: string) {
+    this.metricsService.setStatus(this.metric.uuid, MetricStatus[status]).pipe(first()).subscribe({
+      next: res => {
+        this.toastController.create({
+          message: res?.updateMetric?.message || `Metric set to ${status}.`,
+          duration: 1500,
+          position: 'top',
+        }).then(toast => toast.present());
+        this.fetchMetrics();
+      }
+    });
   }
 
   async configureMetric() {
@@ -104,7 +116,7 @@ export class MetricDetailComponent implements OnInit {
       await toast.present();
 
       if (res?.data?.configureMetric?.success === true) {
-        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+        this.fetchMetrics();
       }
     });
   }
@@ -117,7 +129,7 @@ export class MetricDetailComponent implements OnInit {
           duration: 1500,
           position: 'top',
         }).then(toast => toast.present());
-        this.metricsService.getMetrics(this.from === 'library').pipe(first()).subscribe();
+        this.fetchMetrics();
       },
       error: error => {
         this.toastController.create({

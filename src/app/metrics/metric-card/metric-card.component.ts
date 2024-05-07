@@ -56,4 +56,8 @@ export class MetricComponent {
       }
     });
   }
+
+  calculatePercentage() {
+    return Math.round((this.data.lastRecord.value / this.data.maxValue) * 100) + '%';
+  }
 }
