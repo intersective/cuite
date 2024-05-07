@@ -40,10 +40,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchData();
-    this.metricsService.metrics$.pipe(
-      map((metrics) => metrics.filter((metric) => metric.status === 'active')),
-      takeUntil(this.unsubscribe$)
-    )
+    this.metricsService.metrics$
     .subscribe((metrics) => {
       this.metrics = metrics;
     });
@@ -82,7 +79,13 @@ export class MetricsComponent implements OnInit, OnDestroy {
   }
 
   calculateAll() {
-    const metricsUuids = this.metrics.map((metric) => metric.uuid);
+    // should only calculate “active” “configured” metrics.
+    // can't calculate not configured onces.
+    const metricsUuids = this.metrics.map((metric) => {
+      if(metric.status === 'active' && metric.dataSourceId) {
+        return metric.uuid;
+      }
+    });
     this.metricsService.calculate(metricsUuids).pipe(first()).subscribe({
       next: res => {
         this.toastController.create({

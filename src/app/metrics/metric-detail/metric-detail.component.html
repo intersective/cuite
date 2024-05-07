@@ -15,27 +15,35 @@
       <ion-col size="auto">
         <h2 class="title">{{ metric.name | titlecase }}</h2>
       </ion-col>
-      <ng-container [ngSwitch]="from">
-        <ion-col size="auto">
-          <div *ngSwitchCase="'experience'" class="config-status-chip"
-            [class]="this.metric.dataSourceId ? 'config' : 'not'">
-            <p>{{ this.metric.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
-          </div>
-          <div *ngSwitchCase="'institution'" class="matric-status-chip" [class]="metric.status">
-            <p>{{ metric.status | titlecase }}</p>
-          </div>
-          <div *ngSwitchDefault class="config-status-chip" [class]="this.metric.dataSourceId ? 'config' : 'not'">
-            <p>{{ this.metric.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
-          </div>
-        </ion-col>
-      </ng-container>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col size="6">
         <div class="requirement-label detail-popup" [class]="getColor(metric.requirement)">
           <p>{{ metric.requirement | titlecase | noSymbols }}</p>
         </div>
       </ion-col>
+      <ng-container [ngSwitch]="from">
+        <ion-col size="6" class="chip-container right">
+          <ng-container *ngSwitchCase="'experience'">
+            <div class="matric-status-chip" [class]="metric.status">
+              <p>{{ metric.status | titlecase }}</p>
+            </div>
+            <div class="config-status-chip" [class]="this.metric.dataSourceId ? 'config' : 'not'">
+              <p>{{ this.metric.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'institution'">
+            <div class="matric-status-chip" [class]="metric.status">
+              <p>{{ metric.status | titlecase }}</p>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <div class="matric-status-chip" [class]="metric.status">
+              <p>{{ metric.status | titlecase }}</p>
+            </div>
+          </ng-container>
+        </ion-col>
+      </ng-container>
     </ion-row>
     <ng-container *ngIf="from === 'experience' && metric.lastRecord">
       <ion-row>
@@ -99,14 +107,22 @@
     <ion-item lines="none">
       <ng-container [ngSwitch]="from">
         <ng-container *ngSwitchCase="'experience'">
-          <ion-button size="default" shape="round" color="ocean" (click)="action('configure')">Configure</ion-button>
-          <ion-button size="default" shape="round" color="ocean" (click)="action('calculate')">Calculate</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="!this.metric.dataSourceId"
+            (click)="action('configure')">Configure</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="this.metric.dataSourceId"
+            (click)="action('calculate')">Calculate</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="this.metric.dataSourceId"
+            (click)="action('unlink')">Unlink</ion-button>
         </ng-container>
         <ng-container *ngSwitchCase="'institution'">
-          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status !== 'active'" (click)="action('edit')">Edit</ion-button>
-          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'draft' || metric.status === 'archived'" (click)="action('activate')">Set Active</ion-button>
-          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active'" (click)="action('draft')">Convert to Draft</ion-button>
-          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status === 'active' || metric.status === 'draft'" (click)="action('archive')">Archive</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status !== 'active'"
+            (click)="action('edit')">Edit</ion-button>
+          <ion-button size="default" shape="round" color="ocean"
+            *ngIf="metric.status === 'active' || metric.status === 'inactive'"
+            (click)="action('archive')">Archive</ion-button>
+            <ion-button size="default" shape="round" color="ocean"
+            *ngIf="metric.status === 'archived'"
+            (click)="action('unarchive')">unarchive</ion-button>
         </ng-container>
         <ng-container *ngSwitchDefault>
           <ion-button size="default" shape="round" color="ocean" (click)="action('edit')">Edit</ion-button>

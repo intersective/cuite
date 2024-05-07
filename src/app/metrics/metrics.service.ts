@@ -334,4 +334,20 @@ export class MetricsService {
       map(response => response.data),
     );
   }
+
+  unLinkMetric(uuid: string) {
+    return this.graphql.graphQLMutate(`
+    mutation unlinkMetric($uuid: ID!) {
+      unlinkMetric(uuid: $uuid) {
+        success
+        message
+      }
+    }`,
+      {
+        uuid
+      }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
 }
