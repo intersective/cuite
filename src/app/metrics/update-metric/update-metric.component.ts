@@ -17,7 +17,7 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
   filterStatusesFormGroup: FormGroup;
   unsubscribe$ = new Subject<void>();
 
-  filterRoles = ['participant', 'mentor', 'admin', 'coordinator'];
+  filterRoles = ['participant', 'mentor'];
   filterStatuses = ['active', 'dropped'];
   statuses = ['draft', 'active', 'archived'];
   requirements = ['required', 'recommended', 'not_required'];
@@ -123,5 +123,16 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
 
   async dismissModal() {
     await this.modalController.dismiss();
+  }
+
+  getFilterRoleDisplay(role) {
+    switch (role) {
+      case 'participant':
+        return 'Learner';
+      case 'mentor':
+        return 'Expert';
+      default:
+        return 'Learner';
+    }
   }
 }
