@@ -48,11 +48,11 @@ export class MetricDetailComponent implements OnInit {
       case 'configure':
         this.configureMetric();
         break;
-      case 'activate':
+      case 'unarchive':
         this.setStatus('active');
         break;
-      case 'draft':
-        this.setStatus('draft');
+      case 'unlink':
+        this.unLinkMetric();
         break;
       default:
         console.log('Action not recognized');
@@ -130,6 +130,28 @@ export class MetricDetailComponent implements OnInit {
           position: 'top',
         }).then(toast => toast.present());
         this.fetchMetrics();
+      },
+      error: error => {
+        this.toastController.create({
+          message: error.message,
+          duration: 1500,
+          position: 'top',
+          color: 'danger',
+        }).then(toast => toast.present());
+      }
+    });
+  }
+
+  unLinkMetric() {
+    this.metricsService.unLinkMetric(this.metric.uuid).pipe(first()).subscribe({
+      next: res => {
+        this.toastController.create({
+          message: 'Metric unlinked from the assessment.',
+          duration: 1500,
+          position: 'top',
+        }).then(toast => toast.present());
+        this.fetchMetrics();
+        this.dismissModal();
       },
       error: error => {
         this.toastController.create({
