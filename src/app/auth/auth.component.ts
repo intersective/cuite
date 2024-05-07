@@ -55,6 +55,12 @@ export class AuthComponent implements OnInit {
       case 'overview-only':
         this.router.navigate(['overview-only']);
         break;
+      case 'institution-metrics':
+        this.router.navigate(['metrics', 'institution']);
+        break;
+      case 'experience-metrics':
+        this.router.navigate(['metrics', 'experience']);
+        break;
       default:
         this.router.navigate(['dashboard']);
         break;
