@@ -120,7 +120,6 @@ export class OverviewComponent implements OnInit {
       // get all types
       this._getAllTypes();
       this.filterAndOrder();
-      this._refreshLiveExpStats();
       this.loadingExps = false;
     });
   }
@@ -171,14 +170,18 @@ export class OverviewComponent implements OnInit {
       this.remainingExperiences = [];
       if (this.experiences.length > maxExp) {
         this.remainingExperiences = this.experiences.splice(maxExp, this.experiences.length - maxExp);
+        this._refreshLiveExpStats(this.experiences);
       }
     } else {
       // load 7 more experiences
       if (this.remainingExperiences.length <= maxExp) {
         this.experiences = [...this.experiences, ...this.remainingExperiences];
+        this._refreshLiveExpStats(this.remainingExperiences);
         this.remainingExperiences = [];
       } else {
-        this.experiences = [...this.experiences, ...this.remainingExperiences.splice(0, maxExp)];
+        let newExperiences = this.remainingExperiences.splice(0, maxExp);
+        this._refreshLiveExpStats(newExperiences);
+        this.experiences = [...this.experiences, ...newExperiences];
       }
     }
   }
@@ -372,8 +375,8 @@ export class OverviewComponent implements OnInit {
     this.stats[3].value = `${ Math.round(reviewRatingAvg * 100) }%`;
   }
 
-  private _refreshLiveExpStats() {
-    const uuids = this.experiencesRaw.filter(e => ['live', 'draft'].includes(e.status)).map(e => e.uuid);
+  private _refreshLiveExpStats(experiences) {
+    const uuids = experiences.filter(e => ['live', 'draft'].includes(e.status)).map(e => e.uuid);
     this.service.getExpsStatistics(uuids).subscribe(res => {
       if (!res) {
         return;
