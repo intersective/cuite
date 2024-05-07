@@ -1,5 +1,6 @@
 .metrics-card {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 15px 0px;
+  min-height: 160px;
   .title-status-container {
     display: flex;
     align-items: center;
@@ -25,6 +26,14 @@
       }
     }
   }
+  .chip-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
   p {
     span {
       font-weight: var(--font-weight-bold) !important;
@@ -33,6 +42,14 @@
   .description {
     &.space {
       margin: 8px 0px;
+    }
+    &.short {
+      p {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
     }
   }
   .useBtn-container {

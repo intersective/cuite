@@ -68,6 +68,7 @@ export interface Metric {
   filterStatus: string[];
   dataSource: string;
   dataSourceId: null | number; // Assuming dataSourceId can be a number or null
+  maxValue: number
   assessment: {
     id: number,
     name: string,
@@ -146,8 +147,26 @@ export class MetricsService {
     );
   }
 
+  // set metric status only (draft, active, archived)
+  setStatus(uuid: string, status: MetricStatus) {
+    return this.graphql.graphQLMutate(`
+      mutation updateMetric($uuid: ID!, $status: MetricStatus) {
+        updateMetric(uuid: $uuid, status: $status) {
+          success
+          message
+        }
+      }`,
+      {
+        uuid,
+        status
+      }
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
   saveMetric(variables: {
-    uuid: number;
+    uuid: string;
     name: string;
     description: string;
     isPublic: boolean;
@@ -193,6 +212,7 @@ export class MetricsService {
           filterStatus
           dataSource
           dataSourceId
+          maxValue
           assessment {
             id
             name

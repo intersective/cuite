@@ -413,9 +413,6 @@ export class UtilsService {
       return new Delta().insert(plaintext);
     });
   }
-
-  XLSXFormat() {
-  }
   
   generateXLSX(data, header = null) {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, { header });
