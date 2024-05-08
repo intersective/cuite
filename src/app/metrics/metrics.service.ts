@@ -103,6 +103,7 @@ export class MetricsService {
     return this.graphql.graphQLFetch(
       `query getAssessments($type: AssessmentQuestionType) {
         assessments {
+          id
           name
           questions(type: $type) {
             id
