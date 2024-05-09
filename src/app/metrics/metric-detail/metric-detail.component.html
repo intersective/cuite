@@ -17,24 +17,24 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="6">
-        <div class="requirement-label detail-popup" [class]="getColor(metric.requirement)">
-          <p>{{ metric.requirement | titlecase | noSymbols }}</p>
+      <ion-col size="1">
+        <div class="requirement-chip" [class]="metric.requirement">
+          <ion-icon [name]="getStatusIcon(metric.requirement)"></ion-icon>
         </div>
       </ion-col>
       <ng-container [ngSwitch]="from">
-        <ion-col size="6" class="chip-container right">
+        <ion-col size="3" class="chip-container left">
           <ng-container *ngSwitchCase="'experience'">
             <div class="matric-status-chip" [class]="metric.status">
-              <p>{{ metric.status | titlecase }}</p>
+              <ion-icon [name]="getStatusIcon(metric.status)"></ion-icon>
             </div>
-            <div class="config-status-chip" [class]="this.metric.dataSourceId ? 'config' : 'not'">
-              <p>{{ this.metric.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+            <div class="config-status-chip" [class]="metric.dataSourceId ? 'configured' : 'not_configured'">
+              <ion-icon [name]="getStatusIcon(metric.dataSourceId ? 'configured' : 'not_configured')"></ion-icon>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'institution'">
             <div class="matric-status-chip" [class]="metric.status">
-              <p>{{ metric.status | titlecase }}</p>
+              <ion-icon [name]="getStatusIcon(metric.status)"></ion-icon>
             </div>
           </ng-container>
           <ng-container *ngSwitchDefault>
@@ -49,7 +49,7 @@
       <ion-row>
         <ion-col>
           <div class="metric-record-data-container">
-            <p class="record-value ocean-100">{{ metric.lastRecord.value }}</p>
+            <p class="record-value ocean-100">{{ metric.lastRecord.value }} / {{ metric.maxValue }} <span>{{ calculatePercentage() }}</span></p>
             <p class="record-count black">{{ metric.lastRecord.count }} data point</p>
           </div>
         </ion-col>
