@@ -27,7 +27,7 @@ export class MetricComponent {
     const modal = await this.modalController.create({
       component: MetricDetailComponent,
       backdropDismiss: false,
-      cssClass: 'metric-detail-view-popup',
+      cssClass: 'non-fullscreen-modal',
       animated: true,
       componentProps: {
         metric: this.data,

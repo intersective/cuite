@@ -36,7 +36,7 @@
     <p class="black"><span>Filter Status: </span>{{ data.filterStatus.join(', ') | titlecase }}</p>
   </div>
   <div class="useBtn-container">
-    <ng-container *ngIf="data.status; else elseBlock">
+    <ng-container *ngIf="data.requirement; else elseBlock">
       <div class="matric-status-chip active">
         <p>Used</p>
       </div>

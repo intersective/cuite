@@ -1,15 +1,28 @@
-<ion-list>
-  <form [formGroup]="configureForm">
-    <ion-item *ngFor="let assessment of assessments">
-      <ion-select formControlName="questionId" 
-        [label]="assessment.name"
-        interface="action-sheet"
-        (ionChange)="configure($event.detail.value, $event)"
-      >
-        <ion-select-option *ngFor="let question of assessment.questions | filterBy:'type':'oneof'" [value]="question.id">
-          {{ question.name }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-  </form>
-</ion-list>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Configure Metric</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="configureForm">
+      <ion-item>
+        <ion-select label="Choose Assessment" formControlName="assessmentId" [interfaceOptions]="assessmentSelection">
+          <ion-select-option *ngFor="let assessment of assessments" [value]="assessment.id">
+            {{ assessment.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+  
+      <ion-item *ngIf="questions.length > 0">
+        <ion-select formControlName="questionId" label="Choose Question" [interfaceOptions]="questionSelection"
+          (ionChange)="configure($event.detail.value, $event)" [disabled]="isQuestionDisabled">
+          <ion-select-option *ngFor="let question of questions" [value]="question.id">
+            {{ question.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </form>
+  </ion-list>
+</ion-content>

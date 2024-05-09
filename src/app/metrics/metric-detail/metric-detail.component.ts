@@ -98,6 +98,7 @@ export class MetricDetailComponent implements OnInit {
   async configureMetric() {
     const configureModal = await this.modalController.create({
       component: MetricConfigureComponent,
+      cssClass: 'non-fullscreen-modal',
       componentProps: {
         metric: this.metric,
         from: this.from,
@@ -106,16 +107,15 @@ export class MetricDetailComponent implements OnInit {
 
     configureModal.present();
     configureModal.onDidDismiss().then(async (res) => {
-      const toast = await this.toastController.create({
-        message: 'Metric configured successfully.',
-        duration: 1500,
-        position: 'top',
-        color: 'success',
-      });
+      if (res?.data?.data?.configureMetric?.success === true) {
+        const toast = await this.toastController.create({
+          message: 'Metric configured successfully.',
+          duration: 1500,
+          position: 'top',
+          color: 'success',
+        });
+        await toast.present();
 
-      await toast.present();
-
-      if (res?.data?.configureMetric?.success === true) {
         this.fetchMetrics();
       }
     });
