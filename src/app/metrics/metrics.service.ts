@@ -27,6 +27,16 @@ export enum MetricStatus {
   draft = 'draft',
   active = 'active',
   archived = 'archived',
+  inactive = 'inactive',
+};
+
+/**
+ * @link https://intersective.github.io/core-graphql-api/metricstatusinput.doc.html
+ * @description MetricStatusInput is used for metric to set status only (active or archived)
+ */
+export enum MetricStatusInput {
+  active = 'active',
+  archived = 'archived',
 };
 
 // @link https://intersective.github.io/core-graphql-api/metricfilterrole.doc.html
@@ -149,9 +159,9 @@ export class MetricsService {
   }
 
   // set metric status only (draft, active, archived)
-  setStatus(uuid: string, status: MetricStatus) {
+  setStatus(uuid: string, status: MetricStatusInput) {
     return this.graphql.graphQLMutate(`
-      mutation updateMetric($uuid: ID!, $status: MetricStatus) {
+      mutation updateMetric($uuid: ID!, $status: MetricStatusInput) {
         updateMetric(uuid: $uuid, status: $status) {
           success
           message
@@ -176,7 +186,7 @@ export class MetricsService {
     filterRole: string;
     filterStatus: string;
   }): Observable<any> {
-    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: MetricAggregation, $requirement: MetricRequirement, $status: MetricStatus, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
+    const paramsFormat = '$uuid: ID!, $name: String, $description: String, $isPublic: Boolean, $aggregation: MetricAggregation, $requirement: MetricRequirement, $status: MetricStatusInput, $filterRole: [MetricFilterRole], $filterStatus: [MetricFilterStatus]';
     const params = 'uuid:$uuid, name:$name, description:$description, isPublic:$isPublic, aggregation:$aggregation, requirement:$requirement, status:$status, filterRole:$filterRole, filterStatus:$filterStatus';
 
     return this.graphql.graphQLMutate(
@@ -242,7 +252,8 @@ export class MetricsService {
   color(tag: string): string {
     switch (tag) {
       // status
-      case 'draft':
+      case 'draft': // gracefully fail to 'draft' status
+      case 'inactive':
         return 'medium';
       case 'active':
         return 'success';
