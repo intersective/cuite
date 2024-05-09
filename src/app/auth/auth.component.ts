@@ -26,7 +26,7 @@ export class AuthComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get('token');
     // auth token login
     if (token) {
-      return this.authService.directLogin(token).subscribe(
+      return this.authService.autologin({ authToken: token }).subscribe(
         res => this._handleRedirection(),
         err => this._error()
       );
@@ -35,7 +35,7 @@ export class AuthComponent implements OnInit {
     const jwt = this.route.snapshot.paramMap.get('jwt');
     // jwt login
     if (jwt) {
-      return this.authService.jwtLogin(jwt).subscribe(
+      return this.authService.autologin({ apikey: jwt }).subscribe(
         res => this._handleRedirection(),
         err => this._error()
       );
