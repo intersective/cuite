@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
-import { Metric, MetricStatus, MetricsService } from '../metrics.service';
+import { Metric, MetricStatusInput, MetricsService } from '../metrics.service';
 import { first } from 'rxjs';
 import { MetricConfigureComponent } from '../metric-configure/metric-configure.component';
 
@@ -83,7 +83,7 @@ export class MetricDetailComponent implements OnInit {
   }
 
   setStatus(status: string) {
-    this.metricsService.setStatus(this.metric.uuid, MetricStatus[status]).pipe(first()).subscribe({
+    this.metricsService.setStatus(this.metric.uuid, MetricStatusInput[status]).pipe(first()).subscribe({
       next: res => {
         this.toastController.create({
           message: res?.updateMetric?.message || `Metric set to ${status}.`,
