@@ -1,14 +1,18 @@
-// app-metric {
-//   height: 200px; /* Adjust this value as needed */
-//   display: flex;
-//   flex-direction: column;
-// }
-
 .metrics-dashboard {
-  .title-container {
+  .title-button-container {
     display: flex;
+
     h1 {
       margin-bottom: 0;
+    }
+    .title-container {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      flex-direction: row;
+      ion-button {
+        margin-left: 20px;
+      }
     }
   }
 }

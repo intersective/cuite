@@ -1,6 +1,11 @@
 <ion-content class="metrics-dashboard ion-padding">
-  <div class="title-container ion-justify-content-between">
-    <h1 class="heading-4 black">Metrics Dashboard</h1>
+  <div class="title-button-container ion-justify-content-between">
+    <div class="title-container ion-justify-content-between">
+      <h1 class="heading-3 black">Metrics Dashboard</h1>
+      <ion-button fill="clear" color="ocean" (click)="openStatusInfoPopover($event)">
+        <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+      </ion-button>
+    </div>
     <div>
       <ion-button color="ocean" size="default" (click)="calculateAll()">
         Calculate All
