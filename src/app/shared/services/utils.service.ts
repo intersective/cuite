@@ -446,4 +446,8 @@ export class UtilsService {
     }
   }
 
+  calculateMetricValuePercentage(lastRecordValue, maxValue) {
+    return Math.round((lastRecordValue / maxValue) * 100) + '%';
+  }
+
 }
