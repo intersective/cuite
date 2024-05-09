@@ -98,6 +98,7 @@ export class MetricDetailComponent implements OnInit {
   async configureMetric() {
     const configureModal = await this.modalController.create({
       component: MetricConfigureComponent,
+      cssClass: 'non-fullscreen-modal',
       componentProps: {
         metric: this.metric,
         from: this.from,
