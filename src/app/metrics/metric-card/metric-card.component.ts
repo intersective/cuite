@@ -60,7 +60,7 @@ export class MetricComponent {
   }
 
   calculatePercentage() {
-    return Math.round((this.data.lastRecord.value / this.data.maxValue) * 100) + '%';
+    return this.utill.calculateMetricValuePercentage(this.data.lastRecord.value, this.data.maxValue);
   }
 
   getStatusIcon(status: string): string {
