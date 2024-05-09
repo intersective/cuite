@@ -5,6 +5,7 @@ import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { PopupService } from '@shared/popup/popup.service';
 
 @Component({
   selector: 'app-metrics',
@@ -22,6 +23,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
     private utils: UtilsService,
     private router: Router,
     private loadingCtrl: LoadingController,
+    private popupService: PopupService
   ) {
     // subscribe to router and once this route activated will trigger fetch
     this.router.events.pipe(
@@ -40,10 +42,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchData();
-    this.metricsService.metrics$.pipe(
-      map((metrics) => metrics.filter((metric) => metric.status === 'active')),
-      takeUntil(this.unsubscribe$)
-    )
+    this.metricsService.metrics$
     .subscribe((metrics) => {
       this.metrics = metrics;
     });
@@ -82,7 +81,13 @@ export class MetricsComponent implements OnInit, OnDestroy {
   }
 
   calculateAll() {
-    const metricsUuids = this.metrics.map((metric) => metric.uuid);
+    // should only calculate “active” “configured” metrics.
+    // can't calculate not configured onces.
+    const metricsUuids = this.metrics.map((metric) => {
+      if(metric.status === 'active' && metric.dataSourceId) {
+        return metric.uuid;
+      }
+    });
     this.metricsService.calculate(metricsUuids).pipe(first()).subscribe({
       next: res => {
         this.toastController.create({
@@ -162,6 +167,10 @@ export class MetricsComponent implements OnInit, OnDestroy {
         return this.utils.generateXLSX(output, headers);
       }
     });
+  }
+
+  async openStatusInfoPopover(e: Event) {
+    this.popupService.openMetricStatusInfoPopover(e);
   }
 }
 

@@ -48,11 +48,11 @@ export class MetricDetailComponent implements OnInit {
       case 'configure':
         this.configureMetric();
         break;
-      case 'activate':
+      case 'unarchive':
         this.setStatus('active');
         break;
-      case 'draft':
-        this.setStatus('draft');
+      case 'unlink':
+        this.unLinkMetric();
         break;
       default:
         console.log('Action not recognized');
@@ -98,6 +98,7 @@ export class MetricDetailComponent implements OnInit {
   async configureMetric() {
     const configureModal = await this.modalController.create({
       component: MetricConfigureComponent,
+      cssClass: 'non-fullscreen-modal',
       componentProps: {
         metric: this.metric,
         from: this.from,
@@ -106,16 +107,15 @@ export class MetricDetailComponent implements OnInit {
 
     configureModal.present();
     configureModal.onDidDismiss().then(async (res) => {
-      const toast = await this.toastController.create({
-        message: 'Metric configured successfully.',
-        duration: 1500,
-        position: 'top',
-        color: 'success',
-      });
+      if (res?.data?.data?.configureMetric?.success === true) {
+        const toast = await this.toastController.create({
+          message: 'Metric configured successfully.',
+          duration: 1500,
+          position: 'top',
+          color: 'success',
+        });
+        await toast.present();
 
-      await toast.present();
-
-      if (res?.data?.configureMetric?.success === true) {
         this.fetchMetrics();
       }
     });
@@ -130,6 +130,28 @@ export class MetricDetailComponent implements OnInit {
           position: 'top',
         }).then(toast => toast.present());
         this.fetchMetrics();
+      },
+      error: error => {
+        this.toastController.create({
+          message: error.message,
+          duration: 1500,
+          position: 'top',
+          color: 'danger',
+        }).then(toast => toast.present());
+      }
+    });
+  }
+
+  unLinkMetric() {
+    this.metricsService.unLinkMetric(this.metric.uuid).pipe(first()).subscribe({
+      next: res => {
+        this.toastController.create({
+          message: 'Metric unlinked from the assessment.',
+          duration: 1500,
+          position: 'top',
+        }).then(toast => toast.present());
+        this.fetchMetrics();
+        this.dismissModal();
       },
       error: error => {
         this.toastController.create({

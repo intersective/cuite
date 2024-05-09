@@ -103,6 +103,7 @@ export class MetricsService {
     return this.graphql.graphQLFetch(
       `query getAssessments($type: AssessmentQuestionType) {
         assessments {
+          id
           name
           questions(type: $type) {
             id
@@ -330,6 +331,22 @@ export class MetricsService {
           }
         }
       }`
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
+  unLinkMetric(uuid: string) {
+    return this.graphql.graphQLMutate(`
+    mutation unlinkMetric($uuid: ID!) {
+      unlinkMetric(uuid: $uuid) {
+        success
+        message
+      }
+    }`,
+      {
+        uuid
+      }
     ).pipe(
       map(response => response.data),
     );

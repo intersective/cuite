@@ -5,6 +5,7 @@ import type { Metric } from '../metrics.service';
 import { ModalController } from '@ionic/angular';
 import { MetricDetailComponent } from '../metric-detail/metric-detail.component';
 import { Router } from '@angular/router';
+import { UtilsService } from '@services/utils.service';
 @Component({
   selector: 'app-metric-card',
   templateUrl: './metric-card.component.html',
@@ -19,13 +20,14 @@ export class MetricComponent {
     private modalController: ModalController,
     private metricsService: MetricsService,
     private router: Router,
+    private utill: UtilsService
   ) { }
 
   async openModal() {
     const modal = await this.modalController.create({
       component: MetricDetailComponent,
       backdropDismiss: false,
-      cssClass: 'metric-detail-view-popup',
+      cssClass: 'non-fullscreen-modal',
       animated: true,
       componentProps: {
         metric: this.data,
@@ -60,4 +62,9 @@ export class MetricComponent {
   calculatePercentage() {
     return Math.round((this.data.lastRecord.value / this.data.maxValue) * 100) + '%';
   }
+
+  getStatusIcon(status: string): string {
+    return this.utill.getMetricStatusIcon(status);
+  }
+
 }

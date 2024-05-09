@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Metric, MetricAssessment, MetricsService } from '../metrics.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { first } from 'rxjs';
 
 @Component({
   selector: 'app-metric-configure',
@@ -11,8 +10,21 @@ import { first } from 'rxjs';
 })
 export class MetricConfigureComponent implements OnInit {
   assessments: MetricAssessment[] = [];
-  metric: Metric; // pass from modal controller
+  normalisedAsmt = {};
+  questions: any[] = [];
+
+  @Input() metric: Metric; // pass from modal controller
   configureForm: FormGroup;
+  assessmentSelection = {
+    header: 'Assessments',
+    subHeader: 'Select an assessment',
+  };
+  questionSelection = {
+    header: 'Questions',
+    subHeader: 'Select a question to link',
+    message: 'Choose one',
+  };
+  isQuestionDisabled = true;
 
   constructor(
     private metricsService: MetricsService,
@@ -20,15 +32,36 @@ export class MetricConfigureComponent implements OnInit {
     private modalController: ModalController,
   ) {
     this.configureForm = this.fb.group({
-      questionId: [''],
+      assessmentId: [''],
+      questionId: ['', { disabled: true }],
     });
   }
 
   ngOnInit() {
     this.metricsService.assessments$.subscribe((assessments) => {
       this.assessments = assessments;
+      this.normalisedAsmt = assessments.reduce((acc, curr) => {
+        acc[curr.id] = curr;
+        return acc;
+      }, {});
     });
-    this.configureForm.get('questionId').setValue(this.metric.dataSourceId);
+    if (this.metric.dataSourceId) {
+      this.configureForm.get('questionId').setValue(this.metric.dataSourceId);
+    }
+
+    this.configureForm.get('assessmentId').valueChanges.subscribe(assessmentId => {
+      const questionControl = this.configureForm.get('questionId');
+      
+      if (!assessmentId) {
+        questionControl.setValue('');
+        questionControl.disable();
+        this.isQuestionDisabled = true;
+      } else {
+        this.questions = this.normalisedAsmt[assessmentId].questions;
+        questionControl.enable();
+        this.isQuestionDisabled = false;
+      }
+    });
   }
 
   configure(questionId, event) {
