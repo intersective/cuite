@@ -21,7 +21,6 @@ export class MetricsInstituteComponent implements OnInit {
     private modalController: ModalController,
     private router: Router,
     private popupService: PopupService,
-    private toastController: ToastController,
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
