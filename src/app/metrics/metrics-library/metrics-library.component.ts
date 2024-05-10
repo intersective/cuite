@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService } from '../metrics.service';
 import { Subject, first } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { PopupService } from '@app/shared/popup/popup.service';
 
 @Component({
   selector: 'app-metrics-library',
@@ -13,11 +13,12 @@ import { LoadingController } from '@ionic/angular';
 export class MetricsLibraryComponent implements OnInit, OnDestroy {
   metrics: any[];
   $unsubcribed = new Subject<void>();
+  isLoading = false;
 
   constructor(
     private metricsService: MetricsService,
     private router: Router,
-    private loadingCtrl: LoadingController,
+    private popupService: PopupService,
   ) { 
     // subscribe to router and once this route activated will trigger fetch
     this.router.events.pipe(
@@ -42,20 +43,19 @@ export class MetricsLibraryComponent implements OnInit, OnDestroy {
   }
 
   async fetchMetrics() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Loading metrics...',
-    });
-
-    await loading.present();
+    this.isLoading = true;
     
     // Library metrics: publicOnly = true
     this.metricsService.getMetrics(true).pipe(first()).subscribe({
-      error: (error) => {
-        console.error('Error fetching data:', error);
-        loading.dismiss();
+      error: async (_error) => {
+        await this.popupService.showToast(
+          'Failed to load metrics, please refresh and try again.',
+          { color: 'warning' },
+        );       
+        this.isLoading = false;
       },
       complete: () => {
-        loading.dismiss();
+        this.isLoading = false;
       }
     });
   }

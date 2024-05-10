@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
 import { Subject, takeUntil, map, first, filter, distinctUntilChanged } from 'rxjs';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { PopupService } from '@shared/popup/popup.service';
@@ -15,14 +15,13 @@ import { PopupService } from '@shared/popup/popup.service';
 export class MetricsComponent implements OnInit, OnDestroy {
   metrics: Metric[] = [];
   unsubscribe$ = new Subject<void>();
+  isLoading = false;
 
   constructor(
     private metricsService: MetricsService,
     private modalController: ModalController,
-    private toastController: ToastController,
     private utils: UtilsService,
     private router: Router,
-    private loadingCtrl: LoadingController,
     private popupService: PopupService
   ) {
     // subscribe to router and once this route activated will trigger fetch
@@ -49,19 +48,18 @@ export class MetricsComponent implements OnInit, OnDestroy {
   }
 
   async fetchData() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Loading metrics...',
-    });
-
-    await loading.present();
+    this.isLoading = true;
       
     this.metricsService.getMetrics(false).pipe(takeUntil(this.unsubscribe$)).subscribe({
-      error: (error) => {
-        console.error('Error fetching data:', error);
-        loading.dismiss();
+      error: async (_error) => {
+        await this.popupService.showToast(
+          'Failed to load metrics, please refresh and try again.', 
+          { color: 'warning' },
+        );
+        this.isLoading = false;
       },
       complete: () => {
-        loading.dismiss();
+        this.isLoading = false;
       }
     });
   }
@@ -89,21 +87,18 @@ export class MetricsComponent implements OnInit, OnDestroy {
       }
     });
     this.metricsService.calculate(metricsUuids).pipe(first()).subscribe({
-      next: res => {
-        this.toastController.create({
-          message: res?.calculateMetrics?.message || 'Metric calculated.',
-          duration: 1500,
-          position: 'top',
-        }).then(toast => toast.present());
+      next: async res => {
+        await this.popupService.showToast(
+          res?.calculateMetrics?.message || 'Metric calculated.',
+          { color: 'primary' },
+        );
         this.metricsService.getMetrics(false).pipe(first()).subscribe();
       },
-      error: error => {
-        this.toastController.create({
-          message: error.message,
-          duration: 1500,
-          position: 'top',
-          color: 'danger',
-        }).then(toast => toast.present());
+      error: async error => {
+        await this.popupService.showToast(
+          error.message,
+          { color: 'danger' },
+        );
       }
     });
   }
