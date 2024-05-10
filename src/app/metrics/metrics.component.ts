@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
 import { Subject, takeUntil, map, first, filter, distinctUntilChanged } from 'rxjs';
 import { UpdateMetricComponent } from './update-metric/update-metric.component';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { PopupService } from '@shared/popup/popup.service';
@@ -20,7 +20,6 @@ export class MetricsComponent implements OnInit, OnDestroy {
   constructor(
     private metricsService: MetricsService,
     private modalController: ModalController,
-    private toastController: ToastController,
     private utils: UtilsService,
     private router: Router,
     private popupService: PopupService
@@ -53,12 +52,10 @@ export class MetricsComponent implements OnInit, OnDestroy {
       
     this.metricsService.getMetrics(false).pipe(takeUntil(this.unsubscribe$)).subscribe({
       error: async (_error) => {
-        const toast = await this.toastController.create({
-          color: 'warning',
-          message: 'Failed to load metrics, please refresh and try again.',
-          duration: 2000
-        });
-        await toast.present();
+        await this.popupService.showToast(
+          'Failed to load metrics, please refresh and try again.', 
+          { color: 'warning' },
+        );
         this.isLoading = false;
       },
       complete: () => {
@@ -90,21 +87,18 @@ export class MetricsComponent implements OnInit, OnDestroy {
       }
     });
     this.metricsService.calculate(metricsUuids).pipe(first()).subscribe({
-      next: res => {
-        this.toastController.create({
-          message: res?.calculateMetrics?.message || 'Metric calculated.',
-          duration: 1500,
-          position: 'top',
-        }).then(toast => toast.present());
+      next: async res => {
+        await this.popupService.showToast(
+          res?.calculateMetrics?.message || 'Metric calculated.',
+          { color: 'primary' },
+        );
         this.metricsService.getMetrics(false).pipe(first()).subscribe();
       },
-      error: error => {
-        this.toastController.create({
-          message: error.message,
-          duration: 1500,
-          position: 'top',
-          color: 'danger',
-        }).then(toast => toast.present());
+      error: async error => {
+        await this.popupService.showToast(
+          error.message,
+          { color: 'danger' },
+        );
       }
     });
   }
