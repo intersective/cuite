@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MetricsService, type Metric } from '@app/metrics/metrics.service';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject, distinctUntilChanged, filter, takeUntil } from 'rxjs';
@@ -14,14 +14,14 @@ import { PopupService } from '@shared/popup/popup.service';
 export class MetricsInstituteComponent implements OnInit {
   metrics: Metric[] = [];
   unsubscribe$: Subject<void> = new Subject<void>();
-  loading = false;
+  isLoading = false;
 
   constructor(
     private metricsService: MetricsService,
     private modalController: ModalController,
     private router: Router,
-    private loadingCtrl: LoadingController,
-    private popupService: PopupService
+    private popupService: PopupService,
+    private toastController: ToastController,
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -40,20 +40,21 @@ export class MetricsInstituteComponent implements OnInit {
   }
 
   async fetchData() {
-    this.loading = true;
-    const loading = await this.loadingCtrl.create({
-      message: 'Loading metrics...',
-    });
-    await loading.present();
+    this.isLoading = true;
 
     // Institution metrics: publicOnly = false
     this.metricsService.getMetrics(false).subscribe({
-      error: (error) => {
-        console.error('Error fetching data:', error);
-        loading.dismiss();
+      error: async (_error) => {
+        const toast = await this.toastController.create({
+          color: 'warning',
+          message: 'Failed to load metrics, please refresh and try again.',
+          duration: 2000
+        });
+        await toast.present();
+        this.isLoading = false;
       },
       complete: () => {
-        loading.dismiss();
+        this.isLoading = false;
       }
     });
   }

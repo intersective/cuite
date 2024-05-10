@@ -12,9 +12,10 @@ import { UtilsService } from '@services/utils.service';
   styleUrls: ['./metric-card.component.scss'],
 })
 export class MetricComponent {
-  @Input() data: Metric;
+  @Input() data?: Metric;
   @Input() index: number;
   @Input() from: 'experience' | 'institution' | 'library' | null; // indicate metric category 
+  @Input() isLoading?: boolean; // indicate loading state
 
   constructor(
     private modalController: ModalController,
