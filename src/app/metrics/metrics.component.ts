@@ -5,6 +5,7 @@ import { UpdateMetricComponent } from './update-metric/update-metric.component';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { PopupService } from '@shared/popup/popup.service';
 
 @Component({
   selector: 'app-metrics',
@@ -22,6 +23,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
     private toastController: ToastController,
     private utils: UtilsService,
     private router: Router,
+    private popupService: PopupService
   ) {
     // subscribe to router and once this route activated will trigger fetch
     this.router.events.pipe(
@@ -166,6 +168,10 @@ export class MetricsComponent implements OnInit, OnDestroy {
         return this.utils.generateXLSX(output, headers);
       }
     });
+  }
+
+  async openStatusInfoPopover(e: Event) {
+    this.popupService.openMetricStatusInfoPopover(e);
   }
 }
 

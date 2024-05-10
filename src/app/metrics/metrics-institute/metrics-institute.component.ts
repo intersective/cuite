@@ -4,6 +4,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { UpdateMetricComponent } from '../update-metric/update-metric.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject, distinctUntilChanged, filter, takeUntil } from 'rxjs';
+import { PopupService } from '@shared/popup/popup.service';
 
 @Component({
   selector: 'app-metrics-institute',
@@ -19,7 +20,8 @@ export class MetricsInstituteComponent implements OnInit {
     private metricsService: MetricsService,
     private modalController: ModalController,
     private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private popupService: PopupService,
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -73,5 +75,9 @@ export class MetricsInstituteComponent implements OnInit {
 
   goToLibrary() {
     this.router.navigate(['/metrics/library']);
+  }
+
+  async openStatusInfoPopover(e: Event) {
+    this.popupService.openMetricStatusInfoPopover(e);
   }
 }

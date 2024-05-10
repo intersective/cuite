@@ -89,12 +89,12 @@
       <p class="card-title black">{{ data?.name }}</p>
     </div>
   </div>
-  <div class="chip-container">
-    <div class="requirement-label" [class]="getRequirementIndicatorColor()">
-      <p class="body-2">{{ data?.requirement | noSymbols }}</p>
+  <div class="chip-container left">
+    <div class="requirement-chip" [class]="data?.requirement">
+      <ion-icon [name]="getStatusIcon(data?.requirement)"></ion-icon>
     </div>
     <div class="matric-status-chip" [class]="data?.status">
-      <p>{{ data?.status | titlecase }}</p>
+      <ion-icon [name]="getStatusIcon(data?.status)"></ion-icon>
     </div>
   </div>
   <div class="description short">
@@ -109,17 +109,15 @@
       <p class="card-title black">{{ data?.name }}</p>
     </div>
   </div>
-  <div class="chip-container">
-    <div class="requirement-label" [class]="getRequirementIndicatorColor()">
-      <p class="body-2">{{ data?.requirement | noSymbols }}</p>
-    </div>
-  </div>
   <div class="chip-container left">
-    <div class="matric-status-chip" [class]="data?.status">
-      <p>{{ data?.status | titlecase }}</p>
+    <div class="requirement-chip" [class]="data?.requirement">
+      <ion-icon [name]="getStatusIcon(data?.requirement)"></ion-icon>
     </div>
-    <div class="config-status-chip" [class]="this.data?.dataSourceId ? 'config' : 'not'">
-      <p>{{ this.data?.dataSourceId ? 'Configured' : 'Not Configured' }}</p>
+    <div class="matric-status-chip" [class]="data?.status">
+      <ion-icon [name]="getStatusIcon(data?.status)"></ion-icon>
+    </div>
+    <div class="config-status-chip" [class]="this.data?.dataSourceId ? 'configured' : 'not_configured'">
+      <ion-icon [name]="getStatusIcon(this.data?.dataSourceId ? 'configured' : 'not_configured')"></ion-icon>
     </div>
   </div>
   <ng-container *ngIf="data?.lastRecord">

@@ -4,6 +4,7 @@ import { UpdateMetricComponent } from '../update-metric/update-metric.component'
 import { Metric, MetricStatusInput, MetricsService } from '../metrics.service';
 import { first } from 'rxjs';
 import { MetricConfigureComponent } from '../metric-configure/metric-configure.component';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'app-metric-detail',
@@ -18,6 +19,7 @@ export class MetricDetailComponent implements OnInit {
     private modalController: ModalController,
     private toastController: ToastController,
     private metricsService: MetricsService,
+    private utill: UtilsService,
   ) { }
 
   ngOnInit() {
@@ -162,5 +164,13 @@ export class MetricDetailComponent implements OnInit {
         }).then(toast => toast.present());
       }
     });
+  }
+
+  getStatusIcon(status: string): string {
+    return this.utill.getMetricStatusIcon(status);
+  }
+
+  calculatePercentage() {
+    return this.utill.calculateMetricValuePercentage(this.metric.lastRecord.value, this.metric.maxValue);
   }
 }

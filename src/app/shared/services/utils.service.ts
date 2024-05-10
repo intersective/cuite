@@ -413,7 +413,7 @@ export class UtilsService {
       return new Delta().insert(plaintext);
     });
   }
-  
+
   generateXLSX(data, header = null) {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, { header });
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
@@ -422,4 +422,32 @@ export class UtilsService {
     // save to file
     return XLSX.writeFile(workbook, 'metrics_report.xlsx', { bookType: 'xlsx', type: 'string' });
   }
+
+  getMetricStatusIcon(status) {
+    switch (status) {
+      case 'not_required':
+        return 'ban-outline';
+      case 'required':
+        return 'star-outline';
+      case 'recommended':
+        return 'happy-outline';
+      case 'inactive':
+        return 'flash-off-outline';
+      case 'active':
+        return 'flash-outline';
+      case 'archived':
+        return 'folder-outline';
+      case 'configured':
+        return 'settings-outline';
+      case 'not_configured':
+        return 'warning-outline';
+      default:
+        return '';
+    }
+  }
+
+  calculateMetricValuePercentage(lastRecordValue, maxValue) {
+    return Math.round((lastRecordValue / maxValue) * 100) + '%';
+  }
+
 }

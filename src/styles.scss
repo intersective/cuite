@@ -467,63 +467,63 @@ quill-view {
 .matric-status-chip,
 .config-status-chip,
 .requirement-chip {
-  padding: 5px 14px;
+  padding: 8px;
   border-radius: 50px;
   width: fit-content;
-  p {
-    margin: 0;
-    text-transform: capitalize;
+  display: flex;
+  ion-icon {
+    font-size: 18px;
   }
+  margin-right: 12px;
 }
 
 .matric-status-chip {
   &.inactive,
   &.archived {
     background-color: var(--practera-grey-25-tint);
-    p {
+    ion-icon {
       color: var(--practera-grey-100);
     }
   }
   &.active {
     background-color: var(--practera-green-25);
-    p {
+    ion-icon {
       color: var(--practera-green-100);
     }
   }
 }
 
 .config-status-chip {
-  margin-left: 12px;
-  &.config {
+  &.configured {
     background-color: var(--practera-green-25);
-    p {
+    ion-icon {
       color: var(--practera-green-100);
     }
   }
-  &.not {
-    background-color: var(--practera-red-25);
-    p {
-      color: var(--practera-red-100);
+  &.not_configured {
+    background-color: var(--practera-orange-25);
+    ion-icon {
+      color: var(--practera-orange-100);
     }
   }
 }
 
 .requirement-chip {
-  &.danger {
+  &.required {
     background-color: var(--practera-red-25);
-    p {
+    ion-icon {
       color: var(--practera-red-100);
     }
   }
-  &.warning {
-    background-color: var(--practera-yellow-25);
-    p {
-      color: var(--practera-yellow-100);
+  &.recommended {
+    background-color: var(--practera-orange-25);
+    ion-icon {
+      color: var(--practera-orange-100);
     }
   }
-  &.medium {
+  &.not_required {
     background-color: var(--practera-grey-25);
-    p {
+    ion-icon {
       color: var(--practera-grey-100);
     }
   }
