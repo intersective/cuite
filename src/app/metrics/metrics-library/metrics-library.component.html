@@ -9,9 +9,23 @@
 
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngFor="let metric of metrics; let i = index">
-        <app-metric-card [data]="metric" [index]="i" [from]="'library'"></app-metric-card>
-      </ion-col>
+      <ng-container *ngIf="isLoading; else cards">
+        <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngFor="let i of [0,1,2]">
+          <app-metric-card [isLoading]="isLoading" [from]="'library'"></app-metric-card>
+        </ion-col>
+      </ng-container>
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ng-template #cards>
+  <ion-col 
+    size="12" size-sm="6" size-md="4" size-lg="3"
+    *ngFor="let metric of metrics; let i = index" 
+  >
+    <app-metric-card 
+      [data]="metric" [index]="i"
+      [from]="'library'"
+    ></app-metric-card>
+  </ion-col>
+</ng-template>
