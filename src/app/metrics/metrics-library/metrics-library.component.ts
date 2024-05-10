@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MetricsService } from '../metrics.service';
 import { Subject, first } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { PopupService } from '@app/shared/popup/popup.service';
 
 @Component({
   selector: 'app-metrics-library',
@@ -18,7 +18,7 @@ export class MetricsLibraryComponent implements OnInit, OnDestroy {
   constructor(
     private metricsService: MetricsService,
     private router: Router,
-    private toastController: ToastController,
+    private popupService: PopupService,
   ) { 
     // subscribe to router and once this route activated will trigger fetch
     this.router.events.pipe(
@@ -48,12 +48,10 @@ export class MetricsLibraryComponent implements OnInit, OnDestroy {
     // Library metrics: publicOnly = true
     this.metricsService.getMetrics(true).pipe(first()).subscribe({
       error: async (_error) => {
-        const toast = await this.toastController.create({
-          color: 'warning',
-          message: 'Failed to load metrics, please refresh and try again.',
-          duration: 2000
-        });
-        await toast.present();        
+        await this.popupService.showToast(
+          'Failed to load metrics, please refresh and try again.',
+          { color: 'warning' },
+        );       
         this.isLoading = false;
       },
       complete: () => {

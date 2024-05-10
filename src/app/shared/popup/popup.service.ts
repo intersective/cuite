@@ -65,7 +65,7 @@ export class PopupService {
   }
 
   // toast message pop up, by default, shown success message for 2 seconds.
-  async showToast(message: string, options?: any) {
+  async showToast(message: string, options?: ToastOptions) {
     let toastOptions: ToastOptions = {
       message: message,
       duration: 2000,
