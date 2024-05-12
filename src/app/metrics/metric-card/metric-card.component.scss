@@ -1,0 +1,56 @@
+.metrics-card {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 15px 0px;
+  min-height: 215px;
+  .title-status-container {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .title-icon {
+        color: black;
+        font-size: 20px;
+        font-weight: var(--font-weight-medium);
+        margin-right: 5px;
+      }
+      .card-title {
+        margin: 0;
+        font-size: 20px !important;
+        line-height: 24px !important;
+        letter-spacing: 0.15px !important;
+        font-weight: var(--font-weight-medium) !important;
+      }
+    }
+  }
+
+  p {
+    span {
+      font-weight: var(--font-weight-bold) !important;
+    }
+  }
+  .description {
+    &.space {
+      margin: 8px 0px;
+    }
+    &.short {
+      p {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+  .useBtn-container {
+    display: flex;
+    justify-content: end;
+    margin-top: 12px;
+    ion-select {
+      width: 50% !important;
+    }
+  }
+}
