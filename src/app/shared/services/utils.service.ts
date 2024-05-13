@@ -414,13 +414,13 @@ export class UtilsService {
     });
   }
 
-  generateXLSX(data, header = null) {
+  generateXLSX(data, header = null, title = null) {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, { header });
     const workbook: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Metrics');
 
     // save to file
-    return XLSX.writeFile(workbook, 'metrics_report.xlsx', { bookType: 'xlsx', type: 'string' });
+    return XLSX.writeFile(workbook, title, { bookType: 'xlsx', type: 'string' });
   }
 
   getMetricStatusIcon(status) {

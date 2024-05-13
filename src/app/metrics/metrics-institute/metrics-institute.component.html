@@ -6,9 +6,14 @@
         <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
       </ion-button>
     </div>
-    <ion-button id="add-new" color="ocean" trigger-action="click">
-      <ion-icon slot="icon-only" name="add"></ion-icon>
-    </ion-button>
+    <div>
+      <ion-button id="add-new" color="ocean" trigger-action="click">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+      <ion-button color="ocean" size="default" [disabled]="isDownloading" (click)="download()">
+        <ion-icon slot="icon-only" [name]="isDownloading ? 'ellipsis-horizontal-outline' : 'download-outline'"></ion-icon>
+      </ion-button>
+    </div>
   </div>
 
   <ion-grid>
