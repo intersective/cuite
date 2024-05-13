@@ -179,6 +179,8 @@ export class AuthService {
           role
           contactNumber
           userHash
+          timelineUuid
+          enrolmentUuid
           institution {
             id
             uuid
@@ -204,7 +206,9 @@ export class AuthService {
         contactNumber: thisUser.contactNumber,
         userHash: thisUser.userHash,
         institutionName: thisUser.institution.name,
-        institutionUuid: thisUser.institution.uuid
+        institutionUuid: thisUser.institution.uuid,
+        enrolmentUuid: thisUser.enrolmentUuid,
+        timelineUuid: thisUser.timelineUuid
       });
     }
     return response;
