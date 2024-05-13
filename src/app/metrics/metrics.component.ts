@@ -16,6 +16,8 @@ export class MetricsComponent implements OnInit, OnDestroy {
   metrics: Metric[] = [];
   unsubscribe$ = new Subject<void>();
   isLoading = false;
+  isDownloading = false; // indicate downloading state (for CSV download)
+  isCalculating = false; // indicate calculating state
 
   constructor(
     private metricsService: MetricsService,
@@ -79,6 +81,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
   }
 
   calculateAll() {
+    this.isCalculating = true;
     // should only calculate “active” “configured” metrics.
     // can't calculate not configured onces.
     const metricsUuids = this.metrics.map((metric) => {
@@ -93,12 +96,14 @@ export class MetricsComponent implements OnInit, OnDestroy {
           { color: 'primary' },
         );
         this.metricsService.getMetrics(false).pipe(first()).subscribe();
+        this.isCalculating = false;
       },
       error: async error => {
         await this.popupService.showToast(
           error.message,
           { color: 'danger' },
         );
+        this.isCalculating = false;
       }
     });
   }
@@ -115,6 +120,7 @@ export class MetricsComponent implements OnInit, OnDestroy {
 
   // generate a CSV file for download
   download() {
+    this.isDownloading = true;
     this.metricsService.download().pipe(first()).subscribe({
       next: response => {
         const metrics = response.metrics.filter(m => m.dataSourceId);
@@ -159,7 +165,12 @@ export class MetricsComponent implements OnInit, OnDestroy {
           return row;
         });
 
-        return this.utils.generateXLSX(output, headers);
+        this.isDownloading = false;
+        return this.utils.generateXLSX(output, headers, 'metrics_report.xlsx');
+      },
+      error: async () => {
+        await this.popupService.showToast('Failed to download metrics.', { color: 'danger' });
+        this.isDownloading = false;
       }
     });
   }
