@@ -7,11 +7,11 @@
       </ion-button>
     </div>
     <div>
-      <ion-button color="ocean" size="default" (click)="calculateAll()">
-        Calculate All
+      <ion-button color="ocean" size="default" [disabled]="isCalculating" (click)="calculateAll()">
+        {{isCalculating ? 'Calculating...' : 'Calculate All'}}
       </ion-button>
-      <ion-button color="ocean" size="default" (click)="download()">
-        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+      <ion-button color="ocean" size="default" [disabled]="isDownloading" (click)="download()">
+        <ion-icon slot="icon-only" [name]="isDownloading ? 'ellipsis-horizontal-outline' : 'download-outline'"></ion-icon>
       </ion-button>
     </div>
   </div>

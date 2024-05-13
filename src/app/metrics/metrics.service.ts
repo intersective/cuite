@@ -347,6 +347,29 @@ export class MetricsService {
     );
   }
 
+  downloadInstitution() {
+    return this.graphql.graphQLFetch(
+      `query metrics($publicOnly: Boolean) {
+        metrics(publicOnly: $publicOnly) {
+          id
+          name
+          description
+          aggregation
+          experiencesRecords {
+            experienceId
+            experienceName
+            value
+            count
+            created
+          }
+        }
+      }`
+    ).pipe(
+      map(response => response.data),
+    );
+  }
+
+
   unLinkMetric(uuid: string) {
     return this.graphql.graphQLMutate(`
     mutation unlinkMetric($uuid: ID!) {
