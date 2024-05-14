@@ -6,6 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { UtilsService } from '@app/shared/services/utils.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { PopupService } from '@shared/popup/popup.service';
+import {  retry } from 'rxjs/operators';
 
 @Component({
   selector: 'app-metrics',
@@ -52,7 +53,12 @@ export class MetricsComponent implements OnInit, OnDestroy {
   async fetchData() {
     this.isLoading = true;
       
-    this.metricsService.getMetrics(false).pipe(takeUntil(this.unsubscribe$)).subscribe({
+    this.metricsService.getMetrics(false)
+    .pipe(
+      retry(3),
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe({
       error: async (_error) => {
         await this.popupService.showToast(
           'Failed to load metrics, please refresh and try again.', 
