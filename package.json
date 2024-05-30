@@ -30,6 +30,7 @@
     "@ionic/angular": "^7.4.1",
     "@ionic/storage": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^14.2.0",
+    "@popperjs/core": "^2.11.8",
     "@swimlane/ngx-charts": "^20.4.1",
     "@swimlane/ngx-datatable": "20.1.0",
     "@popperjs/core": "^2.11.8",

@@ -116,44 +116,9 @@ jobs:
       - name: Get AWS Organization Number
         id: AWS_ORG
         run: |
-          CENTRALIZED=$(echo $AWS_ACCOUNT_ID | jq -r .CENTRALIZED)
           P2SANDBOX=$(echo $AWS_ACCOUNT_ID | jq -r .P2SANDBOX)
-
-          echo "::add-mask::$CENTRALIZED"
           echo "::add-mask::$P2SANDBOX"
-
-          echo "CENTRALIZED=$CENTRALIZED" >> $GITHUB_OUTPUT
           echo "P2SANDBOX=$P2SANDBOX" >> $GITHUB_OUTPUT
-
-################################################
-#  AWS CLI CONFIGURATION - CENTRALIZED ACCOUNT
-################################################
-      - name: Configure AWS Credentials from CENTRALIZED Account
-        uses: ./.github/actions/aws-oidc
-        with:
-          role-to-assume: arn:aws:iam::${{ steps.AWS_ORG.outputs.CENTRALIZED }}:role/github-restricted-role-to-assume
-          region: ${{ env.REGION }}
-
-###############################################################
-#  ANGULAR ENVIRONMENT CREATION
-##############################################################
-      - name: Angular Environment creation from common-secrets
-        id: secrets-common
-        run: |
-          printf "Creating required secret variables for angular environment variable creation\n\n"
-
-          CUSTOM_APPKEY=$(aws secretsmanager get-secret-value --secret-id shared-common-secrets | jq --raw-output '.SecretString' | jq -r .AppKeySecret | jq -r .appkey)
-          CUSTOM_FILESTACK_SIGNATURE=$(aws secretsmanager get-secret-value --secret-id shared-common-secrets | jq --raw-output '.SecretString' | jq -r .FilestackSecret | jq -r .signature)
-          CUSTOM_FILESTACK_VIRUS_DETECTION=$(aws secretsmanager get-secret-value --secret-id shared-common-secrets | jq --raw-output '.SecretString' | jq -r .FilestackSecret | jq -r .virusdetection)
-          CUSTOM_FILESTACK_KEY=$(aws secretsmanager get-secret-value --secret-id shared-common-secrets | jq --raw-output '.SecretString' | jq -r .FilestackSecret | jq -r .apikey)
-          CUSTOM_FILESTACK_POLICY=$(aws secretsmanager get-secret-value --secret-id shared-common-secrets | jq --raw-output '.SecretString' | jq -r .FilestackSecret | jq -r .policy)
-
-          echo "CUSTOM_APPKEY=$CUSTOM_APPKEY" >> "$GITHUB_OUTPUT"
-          echo "CUSTOM_FILESTACK_SIGNATURE=$CUSTOM_FILESTACK_SIGNATURE" >> "$GITHUB_OUTPUT"
-          echo "CUSTOM_FILESTACK_VIRUS_DETECTION=$CUSTOM_FILESTACK_VIRUS_DETECTION" >> "$GITHUB_OUTPUT"
-          echo "CUSTOM_FILESTACK_KEY=$CUSTOM_FILESTACK_KEY" >> "$GITHUB_OUTPUT"
-          echo "CUSTOM_FILESTACK_POLICY=$CUSTOM_FILESTACK_POLICY" >> "$GITHUB_OUTPUT"
-
 
 ################################################
 #  AWS CLI CONFIGURATION - P2SANDBOX ACCOUNT
@@ -208,6 +173,11 @@ jobs:
         run: |
           printf "Creating required secret variables for angular environment variable creation\n\n"
 
+          export CUSTOM_APPKEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-AppKeySecret-$ENV| jq --raw-output '.SecretString' | jq -r .appkey) 
+          export CUSTOM_FILESTACK_SIGNATURE=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .signature) 
+          export CUSTOM_FILESTACK_VIRUS_DETECTION=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .virusdetection) 
+          export CUSTOM_FILESTACK_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .apikey)
+          export CUSTOM_FILESTACK_POLICY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .policy)
           export CUSTOM_PUSHER_APPID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-PusherSecret-$ENV| jq --raw-output '.SecretString' | jq -r .app_id) 
           export CUSTOM_PUSHERKEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-PusherSecret-$ENV| jq --raw-output '.SecretString' | jq -r .key) 
           export CUSTOM_PUSHER_SECRET=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-PusherSecret-$ENV| jq --raw-output '.SecretString' | jq -r .secret) 
@@ -235,11 +205,6 @@ jobs:
           CUSTOM_ONBOARDING_FINAL_FORM_HIDDEN_FIELD_NAME: TICKET.content
           CUSTOM_ONBOARDING_FORM_IN_RAW_HTML: 0
           CUSTOM_ONBOARDING_POPUP_FORM_ID: 67a53834-ffac-4ebc-81cd-39f9e77167d8
-          CUSTOM_APPKEY: ${{ steps.secrets-common.outputs.CUSTOM_APPKEY }}
-          CUSTOM_FILESTACK_SIGNATURE: ${{ steps.secrets-common.outputs.CUSTOM_FILESTACK_SIGNATURE }}
-          CUSTOM_FILESTACK_VIRUS_DETECTION: ${{ steps.secrets-common.outputs.CUSTOM_FILESTACK_VIRUS_DETECTION }}
-          CUSTOM_FILESTACK_KEY: ${{ steps.secrets-common.outputs.CUSTOM_FILESTACK_KEY }}
-          CUSTOM_FILESTACK_POLICY: ${{ steps.secrets-common.outputs.CUSTOM_FILESTACK_POLICY }}
 
 ###############################################################
 #  BUILD WEB PACKAGES

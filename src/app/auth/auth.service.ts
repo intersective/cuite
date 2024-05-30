@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
 import { ApolloService } from '@shared/apollo/apollo.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 import { StorageService } from '@services/storage.service';
 import { UtilsService } from '@services/utils.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
+import { PusherService } from '@shared/pusher/pusher.service';
 
 
 /**
@@ -29,68 +30,122 @@ export class AuthService {
     private apollo: ApolloService,
     private storage: StorageService,
     private utils: UtilsService,
-    private demo: DemoService
+    private demo: DemoService,
+    private pusherService: PusherService
   ) { }
 
-  /**
-   * login API specifically only accept request data in encodedUrl formdata,
-   * so must convert them into compatible formdata before submission
-   */
-  directLogin(token: string): Observable<any> {
-    if (environment.demo) {
-      return this.demo.directLogin().pipe(map(this._handleLoginResponse, this));
-    }
-    this.logout();
-    const body = new HttpParams()
-      .set('auth_token', token);
-    return this.request.post(api.login, body.toString(), {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }).pipe(map(this._handleLoginResponse, this));
-  }
-
-  /**
-   * login API specifically only accept request data in encodedUrl formdata,
-   * so must convert them into compatible formdata before submission
-   */
-  jwtLogin(jwt: string): Observable<any> {
-    if (environment.demo) {
-      const response = this.demo.directLogin();
-      this._handleLoginResponse(response);
-      return of(response).pipe(delay(2000));
-    }
-    this.logout();
-    const body = new HttpParams()
-      .set('apikey', jwt);
-    return this.request.post(api.login, body.toString(), {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }).pipe(map(this._handleLoginResponse, this));
-  }
-
-  private _handleLoginResponse(response) {
-    const data = response.data;
-    if (data) {
-      this.storage.setUser({
-        apikey: data.apikey,
-        timelineId: data.timeline_id ? data.timeline_id : null,
-        timelineUuid: data.timeline_uuid ? data.timeline_uuid : null,
-        programId: data.program_id ? data.program_id : null
-      });
-      const programs = data.Timelines ? data.Timelines.map(function(timeline) {
-        return {
-          enrolment: timeline.Enrolment,
-          program: timeline.Program,
-          project: timeline.Project,
-          timeline: timeline.Timeline
+  authenticate(data: {
+    authToken?: string;
+    apikey?: string;
+    service?: string;
+    // needed when switching program (inform server the latest selected experience)
+    experienceUuid?: string;
+  }): Observable<any> {
+    const options: {
+      variables?: {
+        authToken?: string;
+      };
+      context?: {
+        headers?: {
+          service?: string;
+          apikey?: string;
         };
-      }) : [];
-      this.storage.set('programs', programs);
+      };
+    } = {};
+
+    // Initialize options.variables
+    if (data.authToken || data.experienceUuid) {
+      options.variables = {};
     }
+
+    if (data.authToken) {
+      options.variables.authToken = data.authToken;
+    }
+
+    // Initialize options.headers
+    if (data.apikey || data.service) {
+      options.context = { headers: {} };
+    }
+
+    if (data.apikey) {
+      this.storage.setUser({ apikey: data.apikey });
+      options.context.headers.apikey = data.apikey;
+    }
+
+    if (data.service) {
+      options.context.headers.service = data.service;
+    }
+
+    return this.apollo.graphQLFetch(`
+      query auth($authToken: String) {
+        auth(authToken: $authToken) {
+          apikey
+          experience {
+            id
+            uuid
+            timelineId
+            projectId
+            name
+            description
+            type
+            leadImage
+            status
+            setupStep
+            color
+            secondaryColor
+            role
+            isLast
+            locale
+            supportName
+            supportEmail
+            cardUrl
+            bannerUrl
+            logoUrl
+            iconUrl
+            reviewRating
+            truncateDescription
+          }
+          email
+          unregistered
+          activationCode
+        }
+      }`,
+      options
+    ).pipe(
+      map((res)=> {
+        return res;
+      }),
+      catchError(err => {
+        return throwError(err);
+      }),
+    );
+  }
+
+  autologin(data: {
+    authToken?: string;
+    apikey?: string;
+    service?: string;
+  }): Observable<any> {
+    this.logout();
+    return this.authenticate({...data, ...{service: 'LOGIN'}}).pipe(
+      map(res => this._handleAuthResponse(res)),
+    );
+  }
+
+  private _handleAuthResponse(res): {
+    apikey?: string;
+    experience?: object;
+  } {
+    const data: {
+      apikey: string;
+      experience: object;
+    } = res.data.auth;
+
+    this.storage.setUser({ apikey: data.apikey });
+    this.storage.set('experience', data.experience);
+    this.storage.set('isLoggedIn', true);
     this.getMyInfo().subscribe();
-    this.getMyInfoGraphQL().subscribe();
-    if (data.timeline_id || data.timeline_uuid) {
-      this.getUserEnrolmentUuid().subscribe();
-    }
-    return response;
+    return data;
   }
 
   /**
@@ -98,38 +153,36 @@ export class AuthService {
    */
   getMyInfo(): Observable<any> {
     if (environment.demo) {
-      return this.demo.getMyInfo().pipe(map(this._handleMyInfo, this));
-    }
-    return this.request.get(api.me).pipe(map(this._handleMyInfo, this));
-  }
-
-  private _handleMyInfo(response) {
-    if (response.data) {
-      if (!this.utils.has(response, 'data.User')) {
-        return this.request.apiResponseFormatError('User format error');
-      }
-      const apiData = response.data.User;
       this.storage.setUser({
-        contactNumber: apiData.contact_number,
-        userHash: apiData.userhash,
+        uuid: this.demo.myInfo.uuid,
+        name: this.demo.myInfo.name,
+        firstName: this.demo.myInfo.firstName,
+        lastName:this.demo.myInfo.lastName,
+        email: this.demo.myInfo.email,
+        image: this.demo.myInfo.image,
+        role: this.demo.myInfo.role,
+        contactNumber: this.demo.myInfo.contactNumber,
+        userHash: this.demo.myInfo.userHash
       });
-    }
-    return response;
-  }
-
-  getMyInfoGraphQL(): Observable<any> {
-    if (environment.demo) {
-      return this.demo.getMyInfoGraphQL().pipe(map(this._handleMyInfoGraphQL, this));
+      return of(this.demo.myInfo);
     }
     return this.apollo.graphQLFetch(
       `query user {
         user {
+          id
           uuid
           name
+          firstName
+          lastName
           email
           image
           role
+          contactNumber
+          userHash
+          timelineUuid
+          enrolmentUuid
           institution {
+            id
             uuid
             name
           }
@@ -138,20 +191,27 @@ export class AuthService {
     ).pipe(map(this._handleMyInfoGraphQL, this));
   }
 
-  private _handleMyInfoGraphQL(res) {
-    if (!res || !res.data) {
-      return null;
+  private _handleMyInfoGraphQL(response) {
+    if (response.data && response.data.user) {
+      const thisUser = response.data.user;
+
+      this.storage.setUser({
+        uuid: thisUser.uuid,
+        name: thisUser.name,
+        firstName: thisUser.firstName,
+        lastName: thisUser.lastName,
+        email: thisUser.email,
+        image: thisUser.image,
+        role: thisUser.role,
+        contactNumber: thisUser.contactNumber,
+        userHash: thisUser.userHash,
+        institutionName: thisUser.institution.name,
+        institutionUuid: thisUser.institution.uuid,
+        enrolmentUuid: thisUser.enrolmentUuid,
+        timelineUuid: thisUser.timelineUuid
+      });
     }
-    this.storage.setUser({
-      uuid: res.data.user.uuid,
-      name: res.data.user.name,
-      email: res.data.user.email,
-      image: res.data.user.image,
-      role: res.data.user.role,
-      institutionUuid: res.data.user.institution.uuid,
-      institutionName: res.data.user.institution.name,
-    });
-    return res.data.user;
+    return response;
   }
 
   getUserEnrolmentUuid(): Observable<any> {
@@ -189,6 +249,8 @@ export class AuthService {
 
   logout() {
     this.storage.clear();
+    this.pusherService.unsubscribeChannels();
+    this.pusherService.disconnect();
   }
 
 }
