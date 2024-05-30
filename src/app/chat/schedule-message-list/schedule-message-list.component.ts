@@ -169,7 +169,7 @@ export class ScheduleMessageListComponent implements OnInit {
   deleteMessage(messageUuid) {
     this.popupService.showAlert({
       header: 'Delete Scheduled Message?',
-      message: 'Are you sure you want to delete this scheduled message.<br/>This action cannot be undone.',
+      message: 'Are you sure you want to delete this scheduled message. This action cannot be undone.',
       cssClass: 'message-delete-alert',
       buttons: [
         {
