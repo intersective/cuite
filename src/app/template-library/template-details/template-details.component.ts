@@ -106,7 +106,7 @@ export class TemplateDetailsComponent {
   canDelete() {
     const myInfo = this.storage.getUser();
     if (myInfo && this.template) {
-      return !this.template.isPublic && myInfo.role === 'inst_admin';
+      return !this.template.isPublic && (myInfo.role === 'inst_admin' || myInfo.role === 'cs_admin');
     }
     return false;
   }
