@@ -110,7 +110,8 @@ export class AuthService {
           activationCode
         }
       }`,
-      options
+      options.variables,
+      options.context
     ).pipe(
       map((res)=> {
         return res;
