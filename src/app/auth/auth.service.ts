@@ -128,7 +128,7 @@ export class AuthService {
     service?: string;
   }): Observable<any> {
     this.logout();
-    return this.authenticate({...data, ...{service: 'LOGIN'}}).pipe(
+    return this.authenticate({...data}).pipe(
       map(res => this._handleAuthResponse(res)),
     );
   }
