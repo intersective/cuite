@@ -1,8 +1,6 @@
 service: ${env:STACK_NAME}-cutie-app
 frameworkVersion: '3'
 useDotenv: true
-enableLocalInstallationFallback: true
-
 
 provider:
   name: aws
