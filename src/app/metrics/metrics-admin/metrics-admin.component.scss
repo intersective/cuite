@@ -1,0 +1,48 @@
+.table-header {
+  background-color: #f0f0f5;
+  color: #333;
+  font-weight: bold;
+}
+
+.table-row {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.metric-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.metric-action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 15px;
+}
+
+.metric-col {
+  text-align: center;
+}
+
+.metric-description {
+  white-space: normal;
+  /* Ensure text wraps */
+}.metric-col-header {
+  display: flex;
+  align-items: center; /* Vertically center content */
+  justify-content: start; /* Align content to the start/left */
+  font-size: 1.2em; /* Increase font size */
+  font-weight: bold; /* Make the header text bold */
+  padding-left: 15px; /* Add some padding to the left */
+}
+
+.metric-action-buttons {
+  display: flex;
+  justify-content: flex-end; /* Align the button to the right */
+  align-items: center; /* Vertically center the button */
+  padding-right: 15px; /* Add some padding to the right */
+}

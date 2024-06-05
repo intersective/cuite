@@ -13,7 +13,7 @@ export class OnboardingHeaderComponent {
   @Input() title: string;
   @Input() subtitle: string;
   @Input() icon: string;
-  @Input() back: [string];
+  @Input() back: string[];
   @Input() button: string;
   @Output() action = new EventEmitter();
 
