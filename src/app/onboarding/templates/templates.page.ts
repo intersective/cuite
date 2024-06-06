@@ -12,7 +12,7 @@ import { AnalyticsService } from '@app/shared/services/analytics.service';
   styleUrls: ['./templates.page.scss'],
 })
 export class TemplatesPage implements OnInit {
-  templates: [Template];
+  templates: Template[];
   projectIcon: string;
   loading: boolean;
   selectedTopic: string;

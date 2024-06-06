@@ -26,6 +26,10 @@ const routes: Routes = [
     path: 'templates',
     loadChildren: () => import('./template-library/template-library.module').then(m => m.TemplateLibraryModule)
   },
+  {
+    path: 'metrics',
+    loadChildren: () => import('./metrics/metrics.module').then(m => m.MetricsModule)
+  },
   // {
   //   path: 'onboarding',
   //   loadChildren: './onboarding/onboarding.module#OnboardingModule'

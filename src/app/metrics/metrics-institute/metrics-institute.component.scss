@@ -1,0 +1,18 @@
+.metrics-dashboard {
+  .title-button-container {
+    display: flex;
+
+    h1 {
+      margin-bottom: 0;
+    }
+    .title-container {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      flex-direction: row;
+      ion-button {
+        margin-left: 20px;
+      }
+    }
+  }
+}

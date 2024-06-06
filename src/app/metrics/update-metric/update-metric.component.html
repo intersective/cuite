@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add/Edit Metric</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="metricForm">
+
+    <!-- Basic Details Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Basic Details</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-input class="required-field-indicator" labelPlacement="stacked" formControlName="name">
+            <div slot="label">Title<ion-text color="danger">*</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-textarea label="Description" labelPlacement="stacked" formControlName="description"></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Aggregation</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-select formControlName="aggregation">
+            <div slot="label">Type<ion-text color="danger">*</ion-text></div>
+            <ion-select-option *ngFor="let aggregation of aggregations" [value]="aggregation">{{ aggregation | titlecase }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Filters Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Filters</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list [formGroup]="filterRolesFormGroup">
+          <ion-list-header>
+            <ion-label>Filter by Role</ion-label>
+          </ion-list-header>
+          <ion-item *ngFor="let role of filterRoles">
+            <ion-label>{{ getFilterRoleDisplay(role) }}</ion-label>
+            <ion-checkbox slot="start" 
+              [name]="role"
+              [formControlName]="role"
+              [ariaLabel]="role"
+            ></ion-checkbox>
+          </ion-item>
+        </ion-list>
+
+        <ion-list [formGroup]="filterStatusesFormGroup">
+          <ion-list-header>
+            <ion-label>Filter by Status</ion-label>
+          </ion-list-header>
+          <ion-item *ngFor="let status of filterStatuses">
+            <ion-label>{{ status | titlecase }}</ion-label>
+            <ion-checkbox slot="start" 
+              [formControlName]="status" 
+              [ariaLabel]="status"
+            ></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Settings Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Settings</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-select formControlName="requirement">
+            <div slot="label">Requirement<ion-text color="danger">*</ion-text></div>
+            <ion-select-option *ngFor="let requirement of requirements" [value]="requirement">{{requirement | noSymbols | titlecase}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="from !== 'institution'">
+          <ion-select label="Status" formControlName="status" [disabled]="from !== 'experience'">
+            <ion-select-option *ngFor="let status of statuses" [value]="status">{{status | titlecase }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-toggle formControlName="isPublic">Public</ion-toggle>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+  </form>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveMetric()">Save Changes</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
