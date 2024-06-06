@@ -137,7 +137,7 @@ export class ApolloService {
   /**
    * single fetch no-cache is only option
    */
-  graphQLFetch(query: string, variables?: any): Observable<any> {
+  graphQLFetch(query: string, variables?: any, context?: any): Observable<any> {
     // Direct login is using GraphQL before landing on AppComponent,
     // so need force instantiation beforehand
     let apollo: Apollo = this.apollo;
@@ -148,7 +148,8 @@ export class ApolloService {
     const watch = apollo.query({
       query: gql(query),
       variables: variables || {},
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
+      context: context || {},
     });
     return watch
       .pipe(map(response => {
