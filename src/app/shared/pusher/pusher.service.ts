@@ -12,7 +12,7 @@ import { urlFormatter } from 'helper';
 import { ApolloService } from '@shared/apollo/apollo.service';
 
 const api = {
-  pusherAuth: 'api/v2/message/notify/pusher_auth.json',
+  pusherAuth: '/pusher_auth',
   channels: 'api/v2/message/notify/channels.json'
 };
 
@@ -70,10 +70,8 @@ export class PusherService {
     private ngZone: NgZone,
     private apollo: ApolloService,
   ) {
-    if (config) {
-      this.pusherKey = config.pusherKey;
-      this.apiurl = config.apiurl;
-    }
+    this.pusherKey = environment.pusherKey;
+    this.apiurl = environment.graphQL;
   }
 
   // initialise + subscribe to channels at one go
@@ -142,13 +140,13 @@ export class PusherService {
       const config = {
         cluster: environment.pusherCluster,
         forceTLS: true,
-        authEndpoint: urlFormatter(this.apiurl, api.pusherAuth),
+        authEndpoint: this.apiurl + api.pusherAuth,
         auth: {
           headers: {
             'Authorization': 'pusherKey=' + this.pusherKey,
             'appkey': environment.appkey,
-            'apikey': this.storage.getUser().apikey,
-            'timelineid': this.storage.getUser().timelineId
+            'apikey': apikey,
+            'timelineid': timelineId
           },
         },
       };
