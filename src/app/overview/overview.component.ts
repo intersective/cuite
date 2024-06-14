@@ -274,7 +274,7 @@ export class OverviewComponent implements OnInit {
   // }
   private _fixStatistics() {
     this.experiencesRaw = this.experiencesRaw.map(exp => {
-      console.log('fixing statistics', exp.statistics);
+      //console.log('fixing statistics', exp.statistics);
       if (!exp.statistics) {
         exp.statistics = {} as Statistics;
       }
@@ -304,7 +304,7 @@ export class OverviewComponent implements OnInit {
       exp.statistics.reviewRatingAvg = exp.statistics.reviewRatingAvg || 0;
       exp.statistics.onTrackRatio = exp.statistics.onTrackRatio || 0;
     
-      console.log('fixed statistics', exp.statistics);
+      //console.log('fixed statistics', exp.statistics);
       return exp; // Return the modified experience
     });
   }
