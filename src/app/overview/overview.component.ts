@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Experience, Statistics, Tag, OverviewService } from './overview.service';
+import { Experience, Statistics, UserCount, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
@@ -273,48 +273,39 @@ export class OverviewComponent implements OnInit {
   //   "__typename": "ExpStatistics"
   // }
   private _fixStatistics() {
-    this.experiences.forEach(exp => {
+    this.experiences = this.experiences.map(exp => {
       console.log('fixing statistics', exp.statistics);
       if (!exp.statistics) {
         exp.statistics = {} as Statistics;
       }
-      if (!exp.statistics.enrolledUserCount || exp.statistics.enrolledUserCount == null) {
-        exp.statistics.enrolledUserCount = {
-          admin: 0,
-          coordinator: 0,
-          mentor: 0,
-          participant: 0
-        };
-      }
-      if (!exp.statistics.registeredUserCount || exp.statistics.registeredUserCount == null) {
-        exp.statistics.registeredUserCount = {
-          admin: 0,
-          coordinator: 0,
-          mentor: 0,
-          participant: 0
-        };
-      }
-      if (!exp.statistics.activeUserCount || exp.statistics.activeUserCount == null) {
-        exp.statistics.activeUserCount = {
-          admin: 0,
-          coordinator: 0,
-          mentor: 0,
-          participant: 0
-        };
-      }
-      if (!exp.statistics.feedbackLoopStarted) {
-        exp.statistics.feedbackLoopStarted = 0;
-      }
-      if (!exp.statistics.feedbackLoopCompleted) {
-        exp.statistics.feedbackLoopCompleted = 0;
-      }
-      if (!exp.statistics.reviewRatingAvg) {
-        exp.statistics.reviewRatingAvg = 0;
-      }
-      if (!exp.statistics.onTrackRatio) {
-        exp.statistics.onTrackRatio = 0;
-      }
+      exp.statistics.enrolledUserCount = exp.statistics.enrolledUserCount || {
+        admin: 0,
+        coordinator: 0,
+        mentor: 0,
+        participant: 0
+      } as UserCount;
+    
+      exp.statistics.registeredUserCount = exp.statistics.registeredUserCount || {
+        admin: 0,
+        coordinator: 0,
+        mentor: 0,
+        participant: 0
+      } as UserCount;
+    
+      exp.statistics.activeUserCount = exp.statistics.activeUserCount || {
+        admin: 0,
+        coordinator: 0,
+        mentor: 0,
+        participant: 0
+      } as UserCount;
+    
+      exp.statistics.feedbackLoopStarted = exp.statistics.feedbackLoopStarted || 0;
+      exp.statistics.feedbackLoopCompleted = exp.statistics.feedbackLoopCompleted || 0;
+      exp.statistics.reviewRatingAvg = exp.statistics.reviewRatingAvg || 0;
+      exp.statistics.onTrackRatio = exp.statistics.onTrackRatio || 0;
+    
       console.log('fixed statistics', exp.statistics);
+      return exp; // Return the modified experience
     });
   }
 
