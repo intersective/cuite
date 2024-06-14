@@ -273,7 +273,11 @@ export class OverviewComponent implements OnInit {
   //   "__typename": "ExpStatistics"
   // }
   private _fixStatistics() {
-    this.experiencesRaw = this.experiencesRaw.map(exp => {
+    this.experiencesRaw = this.experiencesRaw.map(exp => this._doStatisticsFix(exp));
+  }
+
+  private _doStatisticsFix(exp: Experience) {
+    {
       //console.log('fixing statistics', exp.statistics);
       if (!exp.statistics) {
         exp.statistics = {} as Statistics;
@@ -306,9 +310,8 @@ export class OverviewComponent implements OnInit {
     
       //console.log('fixed statistics', exp.statistics);
       return exp; // Return the modified experience
-    });
+    }
   }
-
   private _filterByTag() {
     const activeTags = this.tags.filter(t => t.active).map(t => t.name);
     if (!activeTags.length) {
@@ -452,6 +455,7 @@ export class OverviewComponent implements OnInit {
         return;
       }
       res.forEach(exp => {
+        exp = this._doStatisticsFix(exp);
         // update both experiencesRaw and experiences
         const expRawIndex = this.experiencesRaw.findIndex(e => e.uuid === exp.uuid);
         if (expRawIndex >= 0 && !this.utils.isEqual(this.experiencesRaw[expRawIndex].statistics, exp.statistics)) {
