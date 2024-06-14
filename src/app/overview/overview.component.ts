@@ -113,6 +113,7 @@ export class OverviewComponent implements OnInit {
     this.service.getExperiences().subscribe(res => {
       // reformat tags from string[] to Tag[]
       this.experiencesRaw = res;
+      this._fixStatistics();
       // remove experiences didn't have admin or coordinator role
       this._filterByRole();
       // get all tags
@@ -232,7 +233,6 @@ export class OverviewComponent implements OnInit {
 
   filterAndOrder() {
     this.experiences = JSON.parse(JSON.stringify(this.experiencesRaw));
-    this._fixStatistics();
     this._filterByTag();
     this._filterByStatus();
     this._filterByType();
@@ -273,7 +273,7 @@ export class OverviewComponent implements OnInit {
   //   "__typename": "ExpStatistics"
   // }
   private _fixStatistics() {
-    this.experiences = this.experiences.map(exp => {
+    this.experiencesRaw = this.experiencesRaw.map(exp => {
       console.log('fixing statistics', exp.statistics);
       if (!exp.statistics) {
         exp.statistics = {} as Statistics;
