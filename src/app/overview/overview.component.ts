@@ -122,6 +122,7 @@ export class OverviewComponent implements OnInit {
       this.filterAndOrder();
       this.loadingExps = false;
     });
+
   }
 
 
@@ -231,10 +232,10 @@ export class OverviewComponent implements OnInit {
 
   filterAndOrder() {
     this.experiences = JSON.parse(JSON.stringify(this.experiencesRaw));
+    this._fixStatistics();
     this._filterByTag();
     this._filterByStatus();
     this._filterByType();
-    this._fixStatistics();
     this._sort();
     this._calculateTags();
     this._calculateStatistics();
@@ -273,10 +274,11 @@ export class OverviewComponent implements OnInit {
   // }
   private _fixStatistics() {
     this.experiences.forEach(exp => {
+      console.log('fixing statistics', exp.statistics);
       if (!exp.statistics) {
         exp.statistics = {} as Statistics;
       }
-      if (!exp.statistics.enrolledUserCount) {
+      if (!exp.statistics.enrolledUserCount || exp.statistics.enrolledUserCount == null) {
         exp.statistics.enrolledUserCount = {
           admin: 0,
           coordinator: 0,
@@ -284,7 +286,7 @@ export class OverviewComponent implements OnInit {
           participant: 0
         };
       }
-      if (!exp.statistics.registeredUserCount) {
+      if (!exp.statistics.registeredUserCount || exp.statistics.registeredUserCount == null) {
         exp.statistics.registeredUserCount = {
           admin: 0,
           coordinator: 0,
@@ -292,7 +294,7 @@ export class OverviewComponent implements OnInit {
           participant: 0
         };
       }
-      if (!exp.statistics.activeUserCount) {
+      if (!exp.statistics.activeUserCount || exp.statistics.activeUserCount == null) {
         exp.statistics.activeUserCount = {
           admin: 0,
           coordinator: 0,
@@ -312,6 +314,7 @@ export class OverviewComponent implements OnInit {
       if (!exp.statistics.onTrackRatio) {
         exp.statistics.onTrackRatio = 0;
       }
+      console.log('fixed statistics', exp.statistics);
     });
   }
 
