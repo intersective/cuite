@@ -353,9 +353,10 @@ export class OverviewComponent implements OnInit {
     let fbCompleted = 0;
     let fbStarted = 0;
     let reviewRatingAvg = 0;
+    let reviewRatingCount = 0;
     this.experiences.forEach(exp => {
       if (exp.status === 'live') {
-        liveExpCount ++;
+        liveExpCount++;
       }
       const stat = exp.statistics;
       // if stat is null continue
@@ -363,25 +364,23 @@ export class OverviewComponent implements OnInit {
         return;
       }
       // check that each field is not null before adding it to the total
-      if (typeof stat.activeUserCount === 'object' && 'participant' in stat.activeUserCount && 'mentor' in stat.activeUserCount) {
+      if (('activeUserCount' in stat) && stat.activeUserCount != null && typeof stat.activeUserCount === 'object' && ('participant' in stat.activeUserCount) && ('mentor' in stat.activeUserCount)) {
         activeUsers += stat.activeUserCount.participant + stat.activeUserCount.mentor;
       }
-      if (typeof stat.registeredUserCount === 'object' && 'participant' in stat.registeredUserCount && 'mentor' in stat.registeredUserCount) {
+      if (('registeredUserCount' in stat) && stat.registeredUserCount != null && typeof stat.registeredUserCount === 'object' && ('participant' in stat.registeredUserCount) && ('mentor' in stat.registeredUserCount)) {
         totalUsers += stat.registeredUserCount.participant + stat.registeredUserCount.mentor;
       }
-      if ('feedbackLoopCompleted' in stat) {
+      if (('feedbackLoopCompleted' in stat) && stat.feedbackLoopCompleted != null) {
         fbCompleted += stat.feedbackLoopCompleted;
       }
-      if ('feedbackLoopStarted' in stat) {
+      if (('feedbackLoopStarted' in stat) && stat.feedbackLoopStarted != null) {
         fbStarted += stat.feedbackLoopStarted;
       }
-      if ('reviewRatingAvg' in stat) {
-        if (reviewRatingAvg === 0) {
-          reviewRatingAvg = stat.reviewRatingAvg;
-        } else if (stat.reviewRatingAvg > 0) {
-          // if stat.reviewRatingAvg <= 0, don't count it for the average
-          reviewRatingAvg = (reviewRatingAvg + stat.reviewRatingAvg) / 2;
-        }
+
+      // Assuming there's a count variable initialized to 0 outside this snippet
+      if (('reviewRatingAvg' in stat) && stat.reviewRatingAvg != null && stat.reviewRatingAvg > 0) {
+        reviewRatingAvg = ((reviewRatingAvg * reviewRatingCount) + stat.reviewRatingAvg) / (reviewRatingCount + 1);
+        reviewRatingCount += 1; // Increment count only if a valid reviewRatingAvg is added
       }
     });
     this.stats[0].value = liveExpCount.toString();
