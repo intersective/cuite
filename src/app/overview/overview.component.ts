@@ -234,10 +234,85 @@ export class OverviewComponent implements OnInit {
     this._filterByTag();
     this._filterByStatus();
     this._filterByType();
+    this._fixStatistics();
     this._sort();
     this._calculateTags();
     this._calculateStatistics();
     this._renderExperiences();
+  }
+
+  // ensure that statistics object is always available
+  // and that all fields are initialized to 0
+  // "statistics": {
+  //   "enrolledUserCount": {
+  //       "admin": 0,
+  //       "coordinator": 0,
+  //       "mentor": 0,
+  //       "participant": 0,
+  //       "__typename": "UserCount"
+  //   },
+  //   "registeredUserCount": {
+  //       "admin": 0,
+  //       "coordinator": 0,
+  //       "mentor": 0,
+  //       "participant": 0,
+  //       "__typename": "UserCount"
+  //   },
+  //   "activeUserCount": {
+  //       "admin": 0,
+  //       "coordinator": 0,
+  //       "mentor": 0,
+  //       "participant": 0,
+  //       "__typename": "UserCount"
+  //   },
+  //   "feedbackLoopStarted": 0,
+  //   "feedbackLoopCompleted": 0,
+  //   "reviewRatingAvg": 0,
+  //   "onTrackRatio": 0,
+  //   "__typename": "ExpStatistics"
+  // }
+  private _fixStatistics() {
+    this.experiences.forEach(exp => {
+      if (!exp.statistics) {
+        exp.statistics = {} as Statistics;
+      }
+      if (!exp.statistics.enrolledUserCount) {
+        exp.statistics.enrolledUserCount = {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        };
+      }
+      if (!exp.statistics.registeredUserCount) {
+        exp.statistics.registeredUserCount = {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        };
+      }
+      if (!exp.statistics.activeUserCount) {
+        exp.statistics.activeUserCount = {
+          admin: 0,
+          coordinator: 0,
+          mentor: 0,
+          participant: 0
+        };
+      }
+      if (!exp.statistics.feedbackLoopStarted) {
+        exp.statistics.feedbackLoopStarted = 0;
+      }
+      if (!exp.statistics.feedbackLoopCompleted) {
+        exp.statistics.feedbackLoopCompleted = 0;
+      }
+      if (!exp.statistics.reviewRatingAvg) {
+        exp.statistics.reviewRatingAvg = 0;
+      }
+      if (!exp.statistics.onTrackRatio) {
+        exp.statistics.onTrackRatio = 0;
+      }
+    });
   }
 
   private _filterByTag() {
@@ -359,26 +434,13 @@ export class OverviewComponent implements OnInit {
         liveExpCount++;
       }
       const stat = exp.statistics;
-      // if stat is null continue
-      if (!stat || typeof stat !== 'object') {
-        return;
-      }
-      // check that each field is not null before adding it to the total
-      if (('activeUserCount' in stat) && stat.activeUserCount != null && typeof stat.activeUserCount === 'object' && ('participant' in stat.activeUserCount) && ('mentor' in stat.activeUserCount)) {
-        activeUsers += stat.activeUserCount.participant + stat.activeUserCount.mentor;
-      }
-      if (('registeredUserCount' in stat) && stat.registeredUserCount != null && typeof stat.registeredUserCount === 'object' && ('participant' in stat.registeredUserCount) && ('mentor' in stat.registeredUserCount)) {
-        totalUsers += stat.registeredUserCount.participant + stat.registeredUserCount.mentor;
-      }
-      if (('feedbackLoopCompleted' in stat) && stat.feedbackLoopCompleted != null) {
-        fbCompleted += stat.feedbackLoopCompleted;
-      }
-      if (('feedbackLoopStarted' in stat) && stat.feedbackLoopStarted != null) {
-        fbStarted += stat.feedbackLoopStarted;
-      }
+      activeUsers += stat.activeUserCount.participant + stat.activeUserCount.mentor;
+      totalUsers += stat.registeredUserCount.participant + stat.registeredUserCount.mentor;
+      fbCompleted += stat.feedbackLoopCompleted;
+      fbStarted += stat.feedbackLoopStarted;
 
       // Assuming there's a count variable initialized to 0 outside this snippet
-      if (('reviewRatingAvg' in stat) && stat.reviewRatingAvg != null && stat.reviewRatingAvg > 0) {
+      if (stat.reviewRatingAvg > 0) {
         reviewRatingAvg = ((reviewRatingAvg * reviewRatingCount) + stat.reviewRatingAvg) / (reviewRatingCount + 1);
         reviewRatingCount += 1; // Increment count only if a valid reviewRatingAvg is added
       }
