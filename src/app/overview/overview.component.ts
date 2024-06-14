@@ -358,15 +358,30 @@ export class OverviewComponent implements OnInit {
         liveExpCount ++;
       }
       const stat = exp.statistics;
-      activeUsers += stat.activeUserCount.participant + stat.activeUserCount.mentor;
-      totalUsers += stat.registeredUserCount.participant + stat.registeredUserCount.mentor;
-      fbCompleted += stat.feedbackLoopCompleted;
-      fbStarted += stat.feedbackLoopStarted;
-      if (reviewRatingAvg === 0) {
-        reviewRatingAvg = stat.reviewRatingAvg;
-      } else if (stat.reviewRatingAvg > 0) {
-        // if stat.reviewRatingAvg <= 0, don't count it for the average
-        reviewRatingAvg = (reviewRatingAvg + stat.reviewRatingAvg) / 2;
+      // if stat is null continue
+      if (!stat || typeof stat !== 'object') {
+        return;
+      }
+      // check that each field is not null before adding it to the total
+      if (typeof stat.activeUserCount === 'object' && 'participant' in stat.activeUserCount && 'mentor' in stat.activeUserCount) {
+        activeUsers += stat.activeUserCount.participant + stat.activeUserCount.mentor;
+      }
+      if (typeof stat.registeredUserCount === 'object' && 'participant' in stat.registeredUserCount && 'mentor' in stat.registeredUserCount) {
+        totalUsers += stat.registeredUserCount.participant + stat.registeredUserCount.mentor;
+      }
+      if ('feedbackLoopCompleted' in stat) {
+        fbCompleted += stat.feedbackLoopCompleted;
+      }
+      if ('feedbackLoopStarted' in stat) {
+        fbStarted += stat.feedbackLoopStarted;
+      }
+      if ('reviewRatingAvg' in stat) {
+        if (reviewRatingAvg === 0) {
+          reviewRatingAvg = stat.reviewRatingAvg;
+        } else if (stat.reviewRatingAvg > 0) {
+          // if stat.reviewRatingAvg <= 0, don't count it for the average
+          reviewRatingAvg = (reviewRatingAvg + stat.reviewRatingAvg) / 2;
+        }
       }
     });
     this.stats[0].value = liveExpCount.toString();
