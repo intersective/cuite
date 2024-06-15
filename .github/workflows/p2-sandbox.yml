@@ -9,8 +9,14 @@ name: Deploy to p2-sandbox environment
 ################################################
 on:
   workflow_dispatch:
+    inputs:
+      INPUT_BRANCH:
+        description: 'Branch or tag to deploy'     
+        required: true
+        default: ''
   push:
-    branches: [ 'develop' ]
+    branches:
+      - 'pvt'
 
 
 ################################################
@@ -31,7 +37,7 @@ jobs:
     env:
       REGION : ap-southeast-2
       ENV : dev # Valid values are dev,test,live only
-      STACK_NAME: p2-sandbox # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p1-stage,p2-sandbox,shared only
+      STACK_NAME: p2-sandbox # Valid values are au,us,uk,p2,lf,nu,p1-sandbox,p2-sandbox,p2-sandbox,shared only
       ROOTSTACK: cutie-app
       CFNS3BucketName: devops-cfn-templates
       PRIVATES3BucketName: devops-shared-private
@@ -42,28 +48,41 @@ jobs:
       REQUESTOR: ${{ github.event.inputs.REQUESTOR }}
       REASON: ${{ github.event.inputs.REASON }}
       ENDPOINT: cutie-app.p2-sandbox.practera.com
-      BRANCH_TAG_NAME: develop
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
 
 
+
+    steps:
+
+################################################
+#  Export BRANCH_TAG_NAME
+################################################
+      - name: Get branch for env BRANCH_TAG_NAME
+        run: |
+          if [ -z "$INPUT_BRANCH" ]; then
+            echo "BRANCH_TAG_NAME="$(echo "$GITHUB_REF_NAME") >> $GITHUB_ENV
+          else
+            echo "BRANCH_TAG_NAME="$(echo "$INPUT_BRANCH") >> $GITHUB_ENV
+          fi
+        env:
+          INPUT_BRANCH: ${{ github.event.inputs.INPUT_BRANCH }}
+
 ################################################
 #  GITHUB REPO CHECKOUT
 ################################################
-    steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
-
+          ref: ${{ env.BRANCH_TAG_NAME }}
 
 ################################################
 #  NODE ENV
 ################################################
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '18'
 
 
 ################################################
@@ -94,7 +113,6 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run:  npm install
 
-
 ################################################
 #  SEGMENT ENV VARIABLE SUBSTITUION - INDEX.HTML
 ################################################
@@ -109,7 +127,7 @@ jobs:
           cat ./src/index.html
         env:
           SEGMENT_KEY: AsLmvmyUc9LdCxFn0xqQhVz9CL2KCFc1
-          
+
 ################################################
 #  GET P2 SANDBOX AWS ORGANIZATION NUMBER
 ################################################
@@ -128,7 +146,8 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ steps.AWS_ORG.outputs.P2SANDBOX }}:role/github-restricted-role-to-assume
           region: ${{ env.REGION }}
-          
+
+
 ##########################################################
 #  AWS S3 SYNC - SERVERLESS TEMPLATES
 ##########################################################
@@ -146,7 +165,10 @@ jobs:
           cat >> .env <<EOF
           CDNSharedACMCertificateArn=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-CDNSharedACMCertificateArn-$ENV\`].Value" --no-paginate --output text)
           ChatBotSNSTopicARN=$(aws cloudformation list-exports --query "Exports[?Name==\`$STACK_NAME-ChatBotSNSTopicARN-$ENV\`].Value" --no-paginate --output text)
-
+          COMMIT_ID=$(git rev-parse --short "$GITHUB_SHA")
+          BRANCH_TAG_ID=${GITHUB_REF#refs/heads/}
+          VantaOwner=sunil@practera.com
+          VantaDescription=${{ env.STACK_NAME }}-${{ env.ROOTSTACK }}
 
           EOF
 
@@ -173,9 +195,9 @@ jobs:
         run: |
           printf "Creating required secret variables for angular environment variable creation\n\n"
 
-          export CUSTOM_APPKEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-AppKeySecret-$ENV| jq --raw-output '.SecretString' | jq -r .appkey) 
-          export CUSTOM_FILESTACK_SIGNATURE=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .signature) 
-          export CUSTOM_FILESTACK_VIRUS_DETECTION=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .virusdetection) 
+          export CUSTOM_APPKEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-AppKeySecret-$ENV| jq --raw-output '.SecretString' | jq -r .appkey)
+          export CUSTOM_FILESTACK_SIGNATURE=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .signature)
+          export CUSTOM_FILESTACK_VIRUS_DETECTION=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .virusdetection)
           export CUSTOM_FILESTACK_KEY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .apikey)
           export CUSTOM_FILESTACK_POLICY=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-FilestackSecret-$ENV| jq --raw-output '.SecretString' | jq -r .policy)
           export CUSTOM_PUSHER_APPID=$(aws secretsmanager get-secret-value --secret-id $STACK_NAME-PusherSecret-$ENV| jq --raw-output '.SecretString' | jq -r .app_id) 
@@ -205,6 +227,7 @@ jobs:
           CUSTOM_ONBOARDING_FINAL_FORM_HIDDEN_FIELD_NAME: TICKET.content
           CUSTOM_ONBOARDING_FORM_IN_RAW_HTML: 0
           CUSTOM_ONBOARDING_POPUP_FORM_ID: 67a53834-ffac-4ebc-81cd-39f9e77167d8
+
 
 ###############################################################
 #  BUILD WEB PACKAGES
