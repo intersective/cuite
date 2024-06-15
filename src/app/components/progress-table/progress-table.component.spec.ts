@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { ProgressTableComponent } from './progress-table.component';
@@ -14,7 +14,7 @@ describe('ProgressTableComponent', () => {
   let popoverSpy;
   let utilSpy;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ProgressTableComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

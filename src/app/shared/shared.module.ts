@@ -11,38 +11,37 @@ import { PreviewComponent } from './filestack/preview/preview.component';
 import { ActionFooterComponent } from '@app/components/action-footer/action-footer.component';
 import { OnboardingTemplateDetailComponent } from '@app/components/onboarding-template-detail/onboarding-template-detail.component';
 import { VideoConversionComponent } from '@app/components/video-conversion/video-conversion.component';
+import { FilterByPipe } from './filter-by.pipe';
 
 @NgModule({
-  declarations: [
-    NavbarComponent,
-    ActionPopoverComponent,
-    PreviewComponent,
-    ActionFooterComponent,
-    OnboardingTemplateDetailComponent,
-    VideoConversionComponent,
-  ],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule
-  ],
-  exports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    NavbarComponent,
-    ActionPopoverComponent,
-    ActionFooterComponent,
-    OnboardingTemplateDetailComponent,
-    VideoConversionComponent,
-  ],
-  providers: [
-    StorageService,
-    FilestackService
-  ],
-  entryComponents: [
-    ActionPopoverComponent,
-    PreviewComponent
-  ]
+    declarations: [
+        NavbarComponent,
+        ActionPopoverComponent,
+        PreviewComponent,
+        ActionFooterComponent,
+        OnboardingTemplateDetailComponent,
+        VideoConversionComponent,
+        FilterByPipe,
+    ],
+    imports: [
+        CommonModule,
+        IonicModule,
+        FormsModule
+    ],
+    exports: [
+        CommonModule,
+        IonicModule,
+        FormsModule,
+        NavbarComponent,
+        ActionPopoverComponent,
+        ActionFooterComponent,
+        OnboardingTemplateDetailComponent,
+        VideoConversionComponent,
+        FilterByPipe,
+    ],
+    providers: [
+        StorageService,
+        FilestackService
+    ]
 })
 export class SharedModule { }

@@ -1,6 +1,6 @@
 <ion-item class="badge-container">
   <ng-container *ngFor="let s of steps; let i = index">
-    <ion-badge class="badge" [class]="i + 1 == step ? 'primary' : ( i + 1 < step ? 'ocean' : 'grey' )">{{ i + 1 }}</ion-badge>
+    <ion-badge class="badge" [class]="i + 1 === step ? 'primary' : ( i + 1 < step ? 'ocean' : 'grey' )">{{ i + 1 }}</ion-badge>
     <ion-label>{{ s }}</ion-label>
     <hr *ngIf="i !== (steps.length - 1)">
   </ng-container>

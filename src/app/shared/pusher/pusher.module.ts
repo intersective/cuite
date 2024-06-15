@@ -17,7 +17,7 @@ export class PusherModule {
     }
   }
 
-  static forRoot(config: PusherConfig): ModuleWithProviders {
+  static forRoot(config: PusherConfig): ModuleWithProviders<PusherModule> {
     return {
       ngModule: PusherModule,
       providers: [

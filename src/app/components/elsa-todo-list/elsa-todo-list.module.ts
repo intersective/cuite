@@ -5,18 +5,16 @@ import { ElsaGhostComponent } from '@components/elsa-ghost/elsa-ghost.component'
 import { ElsaTodoListComponent } from './elsa-todo-list.component';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    NgxDatatableModule
-  ],
-  exports: [
-    ElsaTodoListComponent
-  ],
-  declarations: [
-    ElsaTodoListComponent,
-    ElsaGhostComponent
-  ],
-  entryComponents: [
-  ]
+    imports: [
+        SharedModule,
+        NgxDatatableModule
+    ],
+    exports: [
+        ElsaTodoListComponent
+    ],
+    declarations: [
+        ElsaTodoListComponent,
+        ElsaGhostComponent
+    ]
 })
 export class ElsaTodoListModule { }

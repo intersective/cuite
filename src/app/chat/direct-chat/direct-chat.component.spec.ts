@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DirectChatComponent } from './direct-chat.component';
 import { Apollo } from 'apollo-angular';
@@ -20,7 +20,7 @@ describe('DirectChatComponent', () => {
   const modalCtrlSpy = jasmine.createSpyObj('ModalController', ['dismiss']);
   modalCtrlSpy.dismiss.and.returnValue(modalSpy);
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DirectChatComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -194,7 +194,8 @@ describe('DirectChatComponent', () => {
           canEdit: true,
           unreadMessageCount: 0,
           lastMessage: null,
-          lastMessageCreated: null
+          lastMessageCreated: null,
+          scheduledMessageCount: 0
         }
       ));
       component.createChatChannel(user);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Directive } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -21,7 +21,7 @@ describe('ChatInfoComponent', () => {
   const modalCtrlSpy = jasmine.createSpyObj('ModalController', ['dismiss', 'create']);
   modalCtrlSpy.create.and.returnValue(modalSpy);
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChatInfoComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -58,19 +58,22 @@ describe('ChatInfoComponent', () => {
       uuid: '1',
       name: 'student+01',
       role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      email: ''
     },
     {
       uuid: '2',
       name: 'student1',
       role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      email: ''
     },
     {
       uuid: '3',
       name: 'student2',
       role: 'participant',
-      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50'
+      avatar: 'https://www.gravatar.com/avatar/21b7427270a606e8a3c4413a13bb47c6?d=https://sandbox.practera.com/img/user-512.png&s=50',
+      email: ''
     }
   ];
 

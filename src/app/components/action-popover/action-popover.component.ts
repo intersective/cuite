@@ -6,7 +6,7 @@ import { PopoverController } from '@ionic/angular';
   templateUrl: './action-popover.component.html',
   styleUrls: ['./action-popover.component.scss']
 })
-export class ActionPopoverComponent implements OnInit {
+export class ActionPopoverComponent {
 
   @Input() actions: Array<{
     icon?: string;
@@ -17,9 +17,6 @@ export class ActionPopoverComponent implements OnInit {
   constructor(
     private popoverController: PopoverController
   ) { }
-
-  ngOnInit() {
-  }
 
   click(action) {
     this.popoverController.dismiss(action);

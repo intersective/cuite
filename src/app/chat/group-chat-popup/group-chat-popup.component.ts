@@ -57,13 +57,11 @@ export class GroupChatPopupComponent implements OnInit {
  * This call chat service to create group channel
  */
   async createChatChannels() {
-    const currentProgram = this.storage.get('programs').find(program => {
-      return program.timeline.id === this.storage.timelineId;
-    });
+    const currentExperience = this.storage.get('experience');
     this.creating = true;
     if (this.isCohortChecked) {
       this.chatService.createChannel({
-        name: currentProgram.timeline.title,
+        name: currentExperience.name,
         isAnnouncement: false,
         roles: ['participant', 'mentor', 'admin', 'coordinator'],
         members: [{

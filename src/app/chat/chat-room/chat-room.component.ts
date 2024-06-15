@@ -788,7 +788,7 @@ export class ChatRoomComponent {
   deleteMessage(messageUuid) {
     this.popupService.showAlert({
       header: 'Delete Message?',
-      message: 'Are you sure you want to delete this message.<br/>This action cannot be undone.',
+      message: 'Are you sure you want to delete this message. This action cannot be undone.',
       cssClass: 'message-delete-alert',
       buttons: [
         {

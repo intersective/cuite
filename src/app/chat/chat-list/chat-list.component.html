@@ -26,8 +26,8 @@
       </ion-button>
     </ion-item>
     <ng-container *ngIf="isAnnouncementChatExpand">
-      <clickable-item *ngFor="let chat of announcementChatChannels; let i = index" (click)="goToChatRoom(chat)"
-        [active]="currentChat && currentChat.uuid == chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
+      <app-clickable-item *ngFor="let chat of announcementChatChannels; let i = index" (click)="goToChatRoom(chat)"
+        [active]="currentChat && currentChat.uuid === chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
         [lines]="'full'">
         <ion-avatar slot="start" text-center>
           <img [src]="chat.avatar" alt="{{chat.name}}">
@@ -63,7 +63,7 @@
             </ng-container>
           </div>
         </div>
-      </clickable-item>
+      </app-clickable-item>
     </ng-container>
     <!-- group chats -->
     <ion-item [lines]="'full'" color="light-grey-75" class="create-channel-container">
@@ -80,8 +80,8 @@
       </ion-button>
     </ion-item>
     <ng-container *ngIf="isGroupChatExpand">
-      <clickable-item *ngFor="let chat of groupChatChannels; let i = index" (click)="goToChatRoom(chat)"
-        [active]="currentChat && currentChat.uuid == chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
+      <app-clickable-item *ngFor="let chat of groupChatChannels; let i = index" (click)="goToChatRoom(chat)"
+        [active]="currentChat && currentChat.uuid === chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
         [lines]="'full'">
         <ion-avatar slot="start" text-center>
           <img [src]="chat.avatar" alt="{{chat.name}}">
@@ -112,7 +112,7 @@
             </ng-container>
           </div>
         </div>
-      </clickable-item>
+      </app-clickable-item>
     </ng-container>
     <!-- direct messages -->
     <ion-item [lines]="'full'" color="light-grey-75" class="create-channel-container">
@@ -129,8 +129,8 @@
       </ion-button>
     </ion-item>
     <ng-container *ngIf="isDirectChatExpand">
-      <clickable-item *ngFor="let chat of directChatChannels; let i = index" (click)="goToChatRoom(chat)"
-        [active]="currentChat && currentChat.uuid == chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
+      <app-clickable-item *ngFor="let chat of directChatChannels; let i = index" (click)="goToChatRoom(chat)"
+        [active]="currentChat && currentChat.uuid === chat.uuid" [ngClass]="{'unread': chat.unreadMessageCount > 0}"
         [lines]="'full'">
         <ion-avatar slot="start" class="ion-text-center">
           <img [src]="chat.avatar" alt="{{chat.name}}">
@@ -169,7 +169,7 @@
             </ng-container>
           </div>
         </div>
-      </clickable-item>
+      </app-clickable-item>
     </ng-container>
   </ion-list>
 </ion-content>

@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ActionFooterComponent } from './action-footer.component';
 
@@ -7,7 +7,7 @@ describe('ActionFooterComponent', () => {
   let component: ActionFooterComponent;
   let fixture: ComponentFixture<ActionFooterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ActionFooterComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

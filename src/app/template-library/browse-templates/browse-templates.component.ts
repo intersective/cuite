@@ -3,11 +3,11 @@ import {ActivatedRoute} from '@angular/router';
 import {Template, TemplateLibraryService} from '../template-library.service';
 
 @Component({
-  selector: 'browse-templates',
+  selector: 'app-browse-templates',
   templateUrl: './browse-templates.component.html',
   styleUrls: ['./browse-templates.component.scss'],
 })
-export class BrowseTemplatesComponent implements OnInit {
+export class BrowseTemplatesComponent {
 
   heading: string;
   headingHighlight: string;
@@ -75,7 +75,7 @@ export class BrowseTemplatesComponent implements OnInit {
   loadCustomTemplates() {
     this.loadingTemplates = true;
     this.isCustomTemplates = true;
-    this.heading = 'Custom Templates';
+    this.heading = 'Private Templates';
     this.service.getCustomTemplates().subscribe(res => {
       if (res === null) {
         return;
@@ -84,7 +84,5 @@ export class BrowseTemplatesComponent implements OnInit {
       this.loadingTemplates = false;
     });
   }
-
-  ngOnInit() {}
 
 }

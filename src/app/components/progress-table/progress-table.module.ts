@@ -5,19 +5,16 @@ import { ProgressPopoverComponent } from '@components/progress-popover/progress-
 import { ProgressTableComponent } from './progress-table.component';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    NgxDatatableModule
-  ],
-  exports: [
-    ProgressTableComponent
-  ],
-  declarations: [
-    ProgressPopoverComponent,
-    ProgressTableComponent
-  ],
-  entryComponents: [
-    ProgressPopoverComponent,
-  ]
+    imports: [
+        SharedModule,
+        NgxDatatableModule
+    ],
+    exports: [
+        ProgressTableComponent
+    ],
+    declarations: [
+        ProgressPopoverComponent,
+        ProgressTableComponent
+    ]
 })
 export class ProgressTableModule { }

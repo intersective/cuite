@@ -40,7 +40,7 @@
         </div>
       </ng-container>
       <ion-list class="desktop-view ion-no-padding" *ngIf="!loadingUsers">
-        <clickable-item class="user-item" *ngFor="let user of userList; let i = index" [lines]="'none'"
+        <app-clickable-item class="user-item" *ngFor="let user of userList; let i = index" [lines]="'none'"
           (click)="createChatChannel(user)">
           <ion-avatar slot="start" class="ion-text-center">
             <img [src]="user.avatar" alt="{{user.name}}">
@@ -59,7 +59,7 @@
               <span class="ion-text-capitalize">{{ user.team.name }}</span>
             </div>
           </ion-label>
-        </clickable-item>
+        </app-clickable-item>
       </ion-list>
     </ng-container>
   </div>

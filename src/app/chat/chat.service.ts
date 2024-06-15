@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '@shared/request/request.service';
+import { ApolloService } from '@shared/apollo/apollo.service';
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { UtilsService } from '@services/utils.service';
 import { PusherService } from '@shared/pusher/pusher.service';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
-import { delay } from 'rxjs/internal/operators';
+import { delay } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 
 export interface ChatChannel {
@@ -50,7 +51,10 @@ export interface Message {
   message: string;
   created: string;
   file: string;
-  fileObject?: object;
+  fileObject?: {
+    filename: string;
+    mimetype: string;
+  };
   preview?: string;
   noAvatar?: boolean;
   channelUuid?: string;
@@ -138,6 +142,7 @@ export class ChatService {
 
   constructor(
     private request: RequestService,
+    private apollo: ApolloService,
     private utils: UtilsService,
     private pusherService: PusherService,
     private demo: DemoService,
@@ -152,7 +157,7 @@ export class ChatService {
       const response = this.demo.getChats();
       return of(this._normaliseChatListResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.chatGraphQLQuery(
+    return this.apollo.chatGraphQLQuery(
       `query getChannels {
         channels{
           uuid
@@ -175,11 +180,8 @@ export class ChatService {
           scheduledMessageCount
         }
       }`,
-      {},
-      {
-        noCache: true
-      }
-    ).pipe(map(response => {
+      {}
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normaliseChatListResponse(response.data);
       }
@@ -222,7 +224,7 @@ export class ChatService {
     if (!data.scheduledOnly) {
       delete params.scheduledOnly;
     }
-    return this.request.chatGraphQLQuery(
+    return this.apollo.chatGraphQLQuery(
       `query getChannellogs($uuid:String!, $cursor:String!, $size:Int!, $scheduledOnly:Boolean) {
         channel(uuid:$uuid){
           chatLogsConnection(cursor:$cursor, size:$size, scheduledOnly:$scheduledOnly){
@@ -244,11 +246,8 @@ export class ChatService {
             }
           }
         }
-      }`, params,
-      {
-        noCache: true
-      }
-    ).pipe(map(response => {
+      }`, params
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normaliseMessageListResponse(response.data);
       }
@@ -308,7 +307,7 @@ export class ChatService {
       const response = this.demo.getMembers(channelId);
       return of(this._normaliseChatMembersResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.chatGraphQLQuery(
+    return this.apollo.chatGraphQLQuery(
       `query getChannelmembers($uuid:String!) {
         channel(uuid:$uuid){
           members{
@@ -322,11 +321,8 @@ export class ChatService {
       }`,
       {
         uuid: channelId
-      },
-      {
-        noCache: true
       }
-    ).pipe(map(response => {
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normaliseChatMembersResponse(response.data);
       }
@@ -353,17 +349,14 @@ export class ChatService {
       const response = this.demo.getPusherChannels();
       return of(this._normalisePusherChannelsResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.chatGraphQLQuery(
+    return this.apollo.chatGraphQLQuery(
       `query getPusherChannels {
         channels {
           pusherChannel
         }
       }`,
-      {},
-      {
-        noCache: true
-      }
-    ).pipe(map(response => {
+      {}
+    ).pipe(map((response: any) => {
       if (response.data) {
         return this._normalisePusherChannelsResponse(response.data);
       }
@@ -386,7 +379,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.request.chatGraphQLMutate(
+    return this.apollo.chatGraphQLMutate(
       `mutation markAsSeen($uuids: [String]!) {
         readChatLogs(uuids: $uuids) {
           success
@@ -407,7 +400,7 @@ export class ChatService {
       const response = this.demo.getNewMessage(data);
       return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.chatGraphQLMutate(
+    return this.apollo.chatGraphQLMutate(
       `mutation createChatLogs($channelUuid: String!, $message: String, $file: String, $scheduled: String) {
         createChatLog(channelUuid: $channelUuid, message: $message, file: $file, scheduled: $scheduled) {
             uuid
@@ -488,7 +481,7 @@ export class ChatService {
       const response = this.demo.getNewChannel(data);
       return of(this._normaliseCreateChannelResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.chatGraphQLMutate(
+    return this.apollo.chatGraphQLMutate(
       `mutation createChannel($name: String, $isAnnouncement: Boolean, $roles: [String], $members: [MemberInput]!){
         createChannel(name: $name, isAnnouncement: $isAnnouncement, roles: $roles, members: $members) {
             uuid
@@ -552,7 +545,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.request.chatGraphQLMutate(
+    return this.apollo.chatGraphQLMutate(
       `mutation deleteChannel($uuid: String!){
         deleteChannel(uuid: $uuid) {
             success
@@ -569,7 +562,7 @@ export class ChatService {
       const response = this.demo.getEditedChannel(data);
       return of(this._normaliseEditChannelResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.chatGraphQLMutate(
+    return this.apollo.chatGraphQLMutate(
       `mutation editChannel($uuid: String!, $name: String, $isAnnouncement: Boolean, $roles: [String]){
         editChannel(uuid: $uuid, name: $name, isAnnouncement: $isAnnouncement, roles: $roles) {
             uuid
@@ -640,7 +633,7 @@ export class ChatService {
       const response = this.demo.getUsers(data);
       return of(this._normaliseSearchTimelineUsersResponse(response.data)).pipe(delay(1000));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query getUsers($scope: String, $scopeUuid: String, $filter: String, $teamUserOnly: Boolean) {
         users(scope: $scope, scopeUuid: $scopeUuid, filter: $filter, teamUserOnly: $teamUserOnly) {
           uuid
@@ -693,7 +686,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.request.chatGraphQLMutate(
+    return this.apollo.chatGraphQLMutate(
       `mutation deletechatMessage($uuid: String!) {
         deleteChatLog(uuid: $uuid) {
           success
@@ -709,7 +702,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.request.chatGraphQLMutate(
+    return this.apollo.chatGraphQLMutate(
       `mutation edichatMessage($uuid: String!, $message: String, $file: String, $scheduled: String) {
         editChatLog(uuid: $uuid, message: $message, file: $file, scheduled: $scheduled) {
           success

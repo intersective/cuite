@@ -5,7 +5,7 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './resource-download-card.component.html',
   styleUrls: ['./resource-download-card.component.scss'],
 })
-export class ResourceDownloadCardComponent implements OnInit {
+export class ResourceDownloadCardComponent {
 
   @Input() skeleton = false;
   @Input() prompt: string;
@@ -13,7 +13,5 @@ export class ResourceDownloadCardComponent implements OnInit {
   @Input() src: string;
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

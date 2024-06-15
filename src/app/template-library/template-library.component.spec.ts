@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 import {TemplateLibraryComponent} from './template-library.component';
 import {TemplateLibraryService} from './template-library.service';
@@ -74,7 +74,7 @@ describe('TemplateLibraryComponent', () => {
     }
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([
           { path: 'templates/search/:filter', component: BrowseTemplatesComponent },

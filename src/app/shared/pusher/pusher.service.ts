@@ -6,12 +6,13 @@ import { RequestService } from '@shared/request/request.service';
 import { environment } from '@environments/environment';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
-import { PusherStatic, Pusher, Config, Channel } from 'pusher-js';
+import Pusher, { Channel } from 'pusher-js';
 import * as PusherLib from 'pusher-js';
 import { urlFormatter } from 'helper';
+import { ApolloService } from '@shared/apollo/apollo.service';
 
 const api = {
-  pusherAuth: 'api/v2/message/notify/pusher_auth.json',
+  pusherAuth: '/pusher_auth',
   channels: 'api/v2/message/notify/channels.json'
 };
 
@@ -66,12 +67,11 @@ export class PusherService {
     private request: RequestService,
     private utils: UtilsService,
     public storage: StorageService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private apollo: ApolloService,
   ) {
-    if (config) {
-      this.pusherKey = config.pusherKey;
-      this.apiurl = config.apiurl;
-    }
+    this.pusherKey = environment.pusherKey;
+    this.apiurl = environment.graphQL;
   }
 
   // initialise + subscribe to channels at one go
@@ -137,20 +137,20 @@ export class PusherService {
       return this.pusher;
     }
     try {
-      const config: Config = {
+      const config = {
         cluster: environment.pusherCluster,
         forceTLS: true,
-        authEndpoint: urlFormatter(this.apiurl, api.pusherAuth),
+        authEndpoint: this.apiurl + api.pusherAuth,
         auth: {
           headers: {
             'Authorization': 'pusherKey=' + this.pusherKey,
             'appkey': environment.appkey,
-            'apikey': this.storage.getUser().apikey,
-            'timelineid': this.storage.getUser().timelineId
+            'apikey': apikey,
+            'timelineid': timelineId
           },
         },
       };
-      const newPusherInstance = await new PusherLib(this.pusherKey, config);
+      const newPusherInstance = await new Pusher(this.pusherKey, config);
       return newPusherInstance;
     } catch (err) {
       throw new Error(err);
@@ -192,13 +192,13 @@ export class PusherService {
   }
 
   getChatChannels(): Observable<any> {
-    return this.request.chatGraphQLQuery(
+    return this.apollo.chatGraphQLQuery(
       `query getPusherChannels {
         channels {
           pusherChannel
         }
       }`
-    ).pipe(map(response => {
+    ).pipe(map((response: any) => {
       if (response.data && response.data.channels) {
         const result = JSON.parse(JSON.stringify(response.data.channels));
         result.forEach(element => {

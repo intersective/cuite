@@ -9,7 +9,7 @@ import { UtilsService } from '@services/utils.service';
   templateUrl: './onboarding-template-detail.component.html',
   styleUrls: ['./onboarding-template-detail.component.scss'],
 })
-export class OnboardingTemplateDetailComponent implements OnInit {
+export class OnboardingTemplateDetailComponent{
 
   @Input() template: Template;
   @Output() durationChange = new EventEmitter();
@@ -20,8 +20,6 @@ export class OnboardingTemplateDetailComponent implements OnInit {
     public utils: UtilsService,
     private analytics: AnalyticsService
   ) { }
-
-  ngOnInit() {}
 
   get briefsCount() {
     if (!this.template ||

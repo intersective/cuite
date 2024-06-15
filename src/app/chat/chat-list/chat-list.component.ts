@@ -54,7 +54,6 @@ export class ChatListComponent {
       return;
     }
     this._initialise();
-    this._checkAndSubscribePusherChannels();
     this._loadChatData();
   }
 
@@ -75,6 +74,7 @@ export class ChatListComponent {
       this._groupingChatChannels();
       this.loadingChatList = false;
       this.chatListReady.emit(this.announcementChatChannels.concat(this.groupChatChannels, this.directChatChannels));
+      this._checkAndSubscribePusherChannels();
     });
   }
 
@@ -309,16 +309,14 @@ export class ChatListComponent {
     }
 
     if (channelType === 'cohort') {
-      const currentProgram = this.storage.get('programs').find(program => {
-        return program.timeline.id === this.storage.timelineId;
-      });
+      const currentExperience = this.storage.get('experience');
       this.chatChannels.forEach(channel => {
         if (environment.demo) {
           if (!channel.isAnnouncement && channel.name.includes('cohort channel')) {
             createdChannels.cohortChannel = true;
           }
         } else {
-          if (!channel.isAnnouncement && channel.name.includes(currentProgram.timeline.title)) {
+          if (!channel.isAnnouncement && channel.name.includes(currentExperience.name)) {
             createdChannels.cohortChannel = true;
           }
         }

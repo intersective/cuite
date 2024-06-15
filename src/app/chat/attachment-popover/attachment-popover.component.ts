@@ -8,14 +8,12 @@ import { FilestackService } from '@shared/filestack/filestack.service';
   templateUrl: './attachment-popover.component.html',
   styleUrls: ['./attachment-popover.component.scss'],
 })
-export class AttachmentPopoverComponent implements OnInit {
+export class AttachmentPopoverComponent {
 
   constructor(
     private popoverController: PopoverController,
     private filestackService: FilestackService
   ) { }
-
-  ngOnInit() {}
 
     /**
    * This will cloase the group chat popup

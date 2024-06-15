@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ElsaTodoListComponent } from './elsa-todo-list.component';
 import { ElsaTodoListService } from './elsa-todo-list.service';
@@ -13,7 +13,7 @@ describe('ElsaTodoListComponent', () => {
   let element: HTMLElement;
   let serviceSpy: jasmine.SpyObj<ElsaTodoListService>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     let storageStub: Partial<StorageService>;
     let routerStub: Partial<Router>;
     TestBed.configureTestingModule({

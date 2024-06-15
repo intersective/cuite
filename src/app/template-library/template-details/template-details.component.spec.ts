@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TemplateDetailsComponent } from './template-details.component';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -96,7 +96,7 @@ describe('TemplateDetailsComponent', () => {
     }
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TemplateDetailsComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

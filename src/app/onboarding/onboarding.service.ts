@@ -3,9 +3,10 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
 import { RequestService } from '../shared/request/request.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { urlFormatter } from 'helper';
 import { StorageService } from '@app/shared/services/storage.service';
+import { ApolloService } from '@shared/apollo/apollo.service';
 
 export interface Template {
   uuid: string;
@@ -46,7 +47,8 @@ export class OnboardingService {
   constructor(
     private request: RequestService,
     private demo: DemoService,
-    private storage: StorageService
+    private storage: StorageService,
+    private apollo: ApolloService,
   ) { }
 
   getTemplates(attribute: string): Observable<[Template]> {
@@ -57,7 +59,7 @@ export class OnboardingService {
     if (environment.demo) {
       return this.demo.getOnboardingTemplates().pipe(map(this._handleOnBoardingTemplates));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query onboardingTemplates($attribute: String) {
         onboardingTemplates(attribute: $attribute) {
           uuid
@@ -66,10 +68,7 @@ export class OnboardingService {
           leadImageUrl
         }
       }`,
-      { attribute },
-      {
-        noCache: true
-      }
+      { attribute }
     ).pipe(map(this._handleOnBoardingTemplates));
   }
 
@@ -88,7 +87,7 @@ export class OnboardingService {
     if (environment.demo) {
       return this.demo.getOnboardingTemplateDetail(params.type).pipe(map(this._handleOnBoardingTemplate));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query onboardingTemplate($uuid: ID, $type: String) {
         onboardingTemplate(uuid: $uuid, type: $type) {
           uuid
@@ -134,7 +133,7 @@ export class OnboardingService {
     if (environment.demo) {
       return this.demo.getOnboardingBriefs().pipe(map(this._handleBriefs));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query onboardingBriefs($templateUuid: ID!, $duration: String!) {
         onboardingBriefs(templateUuid: $templateUuid, duration: $duration) {
           uuid

@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AnnouncementChatPopupComponent } from './announcement-chat-popup.component';
 
@@ -7,7 +7,7 @@ describe('AnnouncementChatPopupComponent', () => {
   let component: AnnouncementChatPopupComponent;
   let fixture: ComponentFixture<AnnouncementChatPopupComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AnnouncementChatPopupComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

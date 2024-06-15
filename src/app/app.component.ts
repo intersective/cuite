@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NavigationEnd, Router } from '@angular/router';
 import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 import { PusherService } from '@shared/pusher/pusher.service';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { AnalyticsService } from './shared/services/analytics.service';
+import { ApolloService } from '@shared/apollo/apollo.service';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +16,10 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private router: Router,
     public utils: UtilsService,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private storage: StorageService,
     private pusherService: PusherService,
     private analytics: AnalyticsService,
+    private apolloService: ApolloService,
   ) {
     this.initializeApp();
   }
@@ -75,10 +72,10 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(async() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
       // initialise Pusher
       await this.pusherService.initialise();
+      this.apolloService.initiateCoreClient();
+    this.apolloService.initiateChatClient();
     });
   }
 }

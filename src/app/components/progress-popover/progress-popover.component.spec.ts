@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ProgressPopoverComponent } from './progress-popover.component';
 
@@ -6,7 +6,7 @@ describe('ProgressPopoverComponent', () => {
   let component: ProgressPopoverComponent;
   let fixture: ComponentFixture<ProgressPopoverComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ProgressPopoverComponent ]
     })

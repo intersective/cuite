@@ -47,7 +47,7 @@ ion-content {
   cursor: pointer;
 }
 
-clickable-item {
+app-clickable-item {
   .bold {
     font-weight: bold;
   }
@@ -131,7 +131,7 @@ clickable-item {
     padding-top: 10px;
   }
 
-  clickable-item {
+  app-clickable-item {
     ion-label {
       .chat-name-container {
         span {

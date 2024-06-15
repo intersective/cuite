@@ -11,7 +11,7 @@
       <ion-content>
         <ion-list lines="none">
           <ion-item routerLink="/templates" [ngClass]="router.url === '/templates' ? 'active' : ''" >Home</ion-item>
-          <ion-item routerLink="/templates/custom" [ngClass]="router.url === '/templates/custom' ? 'active' : ''" >Custom Templates</ion-item>
+          <ion-item routerLink="/templates/custom" [ngClass]="router.url === '/templates/custom' ? 'active' : ''" >Private Templates</ion-item>
           <ion-item class="menu-header">Categories</ion-item>
           <ng-container *ngFor="let category of categories">
             <ion-item (click)="router.navigate( ['templates', category.id])" [ngClass]="router.url === '/templates/' + encodeURI(category.id) ? 'active' : ''" button>{{ category.name }}</ion-item>

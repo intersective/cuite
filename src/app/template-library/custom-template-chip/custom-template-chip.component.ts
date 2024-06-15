@@ -5,10 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './custom-template-chip.component.html',
   styleUrls: ['./custom-template-chip.component.scss'],
 })
-export class CustomTemplateChipComponent implements OnInit {
+export class CustomTemplateChipComponent {
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

@@ -1,4 +1,4 @@
-<app-onboarding-steps class="ion-hide-sm-down" step=2 total=3></app-onboarding-steps>
+<app-onboarding-steps class="ion-hide-sm-down" [step]=2 [total]=3></app-onboarding-steps>
 <app-onboarding-header
   title="Choose a Learning Design Template"
   subtitle="Select one experience from the templates or create your own."
@@ -10,4 +10,4 @@
   <app-onboarding-template-detail [template]="template" (durationChange)="durationIndex = $event"></app-onboarding-template-detail>
 </ion-content>
 
-<app-action-footer (submit)="continue()"></app-action-footer>
+<app-action-footer (submitBtn)="continue()"></app-action-footer>

@@ -7,12 +7,10 @@ import {Router} from '@angular/router';
   templateUrl: './template-category-card.component.html',
   styleUrls: ['./template-category-card.component.scss'],
 })
-export class TemplateCategoryCardComponent implements OnInit {
+export class TemplateCategoryCardComponent {
 
   @Input() category: Category;
 
   constructor(public router: Router) { }
-
-  ngOnInit() {}
 
 }

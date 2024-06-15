@@ -24,13 +24,20 @@
   padding-right: 20px;
 }
 
+.public-toggle {
+  ion-toggle {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
 .template-title {
   font-weight: bold;
   font-size: 42px;
 }
 
 .template-details-title-row {
-  padding-top: 20px;
+  padding-top: 30px;
   padding-bottom: 20px;
 }
 
@@ -68,5 +75,5 @@
 .custom-template-chip {
   position: absolute;
   left: 41px;
-  top: 217px;
+  top: 215px;
 }

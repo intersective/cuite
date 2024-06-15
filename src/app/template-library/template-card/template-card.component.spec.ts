@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA, DebugElement} from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TemplateCardComponent } from './template-card.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,7 +22,7 @@ describe('TemplateCardComponent', () => {
     isPublic: false
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [ TemplateCardComponent ],

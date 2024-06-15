@@ -1,6 +1,6 @@
 <div class="ion-padding" [ngClass]="{'main-container': updateSuccess}">
   <ng-container *ngIf="!updateSuccess; else messageCreated">
-    <p class="subtitle-2 popup-title">{{ reScheduled ? 'Modify Shedule' : 'Edit Message' }}</p>
+    <p class="subtitle-2 popup-title">{{ reScheduled ? 'Modify Schedule' : 'Edit Message' }}</p>
 
     <p class="caption hint-message" *ngIf="reScheduled"><strong>{{ utils.browserTimezone() }} Timezone</strong></p>
 

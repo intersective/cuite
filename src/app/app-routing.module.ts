@@ -4,27 +4,31 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: './auth/auth.module#AuthModule'
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: 'error',
-    loadChildren: './error/error.module#ErrorModule'
+    loadChildren: () => import('./error/error.module').then(m => m.ErrorModule)
   },
   {
     path: 'progress-only',
-    loadChildren: './progress/progress.module#ProgressModule'
+    loadChildren: () => import('./progress/progress.module').then(m => m.ProgressModule)
   },
   {
     path: 'chat-only',
-    loadChildren: './chat/chat.module#ChatModule'
+    loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule)
   },
   {
     path: 'overview-only',
-    loadChildren: './overview/overview.module#OverviewModule'
+    loadChildren: () => import('./overview/overview.module').then(m => m.OverviewModule)
   },
   {
     path: 'templates',
-    loadChildren: './template-library/template-library.module#TemplateLibraryModule'
+    loadChildren: () => import('./template-library/template-library.module').then(m => m.TemplateLibraryModule)
+  },
+  {
+    path: 'metrics',
+    loadChildren: () => import('./metrics/metrics.module').then(m => m.MetricsModule)
   },
   // {
   //   path: 'onboarding',
@@ -32,14 +36,12 @@ const routes: Routes = [
   // },
   {
     path: '',
-    loadChildren: './menu/menu.module#MenuModule'
+    loadChildren: () => import('./menu/menu.module').then(m => m.MenuModule)
   },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

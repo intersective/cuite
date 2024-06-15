@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ScheduleMessageListComponent } from './schedule-message-list.component';
 
@@ -7,7 +7,7 @@ describe('ScheduleMessageListComponent', () => {
   let component: ScheduleMessageListComponent;
   let fixture: ComponentFixture<ScheduleMessageListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ScheduleMessageListComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {TemplateLibraryHomeComponent} from './template-library-home.component';
 import {TemplateLibraryService} from '../template-library.service';
@@ -110,7 +110,7 @@ describe('TemplateLibraryHomeComponent', () => {
     }
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TemplateLibraryHomeComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

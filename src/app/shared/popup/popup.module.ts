@@ -9,42 +9,35 @@ import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-e
 import { CreateTemplateComponent } from './create-template/create-template.component';
 import { TemplateInfoComponent } from './template-info/template-info.component';
 import { BriefInfoComponent } from './brief-info/brief-info.component';
+import { StatusInfoPopoverComponent } from './status-info-popover/status-info-popover.component';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    NgbTypeaheadModule
-  ],
-  providers: [
-    PopupService
-  ],
-  declarations: [
-    DescriptionComponent,
-    TagsComponent,
-    TagsViewComponent,
-    DuplicateExperienceComponent,
-    CreateTemplateComponent,
-    TemplateInfoComponent,
-    BriefInfoComponent,
-  ],
-  exports: [
-    DescriptionComponent,
-    TagsComponent,
-    TagsViewComponent,
-    DuplicateExperienceComponent,
-    CreateTemplateComponent,
-    TemplateInfoComponent,
-    BriefInfoComponent,
-  ],
-  entryComponents: [
-    DescriptionComponent,
-    TagsComponent,
-    TagsViewComponent,
-    DuplicateExperienceComponent,
-    CreateTemplateComponent,
-    TemplateInfoComponent,
-    BriefInfoComponent
-  ]
+    imports: [
+        SharedModule,
+        NgbTypeaheadModule
+    ],
+    providers: [
+        PopupService
+    ],
+    declarations: [
+        DescriptionComponent,
+        TagsComponent,
+        TagsViewComponent,
+        DuplicateExperienceComponent,
+        CreateTemplateComponent,
+        TemplateInfoComponent,
+        BriefInfoComponent,
+        StatusInfoPopoverComponent
+    ],
+    exports: [
+        DescriptionComponent,
+        TagsComponent,
+        TagsViewComponent,
+        DuplicateExperienceComponent,
+        CreateTemplateComponent,
+        TemplateInfoComponent,
+        BriefInfoComponent,
+    ]
 })
 
 export class PopupModule {

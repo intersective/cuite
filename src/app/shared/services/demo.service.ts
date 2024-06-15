@@ -3,7 +3,7 @@ import { UtilsService } from '@services/utils.service';
 import { StorageService } from '@services/storage.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { delay } from 'rxjs/internal/operators';
+import { delay } from 'rxjs';
 import { environment } from '@environments/environment';
 import { urlFormatter } from 'helper';
 
@@ -1662,6 +1662,20 @@ export class DemoService {
         onboardingBriefs: this.onboardingBriefs
       }
     }).pipe(delay(1000));
+  }
+
+  get myInfo() {
+    return {
+      uuid: 'uuid-1',
+      name: 'test user',
+      firstName: 'test',
+      lastName: 'user',
+      email: 'test@abcd.com',
+      image: 'https://swapnil2597.github.io/assets/img/profile.png',
+      role: 'participent',
+      contactNumber: '',
+      userHash: '1234#asdwdd'
+    }
   }
 
 }

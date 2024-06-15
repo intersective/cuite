@@ -10,15 +10,15 @@ const routes: Routes = [{
   children: [
     {
       path: 'dashboard',
-      loadChildren: '../home/home.module#HomeModule'
+      loadChildren: () => import('../home/home.module').then(m => m.HomeModule)
     },
     {
       path: 'progress',
-      loadChildren: '../progress/progress.module#ProgressModule'
+      loadChildren: () => import('../progress/progress.module').then(m => m.ProgressModule)
     },
     {
       path: 'message',
-      loadChildren: '../message/message.module#MessageModule'
+      loadChildren: () => import('../message/message.module').then(m => m.MessageModule)
     },
     {
       path: '',

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ActionPopoverComponent } from './action-popover.component';
 import { PopoverController } from '@ionic/angular';
@@ -8,7 +8,7 @@ describe('ActionPopoverComponent', () => {
   let fixture: ComponentFixture<ActionPopoverComponent>;
   let popoverSpy;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ActionPopoverComponent ],
       providers: [

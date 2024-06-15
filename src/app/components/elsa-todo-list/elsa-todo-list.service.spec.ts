@@ -1,6 +1,5 @@
 import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { of, async } from 'rxjs';
-import { delay, map } from 'rxjs/internal/operators';
 import { RequestService } from '@shared/request/request.service';
 import { DemoService } from '@services/demo.service';
 import { UtilsService } from '@services/utils.service';

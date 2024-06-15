@@ -20,6 +20,11 @@
               <div class="float-end importing-template-spinner"><ion-spinner *ngIf="importingTemplate"></ion-spinner></div>
               <button *ngIf="canDelete()" type="button" class="btn btn-outline-secondary float-end" (click)="deleteTemplate()"><span>Delete</span></button>
             </div>
+            <div *ngIf="showToggle" class="d-flex align-items-center float-end public-toggle" style="margin-top:10px">
+              <span>Private</span>
+              <ion-toggle color="ocean" mode="ios" [(ngModel)]="isTemplatepublic" (ionChange)="updateTemplateVisibility($event)"></ion-toggle>
+              <span>Public</span>
+            </div>
           </ion-col>
         </ion-row>
 

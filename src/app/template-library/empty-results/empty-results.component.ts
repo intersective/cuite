@@ -5,12 +5,10 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './empty-results.component.html',
   styleUrls: ['./empty-results.component.scss'],
 })
-export class EmptyResultsComponent implements OnInit {
+export class EmptyResultsComponent {
 
   @Input() emptyResultsString = 'Could not find any templates';
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

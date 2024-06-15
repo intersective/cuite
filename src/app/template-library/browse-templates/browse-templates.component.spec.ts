@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 import {BrowseTemplatesComponent} from './browse-templates.component';
 import {ActivatedRoute} from '@angular/router';
@@ -92,7 +92,7 @@ describe('BrowseTemplatesComponent', () => {
     filter: 'filter string'
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BrowseTemplatesComponent ],
       imports: [RouterTestingModule],

@@ -6,13 +6,11 @@ import {Template} from '../../template-library/template-library.service';
   templateUrl: './template-card.component.html',
   styleUrls: ['./template-card.component.scss'],
 })
-export class TemplateCardComponent implements OnInit {
+export class TemplateCardComponent {
 
   @Input() template: Template;
   @Input() skeleton = false;
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

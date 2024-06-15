@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModalController, AlertController, ToastController } from '@ionic/angular';
-import { AlertOptions } from '@ionic/core';
+import { AlertOptions } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,8 @@ import { RequestService } from '@shared/request/request.service';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { DemoService } from '@services/demo.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { ApolloService } from '@shared/apollo/apollo.service';
 
 /**
  * list of api endpoint involved in this service
@@ -29,7 +30,7 @@ export interface Experience {
   todoItemCount: number;
   statistics: Statistics;
   role: Role;
-  isLast: boolean;
+  isLast?: boolean;
 }
 
 export type Role = 'sysadmin' | 'inst_admin' | 'admin' | 'coordinator' | 'mentor' | 'participant';
@@ -66,13 +67,14 @@ export class OverviewService {
   constructor(
     private request: RequestService,
     private demo: DemoService,
+    private apollo: ApolloService,
   ) { }
 
   getExperiences() {
     if (environment.demo) {
       return this.demo.getExperiences().pipe(map(this._handleExperiences));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query experiences {
         experiences {
           id
@@ -118,10 +120,7 @@ export class OverviewService {
           }
         }
       }`,
-      {},
-      {
-        noCache: true,
-      }
+      {}
     ).pipe(map(this._handleExperiences));
   }
 
@@ -143,7 +142,7 @@ export class OverviewService {
     if (environment.demo) {
       return this.demo.getExpsStatistics(uuids).pipe(map(this._handleExpsStatistics));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query expsStatistics($uuids: [ID]){
         expsStatistics(uuids: $uuids) {
           uuid
@@ -191,7 +190,7 @@ export class OverviewService {
     if (environment.demo) {
       return this.demo.deleteExperience(experience);
     }
-    return this.request.graphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation deleteExperience($uuid: String!) {
         deleteExperience(uuid: $uuid) {
           success
@@ -218,7 +217,7 @@ export class OverviewService {
     if (environment.demo) {
       return this.demo.duplicateExperienceUrl(uuid).pipe(map(this._handleDuplicateExperienceUrlResponse));
     }
-    return this.request.graphQLQuery(
+    return this.apollo.graphQLFetch(
       `query duplicateExperienceUrl($uuid: ID!, $roles: [String]) {
         duplicateExperienceUrl(uuid: $uuid, roles: $roles)
       }`,
@@ -237,7 +236,7 @@ export class OverviewService {
     if (environment.demo) {
       return this.demo.updateExperience(experience, status);
     }
-    return this.request.graphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation updateExperience($uuid: String!, $status: String) {
         updateExperience(uuid: $uuid, status: $status) {
           success
@@ -255,7 +254,7 @@ export class OverviewService {
     if (environment.demo) {
       return this.demo.exportExperience(uuid, name).pipe(map(this._handleExportExperienceResponse));
     }
-    return this.request.graphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation exportExperience($uuid: ID!, $name: String) {
         exportExperience(uuid: $uuid, name: $name) {
           success

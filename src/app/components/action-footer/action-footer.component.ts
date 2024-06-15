@@ -12,7 +12,7 @@ export class ActionFooterComponent {
   @Input() hasCancelEvent: boolean;
   @Input() btnSubmitText = 'continue';
   @Input() btnSubmitDisabled;
-  @Output() submit = new EventEmitter();
+  @Output() submitBtn = new EventEmitter();
   @Output() cancel = new EventEmitter();
   constructor(
     private router: Router,
@@ -31,6 +31,6 @@ export class ActionFooterComponent {
   }
 
   submitEvent() {
-    this.submit.emit();
+    this.submitBtn.emit();
   }
 }

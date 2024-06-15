@@ -9,7 +9,7 @@
       </div>
       <div class="title-bar-tools col-md-6">
         <button class="btn btn-link" [disabled]="loadingExps" (click)="createReport()">Download data</button>
-        <button class="btn btn-primary btn-sm" style='border-radius: 20px; font-size: .8em;' (click)="goToLink('https://help.practera.com/en/articles/4820081-communicating-with-learners-and-experts')"><ion-icon size='small' name="help-circle-outline"></ion-icon><span>help</span></button>
+        <button class="btn btn-primary btn-sm" style='border-radius: 20px; font-size: .8em;' (click)="goToLink('https://practera.com/docs/the-experience-portal-explained-practera-2/')"><ion-icon size='small' name="help-circle-outline"></ion-icon><span>help</span></button>
       </div>
     </div>
   </header>
@@ -28,7 +28,7 @@
       <div *ngIf="loadingExps" class="row">
         <div class="col-md-6 col-xl-3" *ngFor="let stat of stats">
           <app-stat-card
-            skeleton="true"
+            [skeleton]="true"
             [statLabel]="stat.label"
             [statDescription]="stat.description"
           ></app-stat-card>
@@ -45,7 +45,7 @@
           <h2>My experiences</h2>
         </div>
         <div class="title-bar-tools col-md-6">
-          <button class="btn btn-primary btn-lg" [routerLink]="['/templates']" [disabled]="loadingExps">
+          <button class="btn btn-primary btn-lg" [routerLink]="['/templates']">
             <ion-icon name="add"></ion-icon>
             <span>Add experience</span>
           </button>
@@ -159,7 +159,7 @@
           </div>
 
           <div class="experiences-list">
-            <app-experience-card *ngIf="loadingExps" skeleton="true"></app-experience-card>
+            <app-experience-card *ngIf="loadingExps" [skeleton]="true"></app-experience-card>
             <ng-container *ngIf="!loadingExps">
               <ng-container *ngFor="let exp of experiences">
                 <app-experience-card

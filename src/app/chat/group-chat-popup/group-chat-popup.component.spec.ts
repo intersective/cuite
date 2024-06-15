@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GroupChatPopupComponent } from './group-chat-popup.component';
 
@@ -7,7 +7,7 @@ describe('GroupChatPopupComponent', () => {
   let component: GroupChatPopupComponent;
   let fixture: ComponentFixture<GroupChatPopupComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupChatPopupComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

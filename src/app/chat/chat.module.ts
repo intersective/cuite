@@ -20,45 +20,36 @@ import { EditScheduleMessagePopupComponent } from './edit-schedule-message-popup
 import { AttachmentPopoverComponent } from './attachment-popover/attachment-popover.component';
 
 @NgModule({
-  declarations: [
-    ChatComponent,
-    ChatListComponent,
-    ChatRoomComponent,
-    ChatPreviewComponent,
-    ChatInfoComponent,
-    ClickableItemComponent,
-    DirectChatComponent,
-    AnnouncementChatPopupComponent,
-    GroupChatPopupComponent,
-    ScheduleMessageListComponent,
-    ScheduleMessagePopupComponent,
-    EditScheduleMessagePopupComponent,
-    AttachmentPopoverComponent
-  ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: ChatComponent
-      }
-    ]),
-    QuillModule.forRoot()
-  ],
-  exports: [
-    ChatComponent,
-    ChatListComponent,
-    ChatRoomComponent,
-  ],
-  entryComponents: [
-    ChatPreviewComponent,
-    ChatInfoComponent,
-    DirectChatComponent,
-    AnnouncementChatPopupComponent,
-    GroupChatPopupComponent,
-    ScheduleMessagePopupComponent,
-    EditScheduleMessagePopupComponent,
-    AttachmentPopoverComponent],
-  providers: [ChatService],
+    declarations: [
+        ChatComponent,
+        ChatListComponent,
+        ChatRoomComponent,
+        ChatPreviewComponent,
+        ChatInfoComponent,
+        ClickableItemComponent,
+        DirectChatComponent,
+        AnnouncementChatPopupComponent,
+        GroupChatPopupComponent,
+        ScheduleMessageListComponent,
+        ScheduleMessagePopupComponent,
+        EditScheduleMessagePopupComponent,
+        AttachmentPopoverComponent
+    ],
+    imports: [
+        SharedModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: ChatComponent
+            }
+        ]),
+        QuillModule.forRoot()
+    ],
+    exports: [
+        ChatComponent,
+        ChatListComponent,
+        ChatRoomComponent,
+    ],
+    providers: [ChatService]
 })
 export class ChatModule { }

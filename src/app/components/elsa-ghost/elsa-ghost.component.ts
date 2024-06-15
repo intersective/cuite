@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './elsa-ghost.component.html',
   styleUrls: ['./elsa-ghost.component.scss']
 })
-export class ElsaGhostComponent implements OnInit {
+export class ElsaGhostComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

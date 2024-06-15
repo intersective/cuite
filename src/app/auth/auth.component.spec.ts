@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { AuthComponent } from './auth.component';
@@ -13,7 +13,7 @@ describe('AuthComponent', () => {
   let fixture: ComponentFixture<AuthComponent>;
   let routerSpy, activeRouterSpy, authServiceSpy, notificationServiceSpy, pusherServiceSpy;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     authServiceSpy = jasmine.createSpyObj('AuthService', ['directLogin']);
     notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['alert']);

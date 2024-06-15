@@ -7,6 +7,6 @@
   </ion-card-header>
   <app-onboarding-template-detail [template]="template" (durationChange)="durationIndex = $event"></app-onboarding-template-detail>
   <div class="position-fixed w-100" [ngClass]="{ 'bottom-0': template }">
-    <app-action-footer (cancel)="cancel()" hasCancelEvent="true" (submit)="confirm()" btnSubmitText="{{utils.isMobile() ? 'Use Template' : 'Select Template & Continue'}}"></app-action-footer>
+    <app-action-footer (cancel)="cancel()" [hasCancelEvent]="true" (submitBtn)="confirm()" btnSubmitText="{{utils.isMobile() ? 'Use Template' : 'Select Template & Continue'}}"></app-action-footer>
   </div>
 </ion-card>

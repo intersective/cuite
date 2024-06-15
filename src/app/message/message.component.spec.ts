@@ -1,11 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { MessageComponent } from './message.component';
 import { StorageService } from '@services/storage.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { LoadingController } from '@ionic/angular';
 import { MessageService } from './message.service';
 import { NotificationService } from '@services/notification.service';
@@ -75,7 +74,7 @@ describe('MessageComponent', () => {
   let serviceSpy;
   let notificationSpy;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MessageComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

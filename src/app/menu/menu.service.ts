@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { delay } from 'rxjs/internal/operators';
+import { delay } from 'rxjs';
 import { RequestService } from '@shared/request/request.service';
 import { StorageService } from '@services/storage.service';
 import { environment } from '@environments/environment';

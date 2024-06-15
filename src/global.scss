@@ -11,9 +11,9 @@
 @import '~@ionic/angular/css/flex-utils.css';
 
 // Data tables
-@import '~@swimlane/ngx-datatable/index.css';
-@import '~@swimlane/ngx-datatable/themes/material.css';
-@import '~@swimlane/ngx-datatable/assets/icons.css';
+@import '../node_modules/@swimlane/ngx-datatable/index.css';
+@import '../node_modules/@swimlane/ngx-datatable/themes/material.css';
+@import '../node_modules/@swimlane/ngx-datatable/assets/icons.css';
 
 // PFAS
 @import 'theme/pfas/pfas';
@@ -22,5 +22,5 @@
 @import 'theme/pfas-bootstrap/pfas-bootstrap';
 
 // Quill
-@import "~quill/dist/quill.core.css";
-@import "~quill/dist/quill.snow.css";
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";

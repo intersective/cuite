@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx';
 import { Injectable, Inject } from '@angular/core';
 import * as _ from 'lodash';
 import { DOCUMENT } from '@angular/common';
@@ -273,7 +274,7 @@ export class UtilsService {
   }
 
   removeAllSpecialCharactersAndToLower(type: string): string {
-    type = type.replace(/[!@#^_.$&*%\s\-]/g, ''); // tslint:disable-line
+    type = type.replace(/[!@#^_.$&*%\s\-]/g, ''); // eslint-disable-line
     type = type.toLowerCase();
     return type;
   }
@@ -411,6 +412,42 @@ export class UtilsService {
       const plaintext = node.innerText;
       return new Delta().insert(plaintext);
     });
+  }
+
+  generateXLSX(data, header = null, title = null) {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data, { header });
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Metrics');
+
+    // save to file
+    return XLSX.writeFile(workbook, title, { bookType: 'xlsx', type: 'string' });
+  }
+
+  getMetricStatusIcon(status) {
+    switch (status) {
+      case 'not_required':
+        return 'ban-outline';
+      case 'required':
+        return 'star-outline';
+      case 'recommended':
+        return 'happy-outline';
+      case 'inactive':
+        return 'flash-off-outline';
+      case 'active':
+        return 'flash-outline';
+      case 'archived':
+        return 'folder-outline';
+      case 'configured':
+        return 'settings-outline';
+      case 'not_configured':
+        return 'warning-outline';
+      default:
+        return '';
+    }
+  }
+
+  calculateMetricValuePercentage(lastRecordValue, maxValue) {
+    return Math.round((lastRecordValue / maxValue) * 100) + '%';
   }
 
 }

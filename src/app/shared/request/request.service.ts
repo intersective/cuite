@@ -152,90 +152,6 @@ export class RequestService {
   }
 
   /**
-   * Method to call practera graphQL server to get deta from database.
-   * @param query GraphQL query that use to get data from graphQL server.
-   * @param variables values need to pass with query.
-   * @param options options of the query eg:- 'no-cache' do we need to cache the data of query.
-   */
-  graphQLQuery(query: string, variables?: any, options?: any): Observable<any> {
-    options = {...{ noCache: false }, ...options};
-    const watch = this.apollo.use('practera').watchQuery({
-      query: gql(query),
-      variables: variables || {},
-      fetchPolicy: options.noCache ? 'no-cache' : 'cache-and-network'
-    });
-    return watch.valueChanges
-      .pipe(map(response => {
-        this._refreshApikey(response);
-        return response;
-      }))
-      .pipe(
-        catchError((error) => this.handleError(error))
-      );
-  }
-
-  /**
-   * Method to call Practera graphQL server to save data on database.
-   * @param query GraphQL query that use to get data from graphQL server.
-   * @param variables values need to pass with query.
-   */
-  graphQLMutate(query: string, variables = {}): Observable<any> {
-    return this.apollo.use('practera').mutate({
-      mutation: gql(query),
-      variables: variables
-    })
-      .pipe(
-        map(response => {
-          this._refreshApikey(response);
-          return response;
-        }),
-        catchError((error) => this.handleError(error))
-      );
-  }
-
-  /**
-   * Method to call graphQL chat server to get deta from database.
-   * @param query GraphQL query that use to get data from graphQL server.
-   * @param variables values need to pass with query.
-   * @param options options of the query eg:- 'no-cache' do we need to cache the data of query.
-   */
-  chatGraphQLQuery(query: string, variables?: any, options?: any): Observable<any> {
-    options = {...{ noCache: false }, ...options};
-    const watch = this.apollo.use('chat').watchQuery({
-      query: gql(query),
-      variables: variables || {},
-      fetchPolicy: options.noCache ? 'no-cache' : 'cache-and-network'
-    });
-    return watch.valueChanges
-      .pipe(map(response => {
-        this._refreshApikey(response);
-        return response;
-      }))
-      .pipe(
-        catchError((error) => this.handleError(error))
-      );
-  }
-
-  /**
-   * Method to call graphQL chat server to save data on database.
-   * @param query GraphQL query that use to get data from graphQL server.
-   * @param variables values need to pass with query.
-   */
-  chatGraphQLMutate(query: string, variables = {}): Observable<any> {
-    return this.apollo.use('chat').mutate({
-      mutation: gql(query),
-      variables: variables
-    })
-      .pipe(
-        concatMap(response => {
-          this._refreshApikey(response);
-          return of(response);
-        }),
-        catchError((error) => this.handleError(error))
-      );
-  }
-
-  /**
    * Get the api prefix based on api endpoint name
    */
   public getPrefixUrl(endPoint: string) {
@@ -254,7 +170,7 @@ export class RequestService {
     return;
   }
 
-  private handleError(error: HttpErrorResponse) {
+  handleError(error: HttpErrorResponse) {
     if (isDevMode()) {
       console.error(error); // log to console instead
     }

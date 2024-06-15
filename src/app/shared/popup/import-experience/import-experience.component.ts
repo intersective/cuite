@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-import { ToastOptions } from '@ionic/core';
+import { ToastOptions } from '@ionic/angular';
 import { environment } from '@environments/environment';
 import { TemplateLibraryService } from '@app/template-library/template-library.service';
 import { AnalyticsService } from '@app/shared/services/analytics.service';
