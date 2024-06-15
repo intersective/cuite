@@ -9,8 +9,14 @@ name: Deploy to p2-stage environment
 ################################################
 on:
   workflow_dispatch:
+    inputs:
+      INPUT_BRANCH:
+        description: 'Branch or tag to deploy'     
+        required: true
+        default: ''
   push:
-    branches: [ 'trunk' ]
+    branches:
+      - 'trunk'
 
 ################################################
 #  GITHUB ACTION JOBS
@@ -41,16 +47,30 @@ jobs:
       REQUESTOR: ${{ github.event.inputs.REQUESTOR }}
       REASON: ${{ github.event.inputs.REASON }}
       ENDPOINT: cutie-app.p2-stage.practera.com
-      BRANCH_TAG_NAME: trunk
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
-################################################
-#  GITHUB REPO CHECKOUT
-################################################
     steps:
-      - uses: actions/checkout@v2
+
+################################################
+#  Export BRANCH_TAG_NAME
+################################################
+      - name: Get branch for env BRANCH_TAG_NAME
+        run: |
+          if [ -z "$INPUT_BRANCH" ]; then
+            echo "BRANCH_TAG_NAME="$(echo "$GITHUB_REF_NAME") >> $GITHUB_ENV
+          else
+            echo "BRANCH_TAG_NAME="$(echo "$INPUT_BRANCH") >> $GITHUB_ENV
+          fi
+        env:
+          INPUT_BRANCH: ${{ github.event.inputs.INPUT_BRANCH }}
+
+################################################
+#  GITHUB REPO CHECKOUT 
+################################################
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          ref: ${{ env.BRANCH_TAG_NAME }}
 
 
 
@@ -60,7 +80,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '18'
 
 
 ################################################
