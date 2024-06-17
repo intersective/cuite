@@ -128,7 +128,8 @@ export class PusherService {
       return this.pusher;
     }
     // prevent pusher auth before user authenticated (skip silently)
-    const { apikey, timelineId } = this.storage.getUser();
+    const apikey = this.storage.getUser();
+    const timelineId = this.storage.get('experience').timelineId;
     if (!apikey || !timelineId) {
       return this.pusher;
     }
