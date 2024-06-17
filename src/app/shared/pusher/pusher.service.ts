@@ -12,7 +12,7 @@ import { urlFormatter } from 'helper';
 import { ApolloService } from '@shared/apollo/apollo.service';
 
 const api = {
-  pusherAuth: '/pusher_auth',
+  pusherAuth: 'pusher_auth',
   channels: 'api/v2/message/notify/channels.json'
 };
 
@@ -128,7 +128,7 @@ export class PusherService {
       return this.pusher;
     }
     // prevent pusher auth before user authenticated (skip silently)
-    const apikey = this.storage.getUser();
+    const apikey = this.storage.getUser().apikey;
     const timelineId = this.storage.get('experience').timelineId;
     if (!apikey || !timelineId) {
       return this.pusher;
