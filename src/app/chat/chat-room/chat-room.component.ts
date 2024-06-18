@@ -74,10 +74,10 @@ export class ChatRoomComponent {
     }
     // message by team
     this.utils.getEvent('chat:new-message').subscribe(event => {
-      console.log('====1===');
+      console.log('====1===', event);
       const receivedMessage = this.getMessageFromEvent(event);
       if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
-        console.log('====2===');
+        console.log('====2===', this.channelUuid, receivedMessage.channelUuid);
         return;
       }
       // if received message is schedule one need to update count
