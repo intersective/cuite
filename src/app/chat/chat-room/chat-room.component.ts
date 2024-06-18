@@ -165,7 +165,7 @@ export class ChatRoomComponent {
    */
   getMessageFromEvent(data): Message {
     console.log('====1===1', data);
-    if (data) {
+    if (!data) {
       return null;
     }
     const receivedMessage: Message = {
