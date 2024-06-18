@@ -74,15 +74,19 @@ export class ChatRoomComponent {
     }
     // message by team
     this.utils.getEvent('chat:new-message').subscribe(event => {
+      console.log('====1===');
       const receivedMessage = this.getMessageFromEvent(event);
       if (this.utils.isEmpty(receivedMessage) || receivedMessage.channelUuid !== this.channelUuid) {
+        console.log('====2===');
         return;
       }
       // if received message is schedule one need to update count
       if (event.isScheduled) {
+        console.log('====3===');
         this.chatChannel.scheduledMessageCount -= 1;
       }
       if (!this.utils.isEmpty(receivedMessage)) {
+        console.log('====4===',  receivedMessage);
         this.messageList.push(receivedMessage);
         this._markAsSeen();
         this._scrollToBottom();
@@ -160,6 +164,7 @@ export class ChatRoomComponent {
    * @description listen to pusher event for new message
    */
   getMessageFromEvent(data): Message {
+    console.log('====1===1', data);
     if (data) {
       return null;
     }
@@ -191,6 +196,7 @@ export class ChatRoomComponent {
     ) {
       receivedMessage.isSender = true;
     }
+    console.log('====1===2', receivedMessage);
     return receivedMessage;
   }
 
@@ -409,6 +415,7 @@ export class ChatRoomComponent {
 
   // call chat api to mark message as seen messages
   private _markAsSeen() {
+    console.log('====4===1');
     const messageIds = this.messageList.map(m => m.uuid);
     this.chatService
       .markMessagesAsSeen(messageIds)
@@ -585,9 +592,11 @@ export class ChatRoomComponent {
   }
 
   private _scrollToBottom() {
+    console.log('====4===2');
     setTimeout(
       () => {
         this.content.scrollToBottom();
+        console.log('====4===3');
       },
       500
     );
