@@ -321,7 +321,8 @@ export class PusherService {
       return;
     }
     channel.subscription.trigger('client-typing-event', {
-      user: this.storage.getUser().name
+      user: this.storage.getUser().name,
+      channel: channelName
     });
   }
 
