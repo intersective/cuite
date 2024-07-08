@@ -160,7 +160,7 @@ export class ChatRoomComponent {
    * @description listen to pusher event for new message
    */
   getMessageFromEvent(data): Message {
-    if (data) {
+    if (!data) {
       return null;
     }
     const receivedMessage: Message = {
