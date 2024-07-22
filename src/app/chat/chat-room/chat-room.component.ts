@@ -160,7 +160,7 @@ export class ChatRoomComponent {
    * @description listen to pusher event for new message
    */
   getMessageFromEvent(data): Message {
-    if (data) {
+    if (!data) {
       return null;
     }
     const receivedMessage: Message = {
@@ -574,6 +574,10 @@ export class ChatRoomComponent {
     if (event.user === this.storage.getUser().name) {
       return;
     }
+    // if the channel names not matching no need to show typing
+    if (event.channel !== this.chatChannel.pusherChannel) {
+      return;
+    }
     this.whoIsTyping = event.user + ' is typing';
     this._scrollToBottom();
     setTimeout(
@@ -789,7 +793,7 @@ export class ChatRoomComponent {
   deleteMessage(messageUuid) {
     this.popupService.showAlert({
       header: 'Delete Message?',
-      message: 'Are you sure you want to delete this message.<br/>This action cannot be undone.',
+      message: 'Are you sure you want to delete this message. This action cannot be undone.',
       cssClass: 'message-delete-alert',
       buttons: [
         {
