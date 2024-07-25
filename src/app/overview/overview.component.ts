@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Experience, Statistics, Tag, OverviewService } from './overview.service';
+import { Experience, Statistics, UserCount, Tag, OverviewService } from './overview.service';
 import { UtilsService } from '@services/utils.service';
 import { PopupService } from '@shared/popup/popup.service';
 import { StorageService } from '@services/storage.service';
@@ -113,6 +113,7 @@ export class OverviewComponent implements OnInit {
     this.service.getExperiences().subscribe(res => {
       // reformat tags from string[] to Tag[]
       this.experiencesRaw = res;
+      this._fixStatistics();
       // remove experiences didn't have admin or coordinator role
       this._filterByRole();
       // get all tags
@@ -120,9 +121,9 @@ export class OverviewComponent implements OnInit {
       // get all types
       this._getAllTypes();
       this.filterAndOrder();
-      this._refreshLiveExpStats();
       this.loadingExps = false;
     });
+
   }
 
 
@@ -171,14 +172,18 @@ export class OverviewComponent implements OnInit {
       this.remainingExperiences = [];
       if (this.experiences.length > maxExp) {
         this.remainingExperiences = this.experiences.splice(maxExp, this.experiences.length - maxExp);
+        this._refreshLiveExpStats(this.experiences);
       }
     } else {
       // load 7 more experiences
       if (this.remainingExperiences.length <= maxExp) {
         this.experiences = [...this.experiences, ...this.remainingExperiences];
+        this._refreshLiveExpStats(this.remainingExperiences);
         this.remainingExperiences = [];
       } else {
-        this.experiences = [...this.experiences, ...this.remainingExperiences.splice(0, maxExp)];
+        let newExperiences = this.remainingExperiences.splice(0, maxExp);
+        this._refreshLiveExpStats(newExperiences);
+        this.experiences = [...this.experiences, ...newExperiences];
       }
     }
   }
@@ -237,6 +242,76 @@ export class OverviewComponent implements OnInit {
     this._renderExperiences();
   }
 
+  // ensure that statistics object is always available
+  // and that all fields are initialized to 0
+  // "statistics": {
+  //   "enrolledUserCount": {
+  //       "admin": 0,
+  //       "coordinator": 0,
+  //       "mentor": 0,
+  //       "participant": 0,
+  //       "__typename": "UserCount"
+  //   },
+  //   "registeredUserCount": {
+  //       "admin": 0,
+  //       "coordinator": 0,
+  //       "mentor": 0,
+  //       "participant": 0,
+  //       "__typename": "UserCount"
+  //   },
+  //   "activeUserCount": {
+  //       "admin": 0,
+  //       "coordinator": 0,
+  //       "mentor": 0,
+  //       "participant": 0,
+  //       "__typename": "UserCount"
+  //   },
+  //   "feedbackLoopStarted": 0,
+  //   "feedbackLoopCompleted": 0,
+  //   "reviewRatingAvg": 0,
+  //   "onTrackRatio": 0,
+  //   "__typename": "ExpStatistics"
+  // }
+  private _fixStatistics() {
+    this.experiencesRaw = this.experiencesRaw.map(exp => this._doStatisticsFix(exp));
+  }
+
+  private _doStatisticsFix(exp: Experience) {
+    {
+      //console.log('fixing statistics', exp.statistics);
+      if (!exp.statistics) {
+        exp.statistics = {} as Statistics;
+      }
+      exp.statistics.enrolledUserCount = exp.statistics.enrolledUserCount || {
+        admin: 0,
+        coordinator: 0,
+        mentor: 0,
+        participant: 0
+      } as UserCount;
+    
+      exp.statistics.registeredUserCount = exp.statistics.registeredUserCount || {
+        admin: 0,
+        coordinator: 0,
+        mentor: 0,
+        participant: 0
+      } as UserCount;
+    
+      exp.statistics.activeUserCount = exp.statistics.activeUserCount || {
+        admin: 0,
+        coordinator: 0,
+        mentor: 0,
+        participant: 0
+      } as UserCount;
+    
+      exp.statistics.feedbackLoopStarted = exp.statistics.feedbackLoopStarted || 0;
+      exp.statistics.feedbackLoopCompleted = exp.statistics.feedbackLoopCompleted || 0;
+      exp.statistics.reviewRatingAvg = exp.statistics.reviewRatingAvg || 0;
+      exp.statistics.onTrackRatio = exp.statistics.onTrackRatio || 0;
+    
+      //console.log('fixed statistics', exp.statistics);
+      return exp; // Return the modified experience
+    }
+  }
   private _filterByTag() {
     const activeTags = this.tags.filter(t => t.active).map(t => t.name);
     if (!activeTags.length) {
@@ -350,20 +425,21 @@ export class OverviewComponent implements OnInit {
     let fbCompleted = 0;
     let fbStarted = 0;
     let reviewRatingAvg = 0;
+    let reviewRatingCount = 0;
     this.experiences.forEach(exp => {
       if (exp.status === 'live') {
-        liveExpCount ++;
+        liveExpCount++;
       }
       const stat = exp.statistics;
       activeUsers += stat.activeUserCount.participant + stat.activeUserCount.mentor;
       totalUsers += stat.registeredUserCount.participant + stat.registeredUserCount.mentor;
       fbCompleted += stat.feedbackLoopCompleted;
       fbStarted += stat.feedbackLoopStarted;
-      if (reviewRatingAvg === 0) {
-        reviewRatingAvg = stat.reviewRatingAvg;
-      } else if (stat.reviewRatingAvg > 0) {
-        // if stat.reviewRatingAvg <= 0, don't count it for the average
-        reviewRatingAvg = (reviewRatingAvg + stat.reviewRatingAvg) / 2;
+
+      // Assuming there's a count variable initialized to 0 outside this snippet
+      if (stat.reviewRatingAvg > 0) {
+        reviewRatingAvg = ((reviewRatingAvg * reviewRatingCount) + stat.reviewRatingAvg) / (reviewRatingCount + 1);
+        reviewRatingCount += 1; // Increment count only if a valid reviewRatingAvg is added
       }
     });
     this.stats[0].value = liveExpCount.toString();
@@ -372,13 +448,14 @@ export class OverviewComponent implements OnInit {
     this.stats[3].value = `${ Math.round(reviewRatingAvg * 100) }%`;
   }
 
-  private _refreshLiveExpStats() {
-    const uuids = this.experiencesRaw.filter(e => ['live', 'draft'].includes(e.status)).map(e => e.uuid);
+  private _refreshLiveExpStats(experiences) {
+    const uuids = experiences.filter(e => ['live', 'draft'].includes(e.status)).map(e => e.uuid);
     this.service.getExpsStatistics(uuids).subscribe(res => {
       if (!res) {
         return;
       }
       res.forEach(exp => {
+        exp = this._doStatisticsFix(exp);
         // update both experiencesRaw and experiences
         const expRawIndex = this.experiencesRaw.findIndex(e => e.uuid === exp.uuid);
         if (expRawIndex >= 0 && !this.utils.isEqual(this.experiencesRaw[expRawIndex].statistics, exp.statistics)) {
