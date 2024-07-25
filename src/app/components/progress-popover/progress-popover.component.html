@@ -20,7 +20,7 @@
       <ion-col size="7" class="container-body">
         <ng-container *ngIf="progress.submitted">
           <ion-label [ngClass]="{'warning': progress.overdue}"
-            *ngIf="progress.status !== 'not started' || progress.status !== 'in progress' else submittedTmp">
+            *ngIf="progress.status !== 'not started' && progress.status !== 'in progress' else submittedTmp">
             {{ progress.submitted }}
           </ion-label>
           <ng-template #submittedTmp>

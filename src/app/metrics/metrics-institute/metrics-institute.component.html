@@ -1,0 +1,47 @@
+<ion-content class="metrics-dashboard ion-padding">
+  <div class="title-button-container ion-justify-content-between">
+    <div class="title-container ion-justify-content-between">
+      <h1 class="heading-3 black">Metrics Dashboard</h1>
+      <ion-button fill="clear" color="ocean" (click)="openStatusInfoPopover($event)">
+        <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <div>
+      <ion-button id="add-new" color="ocean" trigger-action="click">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+      <ion-button color="ocean" size="default" [disabled]="isDownloading" (click)="download()">
+        <ion-icon slot="icon-only" [name]="isDownloading ? 'ellipsis-horizontal-outline' : 'download-outline'"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ng-container *ngIf="isLoading; else cards">
+        <ion-col size="12" size-sm="6" size-md="4" size-lg="3" *ngFor="let i of [0,1,2]">
+          <app-metric-card [isLoading]="isLoading" [from]="'institution'"></app-metric-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ng-template #cards>
+  <ion-col 
+    size="12" size-sm="6" size-md="4" size-lg="3" 
+    *ngFor="let metric of metrics; let i = index"
+  >
+    <app-metric-card [data]="metric" [index]="i" [from]="'institution'"></app-metric-card>
+  </ion-col>
+</ng-template>
+
+
+<ion-popover trigger="add-new" triggerAction="click" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-content>
+      <ion-item [button]="true" [detail]="false" (click)="addNew()">Create New Metric</ion-item>
+      <ion-item [button]="true" [detail]="false" (click)="goToLibrary()">Get From Library</ion-item>
+    </ion-content>
+  </ng-template>
+</ion-popover>

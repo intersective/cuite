@@ -1,0 +1,134 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-title>Metric detail view</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding metric-detail-container">
+  <ion-grid>
+    <ion-row class="ion-justify-content-between ion-align-items-center">
+      <ion-col size="auto">
+        <h2 class="title">{{ metric.name | titlecase }}</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="1">
+        <div class="requirement-chip" [class]="metric.requirement">
+          <ion-icon [name]="getStatusIcon(metric.requirement)"></ion-icon>
+        </div>
+      </ion-col>
+      <ng-container [ngSwitch]="from">
+        <ion-col size="3" class="chip-container left">
+          <ng-container *ngSwitchCase="'experience'">
+            <div class="matric-status-chip" [class]="metric.status">
+              <ion-icon [name]="getStatusIcon(metric.status)"></ion-icon>
+            </div>
+            <div class="config-status-chip" [class]="metric.dataSourceId ? 'configured' : 'not_configured'">
+              <ion-icon [name]="getStatusIcon(metric.dataSourceId ? 'configured' : 'not_configured')"></ion-icon>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'institution'">
+            <div class="matric-status-chip" [class]="metric.status">
+              <ion-icon [name]="getStatusIcon(metric.status)"></ion-icon>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <div class="matric-status-chip" [class]="metric.status">
+              <p>{{ metric.status | titlecase }}</p>
+            </div>
+          </ng-container>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+    <ng-container *ngIf="from === 'experience' && metric.lastRecord">
+      <ion-row>
+        <ion-col>
+          <div class="metric-record-data-container">
+            <p class="record-value ocean-100">{{ metric.lastRecord.value }} / {{ metric.maxValue }} <span>{{ calculatePercentage() }}</span></p>
+            <p class="record-count black">{{ metric.lastRecord.count }} data point</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+    <ion-row>
+      <ion-col>
+        <p>{{ metric.description }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p><span>Aggregation:</span>{{ metric.aggregation | titlecase }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p><span>Filter Role:</span> {{ metric.filterRole.join(', ') | titlecase }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p><span>Filter Status:</span> {{ metric.filterStatus.join(', ') | titlecase }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="from === 'institution'">
+      <ion-col>
+        <p><span>Public:</span> {{ metric.isPublic ? 'Yes' : 'No' }}</p>
+      </ion-col>
+    </ion-row>
+    <ng-container *ngIf="from === 'experience' && metric.assessment">
+      <ion-row>
+        <ion-col>
+          <p><span>Assessment Details</span></p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p><span>Assessment: </span> {{metric.assessment.name | titlecase }} </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p><span>Question: </span> {{metric.assessment.question.name | titlecase }} </p>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+</ion-content>
+
+
+<ion-footer mode="md">
+  <ion-toolbar class="">
+    <ion-item lines="none">
+      <ng-container [ngSwitch]="from">
+        <ng-container *ngSwitchCase="'experience'">
+          <ion-button size="default" shape="round" color="ocean" *ngIf="!this.metric.dataSourceId"
+            (click)="action('configure')">Configure</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="this.metric.dataSourceId"
+            (click)="action('calculate')">Calculate</ion-button>
+          <ion-button size="default" shape="round" color="ocean" *ngIf="this.metric.dataSourceId"
+            (click)="action('unlink')">Unlink</ion-button>
+        </ng-container>
+        <ng-container *ngSwitchCase="'institution'">
+          <ion-button size="default" shape="round" color="ocean" *ngIf="metric.status !== 'active'"
+            (click)="action('edit')">Edit</ion-button>
+          <ion-button size="default" shape="round" color="ocean"
+            *ngIf="metric.status === 'active' || metric.status === 'inactive'"
+            (click)="action('archive')">Archive</ion-button>
+            <ion-button size="default" shape="round" color="ocean"
+            *ngIf="metric.status === 'archived'"
+            (click)="action('unarchive')">unarchive</ion-button>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('edit')">Edit</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('archive')">Archive</ion-button>
+          <ion-button size="default" shape="round" color="ocean" (click)="action('configure')">Configure</ion-button>
+        </ng-container>
+      </ng-container>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

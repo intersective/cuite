@@ -9,6 +9,7 @@ import { DuplicateExperienceComponent } from './duplicate-experience/duplicate-e
 import { CreateTemplateComponent } from './create-template/create-template.component';
 import { TemplateInfoComponent } from './template-info/template-info.component';
 import { BriefInfoComponent } from './brief-info/brief-info.component';
+import { StatusInfoPopoverComponent } from './status-info-popover/status-info-popover.component';
 
 @NgModule({
     imports: [
@@ -26,6 +27,7 @@ import { BriefInfoComponent } from './brief-info/brief-info.component';
         CreateTemplateComponent,
         TemplateInfoComponent,
         BriefInfoComponent,
+        StatusInfoPopoverComponent
     ],
     exports: [
         DescriptionComponent,

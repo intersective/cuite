@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModalController, AlertController, ToastController, LoadingController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController, LoadingController, PopoverController } from '@ionic/angular';
 import { AlertOptions, ToastOptions, ModalOptions, LoadingOptions } from '@ionic/angular';
 import { UtilsService } from '@services/utils.service';
 import { DescriptionComponent } from './description/description.component';
@@ -13,6 +13,7 @@ import { TemplateInfoComponent } from './template-info/template-info.component';
 import { BriefInfoComponent } from './brief-info/brief-info.component';
 import { Brief } from '@app/onboarding/onboarding.service';
 import { OnboardingFormComponent } from './onboarding-form/onboarding-form.component';
+import { StatusInfoPopoverComponent } from './status-info-popover/status-info-popover.component';
 
 export interface CustomTostOptions {
   message: string;
@@ -31,6 +32,7 @@ export class PopupService {
     private toastController: ToastController,
     private loadingController: LoadingController,
     private utils: UtilsService,
+    private popoverController: PopoverController
   ) {
     this.utils.getEvent('show-loading').subscribe(event => {
       this.showLoading(event);
@@ -63,7 +65,7 @@ export class PopupService {
   }
 
   // toast message pop up, by default, shown success message for 2 seconds.
-  async showToast(message: string, options?: any) {
+  async showToast(message: string, options?: ToastOptions) {
     let toastOptions: ToastOptions = {
       message: message,
       duration: 2000,
@@ -244,6 +246,18 @@ export class PopupService {
       cssClass: this.utils.isMobile() ? 'practera-popup' : 'practera-popup popup-h-90'
     };
     return this.showModal(component, componentProps, options);
+  }
+
+  async openMetricStatusInfoPopover(e: Event) {
+    const popover = await this.popoverController.create({
+      component: StatusInfoPopoverComponent,
+      event: e,
+    });
+
+    await popover.present();
+
+    const { role } = await popover.onDidDismiss();
+    console.log(`Popover dismissed with role: ${role}`);
   }
 
 }

@@ -28,7 +28,7 @@
       <div *ngIf="loadingExps" class="row">
         <div class="col-md-6 col-xl-3" *ngFor="let stat of stats">
           <app-stat-card
-            skeleton="true"
+            [skeleton]="true"
             [statLabel]="stat.label"
             [statDescription]="stat.description"
           ></app-stat-card>
@@ -159,7 +159,7 @@
           </div>
 
           <div class="experiences-list">
-            <app-experience-card *ngIf="loadingExps" skeleton="true"></app-experience-card>
+            <app-experience-card *ngIf="loadingExps" [skeleton]="true"></app-experience-card>
             <ng-container *ngIf="!loadingExps">
               <ng-container *ngFor="let exp of experiences">
                 <app-experience-card
