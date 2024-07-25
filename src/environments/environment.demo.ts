@@ -8,7 +8,6 @@ export const environment = {
   APIEndpointOld: 'http://127.0.0.1:8080/',
   Practera: 'http://127.0.0.1:8080',
   graphQL: 'http://127.0.0.1:8000/',
-  chatGraphQL: 'http://localhost:3000/local/graphql/',
   filestack: {
     key: 'AO6F4C72uTPGRywaEijdLz',
     s3Config: {

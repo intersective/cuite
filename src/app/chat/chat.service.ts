@@ -157,7 +157,7 @@ export class ChatService {
       const response = this.demo.getChats();
       return of(this._normaliseChatListResponse(response.data)).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLQuery(
+    return this.apollo.graphQLFetch(
       `query getChannels {
         channels{
           uuid
@@ -224,7 +224,7 @@ export class ChatService {
     if (!data.scheduledOnly) {
       delete params.scheduledOnly;
     }
-    return this.apollo.chatGraphQLQuery(
+    return this.apollo.graphQLFetch(
       `query getChannellogs($uuid:String!, $cursor:String!, $size:Int!, $scheduledOnly:Boolean) {
         channel(uuid:$uuid){
           chatLogsConnection(cursor:$cursor, size:$size, scheduledOnly:$scheduledOnly){
@@ -307,7 +307,7 @@ export class ChatService {
       const response = this.demo.getMembers(channelId);
       return of(this._normaliseChatMembersResponse(response.data)).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLQuery(
+    return this.apollo.graphQLFetch(
       `query getChannelmembers($uuid:String!) {
         channel(uuid:$uuid){
           members{
@@ -349,7 +349,7 @@ export class ChatService {
       const response = this.demo.getPusherChannels();
       return of(this._normalisePusherChannelsResponse(response.data)).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLQuery(
+    return this.apollo.graphQLFetch(
       `query getPusherChannels {
         channels {
           pusherChannel
@@ -379,7 +379,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation markAsSeen($uuids: [String]!) {
         readChatLogs(uuids: $uuids) {
           success
@@ -400,7 +400,7 @@ export class ChatService {
       const response = this.demo.getNewMessage(data);
       return of(this._normalisePostMessageResponse(response.data)).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation createChatLogs($channelUuid: String!, $message: String, $file: String, $scheduled: String) {
         createChatLog(channelUuid: $channelUuid, message: $message, file: $file, scheduled: $scheduled) {
             uuid
@@ -481,7 +481,7 @@ export class ChatService {
       const response = this.demo.getNewChannel(data);
       return of(this._normaliseCreateChannelResponse(response.data)).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation createChannel($name: String, $isAnnouncement: Boolean, $roles: [String], $members: [MemberInput]!){
         createChannel(name: $name, isAnnouncement: $isAnnouncement, roles: $roles, members: $members) {
             uuid
@@ -545,7 +545,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation deleteChannel($uuid: String!){
         deleteChannel(uuid: $uuid) {
             success
@@ -562,7 +562,7 @@ export class ChatService {
       const response = this.demo.getEditedChannel(data);
       return of(this._normaliseEditChannelResponse(response.data)).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation editChannel($uuid: String!, $name: String, $isAnnouncement: Boolean, $roles: [String]){
         editChannel(uuid: $uuid, name: $name, isAnnouncement: $isAnnouncement, roles: $roles) {
             uuid
@@ -686,7 +686,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation deletechatMessage($uuid: String!) {
         deleteChatLog(uuid: $uuid) {
           success
@@ -702,7 +702,7 @@ export class ChatService {
     if (environment.demo) {
       return of({}).pipe(delay(1000));
     }
-    return this.apollo.chatGraphQLMutate(
+    return this.apollo.graphQLMutate(
       `mutation edichatMessage($uuid: String!, $message: String, $file: String, $scheduled: String) {
         editChatLog(uuid: $uuid, message: $message, file: $file, scheduled: $scheduled) {
           success
