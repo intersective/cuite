@@ -211,16 +211,16 @@ export class ChatListComponent {
     let alertMessage = '';
     switch (channelType) {
       case 'cohort':
-      alertMessage = 'Oops! You already created successfully your cohort wide chat.';
+      alertMessage = 'Oops! You already successfully created your cohort wide chat.';
       break;
       case 'direct':
       alertMessage = 'Oops! You already started conversation with this user.';
       break;
       case 'learnerChannel':
-      alertMessage = 'Oops! You already created successfully your learner announcment chat.';
+      alertMessage = 'Oops! You already successfully created your learner announcment chat.';
       break;
       case 'expertChannel':
-      alertMessage = 'Oops! You already created successfully your expert announcment chat.';
+      alertMessage = 'Oops! You already successfully created your expert announcment chat.';
       break;
     }
     const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
