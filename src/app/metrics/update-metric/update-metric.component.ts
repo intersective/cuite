@@ -90,11 +90,14 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
       });
       
       if (this.metricForm.value.uuid) {
+        if (this.metricForm.value.status === 'inactive') {
+          delete this.metricForm.value.status;
+        }
         return this.metricsService.saveMetric(this.metricForm.value)
         .pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
           this.dismissModal();
           this.toastController.create({
-            message: 'Metric added successfully.',
+            message: 'Metric updated successfully.',
             duration: 1500,
             position: 'top',
             color: 'success',
@@ -106,7 +109,7 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
         this.dismissModal();
 
         this.toastController.create({
-          message: 'Metric updated successfully.',
+          message: 'Metric added successfully.',
           duration: 1500,
           position: 'top',
           color: 'success',
