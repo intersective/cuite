@@ -277,7 +277,8 @@
       "@angular-eslint/schematics",
       "@ionic/angular-toolkit",
       "@angular-eslint/schematics"
-    ]
+    ],
+    "analytics": false
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
@@ -288,3 +289,4 @@
     }
   }
 }
+
