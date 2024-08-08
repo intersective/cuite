@@ -71,6 +71,7 @@ export class MetricDetailComponent implements OnInit {
     }).then(modal => {
       modal.present();
       modal.onDidDismiss().then(() => {
+        this.fetchMetrics();
         this.dismissModal();
       });
     });
