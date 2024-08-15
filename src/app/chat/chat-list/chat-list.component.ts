@@ -217,10 +217,10 @@ export class ChatListComponent {
       alertMessage = 'Oops! You already started conversation with this user.';
       break;
       case 'learnerChannel':
-      alertMessage = 'Oops! You already successfully created your learner announcment chat.';
+      alertMessage = 'Oops! You already successfully created your learner announcement chat.';
       break;
       case 'expertChannel':
-      alertMessage = 'Oops! You already successfully created your expert announcment chat.';
+      alertMessage = 'Oops! You already successfully created your expert announcement chat.';
       break;
     }
     const existingChannel = this.chatChannels.find((channel) => data.uuid === channel.uuid);
