@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Metric, MetricsService } from '../metrics.service';
 import { ModalController, ToastController } from '@ionic/angular';
 import { Subject, takeUntil } from 'rxjs';
@@ -36,7 +36,10 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
     this.metricForm = this.formBuilder.group({
       id: [''],
       uuid: [''],
-      name: ['', Validators.required],
+      name: ['', [
+        Validators.required, 
+        Validators.maxLength(64),
+      ]],
       description: [''],
       dataSource: [''],
       aggregation: ['', Validators.required],
@@ -117,9 +120,15 @@ export class UpdateMetricComponent implements AfterViewInit, OnDestroy {
       });
     }
 
+    let errorMessage = 'Please fill out all required fields';
+    const titleInput: AbstractControl = this.metricForm.get('name');
+    if (titleInput.hasError('maxlength')) {
+      errorMessage = `Title must be less than ${titleInput.errors.maxlength.requiredLength} characters. You have entered ${titleInput.errors.maxlength.actualLength} characters.`;
+    }
+
     return this.notificationService.alert({
       header: 'Invalid Form',
-      message: 'Please fill out all required fields',
+      message: errorMessage,
       buttons: ['OK']
     });
   }
