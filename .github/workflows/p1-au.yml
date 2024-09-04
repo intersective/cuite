@@ -55,7 +55,7 @@ jobs:
 #  GITHUB REPO CHECKOUT 
 ################################################
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
           ref: ${{ github.event.inputs.BRANCH_TAG_NAME }}
@@ -65,16 +65,16 @@ jobs:
 #  NODE ENV
 ################################################    
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: 18
       
 
 ################################################
 #  NODE MODULES CACHE  
 ################################################
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-node-modules
         env:
           cache-name: cache
@@ -106,7 +106,7 @@ jobs:
 #  AWS CLI CONFIGURATION - DEVOPS 
 ################################################ 
       - name: Configure AWS credentials from $STACK_NAME account in $REGION region
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.DEVOPS_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.DEVOPS_AWS_SECRET_ACCESS_KEY }}
@@ -141,7 +141,7 @@ jobs:
 #  AWS P1 AU ACCOUNT STEPS BELOW
 ##########################################################
       - name: Configure AWS credentials from $STACK_NAME account in $REGION region
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ steps.DeploySecret.outputs.P1_PROD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ steps.DeploySecret.outputs.P1_PROD_AWS_SECRET_ACCESS_KEY }}
