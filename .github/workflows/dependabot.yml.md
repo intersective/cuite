@@ -83,7 +83,7 @@ jobs:
 #  AWS CLI CONFIGURATION - DEVOPS 
 ################################################ 
       - name: Configure AWS credentials from $STACK_NAME account in $REGION region
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.DEVOPS_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.DEVOPS_AWS_SECRET_ACCESS_KEY }}
